@@ -10,8 +10,11 @@ validate_colour = RegexValidator(colour_re, 'Please enter a valid colour', 'inva
 class ColourField(models.CharField):
     # we define a new custom field to hold tag colours
     # It's stored as a string, so it extends from CharField
+
+    description = "A 6 character hex code, in the form #5ABCDE"
     
     
     def __init__(self, *args, **kwargs):
         kwargs['max_length'] = 18
+        kwargs['validators'] = [validate_colour]
         return super(ColourField, self).__init__(*args, **kwargs)
