@@ -31,12 +31,28 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete = models.CASCADE)
     # is CASCADE okay here? When we delete a user, should their posts disappear too?
     # I'll say so for now, but subject to change.
+    # Perhaps make a default "anonymous" user we revert to if a user is deleted?
     picture = models.ImageField();
     game_tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
-    # same story as above, but a bit less sure this time
+    # same story as above, but a bit less sure this time - default makes little sense
+    # I think cascade is probably the best option from a bad bunch
     info_tags = models.ManyToManyField(Tag)
     # how to validate this server-side?
     date_submitted = models.DateTimeField() # use DateTime for multiple posts on same day
-    post_id = models.IntegerField(unique=True)
+    post_id = models.IntegerField(unique=True) 
+    # or we could just use post_id to sort? could cause problems w/ deleted posts through
     description = models.CharField(max_length = 300, default="")
+
+class Comment(models.Model):
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    text = models.CharField(max_length = 300)
+
+    liking_users = models.ManyToManyField(User)
+
+    parent_post = models.ForeignKey(Post, on_delete=models.DO_NOTHING)
+    # post doesn't care if a comment is deleted
+
+    comment_id = models.IntegerField(unique=True)
+
     
