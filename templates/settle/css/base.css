@@ -3,7 +3,6 @@
 body {
     background-color: #F5F5F5;
     position:relative;
-    z-index:1;
 }
 
 /* ---------------------- NAVIGATION BAR TEXT */
@@ -17,23 +16,23 @@ body {
 
 #linkText {
     color:white;
-    font-size: 22px;
     position: relative;
     left: 240%;
+    font-size: 22px;
 }
 
 #uploadText {
     color:white;
-    font-size: 22px;
     position: relative;
     left: 490%;
+    font-size: 22px;
 }
 
 #tagText {
     color:white;
-    font-size: 22px;
     position: relative;
-    left: 450%; 
+    left: 450%;
+    font-size: 22px;
 }
 
 /* ---------------------- NAVIGATION BAR BUTTONS */
@@ -59,7 +58,6 @@ body {
     position: absolute;
     width:29.5%;
     left:69%;
-    z-index: 1;
 }
 
 #loginDropdownBox {
