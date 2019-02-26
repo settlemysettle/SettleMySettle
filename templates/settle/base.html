@@ -1,70 +1,79 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="EN">
+
     <head>
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+        <!-- Custom CSS -->
         <link rel="stylesheet" type="text/css" href="css/base.css">
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
         <title>Settle My Settle</title>
-
     </head>
 
     <body>
         <!-- Navigation Bar -->
         <nav class="navbar navbar-expand-lg navbar-light" style="background-color:#305475;padding:0 1% 0 0">
+
+            <!-- Logo and App Name -->
             <a class="navbar-brand" href="#" style="background-color:#56C9FF;padding:1% 1% 1% 1%;color:#484C4F">
                 Settle My Settle
                 <img src="images/logoWAD.png" width="30" height="30" class="d-inline-block align-top" alt="">
             </a>
         
             <div class="nav navbar-nav" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
+                <ul class="navbar-nav mr-auto">
+                    <!-- Item 1 - Home -->
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#" id="homeText">Home<span class="sr-only">(current)</span></a>
+                    </li>
 
-                <li class="nav-item active">
-                <a class="nav-link" href="#" id="homeText" style=color:white;>Home<span class="sr-only">(current)</span></a>
-                </li>
+                    <!-- Item 2 - My Feed -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="linkText">My Feed</a>
+                    </li>
 
-                <li class="nav-item">
-                <a class="nav-link" href="#" id="linkText" style=color:white;>My Feed</a>
-                </li>
+                    <!-- Item 3 - Upload -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="uploadText">Upload</a>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="#" id="uploadText" style=color:white;>Upload</a>
-                </li>
+                    <!-- Item 4 - Suggest Tag -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" id="tagText">Suggest Tag</a>
+                    </li>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="#" id="tagText" style=color:white;>Suggest Tag</a>
-                </li>        
+                    <!-- FOR THESE BUTTONS HERE: if logged in, display "Account" and "Log Out" insteaed -->
+                    <!-- Item 5 - Login Button -->
+                    <li>
+                        <button type="button" class="btn btn-primary" id="loginButton">Log in</button>
+                    </li>
 
-                <li>
-                    <button type="button" class="btn btn-primary" style="margin-right:0.5%" id="loginButton">Log in</button>
-                </li>
-
-                <li>
-                    <button type="button" class="btn btn-primary" id="signupButton">Sign Up</button>
-                </li>
-
-            </ul>
-
+                    <!-- Item 6 - Sign Up Button -->
+                    <li>
+                        <button type="button" class="btn btn-primary" id="signupButton">Sign Up</button>
+                    </li>
+                </ul>
             </div>
         </nav>
 
-        <div class="collapse" id="collapseExample">
-            <div class="card card-body" id="loginDropdown">
+
+        <!-- drop down menu for the login form -->
+        <div class="collapse" id="collapseMenu">
+            <div class="card card-body" id="loginDropdownBox">
                 <form>
                     <input class="form-control form-control-sm" id="usernameField" type="text" placeholder="Username" aria-label="Username">
                     <input class="form-control form-control-sm" id="passwordField" type="password" placeholder="Password" aria-label="Search">
-                    <button class="btn btn-success" type="submit" id="finishLogin">Submit</button>
+                    <button class="btn btn-primary" type="submit" id="finishLoginButton">Submit</button>
                 </form>
             </div>
         </div>
 
-        <p>Test to see if nav bar works</p>
-        <img src="images/dukedoggo.jpg" alt="pic of dog" style="height:25%;width:20%;padding-left:5px">
+        <!-- Enter anything else you want on the page here (below the nav bar) -->
+        
 
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->

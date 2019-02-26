@@ -5,7 +5,7 @@ $(document).ready(function(){
   });
 
   $(document).click(function(e){
-    if ($("#loginDropdown").has(e.target).length == 0 && !$("#loginDropdown").is(e.target) && !$("#loginButton").is(e.target)) {
+    if ($("#loginDropdown").has(e.target).length == 0 && !$("#loginDropdown").is(e.target) && !$("#loginButton").is(e.target) && !$("#finishLoginButton").is(e.target)) {
       $(".collapse").collapse('hide');
     }
   });

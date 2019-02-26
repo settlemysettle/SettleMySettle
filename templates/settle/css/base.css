@@ -1,42 +1,49 @@
+/* ---------------------- FULL DOCUMENT FORMATTING */
+
 body {
     background-color: #F5F5F5;
     position:relative;
     z-index:1;
 }
 
+/* ---------------------- NAVIGATION BAR TEXT */
+
 #homeText {
     color:white;
-    font-size: 22px;
     position: relative;
-    left: 50%;
+    left: 100%;
+    font-size: 22px;
 }
 
 #linkText {
     color:white;
     font-size: 22px;
     position: relative;
-    left: 160%;
+    left: 240%;
 }
 
 #uploadText {
     color:white;
     font-size: 22px;
     position: relative;
-    left: 400%;
+    left: 490%;
 }
 
 #tagText {
     color:white;
     font-size: 22px;
     position: relative;
-    left: 380%; 
+    left: 450%; 
 }
+
+/* ---------------------- NAVIGATION BAR BUTTONS */
 
 #loginButton {
     color: #484C4F;
     position:absolute;
     top: 20%;
     left: 87.2%;
+    margin-right:0.5%
 }
 
 #signupButton {
@@ -46,14 +53,16 @@ body {
     left: 92%;
 }
 
-#collapseExample {
+/* ---------------------- DROPDOWN MENU FOR LOGIN */
+
+#collapseMenu {
     position: absolute;
-    width:30%;
+    width:29.5%;
     left:69%;
     z-index: 1;
 }
 
-#loginDropdown {
+#loginDropdownBox {
     background-color:#305475;
     border-radius:0px;
     border-bottom-left-radius:5px;
@@ -70,10 +79,18 @@ body {
     margin-bottom: 1%;
 }
 
-#finishLogin {
+#finishLoginButton {
+    color: #484C4F;
     position:absolute;
     top: 25%;
     left: 80%;
     margin-top: 1%;
     padding: 2% 2% 2% 2%;
 }
+
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+    border-color: #56C9FF !important;
+    background-color: #56C9FF !important;
+}
+
+/* ---------------------- */
