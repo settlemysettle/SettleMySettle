@@ -26,4 +26,17 @@ class User(models.Model):
     # TODO: implement validation to only allow game tags to be included here.
     # It doesn't seem to be possible in the same way as for the ColourField, since
     # ManyToManyFields are a bit special.
+
+class Post(models.Model):
+    author = models.ForeignKey(User, on_delete = models.CASCADE)
+    # is CASCADE okay here? When we delete a user, should their posts disappear too?
+    # I'll say so for now, but subject to change.
+    picture = models.ImageField();
+    game_tag = models.ForeignKey(Tag, on_delete=models.CASCADE)
+    # same story as above, but a bit less sure this time
+    info_tags = models.ManyToManyField(Tag)
+    # how to validate this server-side?
+    date_submitted = models.DateTimeField() # use DateTime for multiple posts on same day
+    post_id = models.IntegerField(unique=True)
+    description = models.CharField(max_length = 300, default="")
     
