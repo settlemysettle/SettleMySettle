@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'settle',
+    'registration'   # Add registration redux
 ]
 
 MIDDLEWARE = [
@@ -99,6 +100,11 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+# Passowrd hashers
+PASSWORD_HASHERS = (
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+)
 
 
 # Internationalization
@@ -119,3 +125,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# Let's suers regisiter
+REGISTRATION_OPEN = True
+# Use this if we want email activation, will remove if we don't need it
+# ACCOUNT_ACTIVATION_DAYS = 7
+# Again, not sure how this will work with the login form
+# REGISTRATION_AUTO_LOGIN = True
+# Go to home pages after log in
+LOGIN_REDIRECT_URL = '/settle/'
+# Gonna leave this commented until we work out the login form
+# LOGIN_URL = '/users/login/'
