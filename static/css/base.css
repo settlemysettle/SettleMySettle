@@ -97,4 +97,40 @@ body {
     background-color: #4FB9EA !important;
 }
 
-/* ---------------------- */
+/* ---------------------- MODAL CSS */
+
+.img-responsive {
+    max-height: 30rem;
+    max-width: 35rem;
+}
+
+#modalButton {
+    color:#484C4F;
+}
+  
+.image-bg {
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+@media(max-height: 991px) {
+    .flex-me .image-bg {
+        min-height: 80vh;
+    }
+}
+
+@media (min-width: 992px) {
+    .flex-me {
+        display: flex;
+    }
+    .image-bg {
+        width: calc(100% + 15px);
+    }
+}
+
+.modalPic {
+    cursor: pointer;
+}

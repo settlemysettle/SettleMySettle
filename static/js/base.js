@@ -6,6 +6,11 @@ $(document).ready(function(){
     $(".collapse").collapse('show');
   });
 
+  $(".modalPic").click(function() {
+    var src = $(this).attr('src');
+    document.getElementById("full-img").src = src;
+  });
+
   // hide login menu when anything but the login button or the box is clicked
   $(document).click(function(e) {
     if ($("#loginDropdownBox").has(e.target).length == 0 && !$("#loginDropdownBox").is(e.target) && !$("#loginButton").is(e.target)) {

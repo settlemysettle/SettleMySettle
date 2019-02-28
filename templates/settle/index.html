@@ -5,8 +5,20 @@
     Home
 {% endblock %}
 
+
+
 {% block body_block %}
-    <!-- Enter anything else you want on the page here (below the nav bar) -->
+<!-- Enter anything else you want on the page here (below the nav bar) -->
     <strong>{{ boldmessage }}</strong>
-    <img src="{{ MEDIA_URL }}userImages/dukedoggo.jpg" style="max-height: 200px;margin-top:5px;"/>
+
+    <p>Can be clicked on to enlargen</p>
+    <img src="{{ MEDIA_URL }}userImages/lukedog.jpg" data-toggle="modal" data-target="#pic-modal" class="modalPic" style="max-height: 100px">
+    <p>Can also be clicked on to enlargen (showing different size - still in middle)</p>
+    <img src="{% static "images/doggo.jpg" %}" data-toggle="modal" data-target="#pic-modal" class="modalPic" style="max-height: 70px">
+    <p>Can't be clicked on to enlargen</p>
+    <img src="{{ MEDIA_URL }}userImages/dukedoggo.jpg" style="max-height: 100px">
+
+{% endblock %}
+
+{% block script_block %}
 {% endblock %}
