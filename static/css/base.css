@@ -2,36 +2,58 @@
 
 body {
     background-color: #F5F5F5;
-    position:relative;
+    position: relative;
+}
+
+/* ---------------------- NAVIGATION BAR */
+
+#navBar {
+    background-color:#305475;
+    padding: 0% 1% 0% 0%;
+}
+
+#navLogo {
+    color:#484C4F;
+    background-color:#56C9FF;
+    padding: 1% 1% 1% 1%;
+}
+
+#logo {
+    height: 1.55em;
+    width: 1.55em;
 }
 
 /* ---------------------- NAVIGATION BAR TEXT */
 
 #homeText {
-    color:white;
-    position: relative;
-    left: 100%;
+    color: white;
+    position: absolute;
+    top: 11%;
+    left: 17.5%;
     font-size: 22px;
 }
 
 #linkText {
     color:white;
-    position: relative;
-    left: 240%;
+    position: absolute;
+    top: 11%;
+    left: 34%;
     font-size: 22px;
 }
 
 #uploadText {
     color:white;
-    position: relative;
-    left: 490%;
+    position: absolute;
+    top: 11%;
+    left: 54%;
     font-size: 22px;
 }
 
 #tagText {
     color:white;
-    position: relative;
-    left: 450%;
+    position: absolute;
+    top: 11%;
+    left: 71%;
     font-size: 22px;
 }
 
@@ -103,10 +125,6 @@ body {
     max-height: 30rem;
     max-width: 35rem;
 }
-
-#modalButton {
-    color:#484C4F;
-}
   
 .image-bg {
     background: transparent;
@@ -134,3 +152,5 @@ body {
 .modalPic {
     cursor: pointer;
 }
+
+/* ---------------------- */
