@@ -103,5 +103,7 @@ venv.bak/
 
 # mypy
 .mypy_cache/
-
+settle/migrations/0001_initial.py
+db.sqlite3
+db.sqlite3
 .vscode
