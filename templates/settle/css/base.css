@@ -1,0 +1,94 @@
+/* ---------------------- FULL DOCUMENT FORMATTING */
+
+body {
+    background-color: #F5F5F5;
+    position:relative;
+}
+
+/* ---------------------- NAVIGATION BAR TEXT */
+
+#homeText {
+    color:white;
+    position: relative;
+    left: 100%;
+    font-size: 22px;
+}
+
+#linkText {
+    color:white;
+    position: relative;
+    left: 240%;
+    font-size: 22px;
+}
+
+#uploadText {
+    color:white;
+    position: relative;
+    left: 490%;
+    font-size: 22px;
+}
+
+#tagText {
+    color:white;
+    position: relative;
+    left: 450%;
+    font-size: 22px;
+}
+
+/* ---------------------- NAVIGATION BAR BUTTONS */
+
+#loginButton {
+    color: #484C4F;
+    position:absolute;
+    top: 20%;
+    left: 87.2%;
+    margin-right:0.5%
+}
+
+#signupButton {
+    color:#484C4F;
+    position:absolute;
+    top: 20%;
+    left: 92%;
+}
+
+/* ---------------------- DROPDOWN MENU FOR LOGIN */
+
+#collapseMenu {
+    position: absolute;
+    width:29.5%;
+    left:69%;
+}
+
+#loginDropdownBox {
+    background-color:#305475;
+    border-radius:0px;
+    border-bottom-left-radius:5px;
+    border-bottom-right-radius:5px;
+}
+
+#usernameField {
+    width: 80%;
+    margin-bottom: 1%;
+}
+
+#passwordField {
+    width: 80%;
+    margin-bottom: 1%;
+}
+
+#finishLoginButton {
+    color: #484C4F;
+    position:absolute;
+    top: 25%;
+    left: 80%;
+    margin-top: 1%;
+    padding: 2% 2% 2% 2%;
+}
+
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+    border-color: #56C9FF !important;
+    background-color: #56C9FF !important;
+}
+
+/* ---------------------- */
