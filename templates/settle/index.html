@@ -1,0 +1,12 @@
+{% extends 'settle/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Home
+{% endblock %}
+
+{% block body_block %}
+    <!-- Enter anything else you want on the page here (below the nav bar) -->
+    <strong>{{ boldmessage }}</strong>
+    <img src="{{ MEDIA_URL }}userImages/dukedoggo.jpg" style="max-height: 200px;margin-top:5px;"/>
+{% endblock %}
