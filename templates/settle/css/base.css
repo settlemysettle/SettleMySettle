@@ -86,9 +86,15 @@ body {
     padding: 2% 2% 2% 2%;
 }
 
-.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+.btn-primary, .btn-primary:active, .btn-primary:visited {
+    color: #484C4F !important;
     border-color: #56C9FF !important;
     background-color: #56C9FF !important;
+}
+
+.btn-primary:hover {
+    border-color: #4FB9EA !important;
+    background-color: #4FB9EA !important;
 }
 
 /* ---------------------- */
