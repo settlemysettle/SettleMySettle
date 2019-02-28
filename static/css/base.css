@@ -25,51 +25,49 @@ body {
 
 /* ---------------------- NAVIGATION BAR TEXT */
 
-#homeText {
-    color: white;
+.nav-link {
+    color: white !important;
     position: absolute;
+    font-size: 22px;
+}
+
+a.nav-link:hover {
+    color: #D8D8D8 !important;
+}
+
+a.nav-link:focus {
+    color: #CCCCCC !important;
+}
+
+#homeText {
     top: 11%;
     left: 17.5%;
-    font-size: 22px;
 }
 
 #linkText {
-    color:white;
-    position: absolute;
     top: 11%;
     left: 34%;
-    font-size: 22px;
 }
 
 #uploadText {
-    color:white;
-    position: absolute;
     top: 11%;
     left: 54%;
-    font-size: 22px;
 }
 
 #tagText {
-    color:white;
-    position: absolute;
     top: 11%;
     left: 71%;
-    font-size: 22px;
 }
 
 /* ---------------------- NAVIGATION BAR BUTTONS */
 
 #loginButton {
-    color: #484C4F;
-    position:absolute;
     top: 20%;
     left: 87.2%;
     margin-right:0.5%
 }
 
 #signupButton {
-    color:#484C4F;
-    position:absolute;
     top: 20%;
     left: 92%;
 }
@@ -100,8 +98,6 @@ body {
 }
 
 #finishLoginButton {
-    color: #484C4F;
-    position:absolute;
     top: 25%;
     left: 80%;
     margin-top: 1%;
@@ -112,6 +108,7 @@ body {
     color: #484C4F !important;
     border-color: #56C9FF !important;
     background-color: #56C9FF !important;
+    position:absolute;
 }
 
 .btn-primary:hover {

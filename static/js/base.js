@@ -6,7 +6,8 @@ $(document).ready(function(){
     $(".collapse").collapse('show');
   });
 
-  $(".modalPic").click(function() {
+  // dynamically change the modal image when clicking on an image
+  $(".modalImg").click(function() {
     var src = $(this).attr('src');
     document.getElementById("full-img").src = src;
   });
