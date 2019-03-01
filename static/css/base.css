@@ -2,52 +2,72 @@
 
 body {
     background-color: #F5F5F5;
-    position:relative;
+    position: relative;
+}
+
+/* ---------------------- NAVIGATION BAR */
+
+#navBar {
+    background-color:#305475;
+    padding: 0% 1% 0% 0%;
+}
+
+#navLogo {
+    color:#484C4F;
+    background-color:#56C9FF;
+    padding: 1% 1% 1% 1%;
+}
+
+#logo {
+    height: 1.55em;
+    width: 1.55em;
 }
 
 /* ---------------------- NAVIGATION BAR TEXT */
 
-#homeText {
-    color:white;
-    position: relative;
-    left: 100%;
+.nav-link {
+    color: white !important;
+    position: absolute;
     font-size: 22px;
+}
+
+a.nav-link:hover {
+    color: #D8D8D8 !important;
+}
+
+a.nav-link:focus {
+    color: #CCCCCC !important;
+}
+
+#homeText {
+    top: 11%;
+    left: 17.5%;
 }
 
 #linkText {
-    color:white;
-    position: relative;
-    left: 240%;
-    font-size: 22px;
+    top: 11%;
+    left: 34%;
 }
 
 #uploadText {
-    color:white;
-    position: relative;
-    left: 490%;
-    font-size: 22px;
+    top: 11%;
+    left: 54%;
 }
 
 #tagText {
-    color:white;
-    position: relative;
-    left: 450%;
-    font-size: 22px;
+    top: 11%;
+    left: 71%;
 }
 
 /* ---------------------- NAVIGATION BAR BUTTONS */
 
 #loginButton {
-    color: #484C4F;
-    position:absolute;
     top: 20%;
     left: 87.2%;
     margin-right:0.5%
 }
 
 #signupButton {
-    color:#484C4F;
-    position:absolute;
     top: 20%;
     left: 92%;
 }
@@ -78,8 +98,6 @@ body {
 }
 
 #finishLoginButton {
-    color: #484C4F;
-    position:absolute;
     top: 25%;
     left: 80%;
     margin-top: 1%;
@@ -90,11 +108,46 @@ body {
     color: #484C4F !important;
     border-color: #56C9FF !important;
     background-color: #56C9FF !important;
+    position:absolute;
 }
 
 .btn-primary:hover {
     border-color: #4FB9EA !important;
     background-color: #4FB9EA !important;
+}
+
+/* ---------------------- MODAL CSS */
+
+.img-responsive {
+    max-height: 30rem;
+    max-width: 35rem;
+}
+  
+.image-bg {
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+@media(max-height: 991px) {
+    .flex-me .image-bg {
+        min-height: 80vh;
+    }
+}
+
+@media (min-width: 992px) {
+    .flex-me {
+        display: flex;
+    }
+    .image-bg {
+        width: calc(100% + 15px);
+    }
+}
+
+.modalPic {
+    cursor: pointer;
 }
 
 /* ---------------------- */
