@@ -21,4 +21,14 @@ class passChangeTestCase(TestCase):
 class regFormTestCase(TestCase):
     print("todo")
 
+class feedTempTestCase(TestCase):
+    print("todo")
 
+class indexTempTestCase(TestCase):
+    print("todo")
+
+class suggestTagTempTestCase(TestCase):
+    print("todo")
+
+class uploadTempTestCase(TestCase):
+    print("todo")
