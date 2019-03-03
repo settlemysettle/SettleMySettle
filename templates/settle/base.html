@@ -4,110 +4,121 @@
 
 <html lang="EN">
 
-    <head>
-        <!-- Required meta tags -->
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <!-- Custom CSS -->
-        <link rel="stylesheet" type="text/css" href="{% static "css/base.css" %}">
-        <!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Favicon -->
+    <link rel="icon" href="{% static "images/favicon.ico" %}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static "css/base.css" %}">
 
-        <title>
-            Settle My Settle -
-            {% block title_block %}
-            {% endblock %}
-        </title>
-    </head>
+    <title>
+        Settle My Settle -
+        {% block title_block %}
+        {% endblock %}
+    </title>
 
-    <body>
-        <!-- Navigation Bar -->
-        <nav class="navbar navbar-expand-lg navbar-light" id="navBar">
+</head>
 
-            <!-- Logo and App Name -->
-            <a class="navbar-brand" href="{% url 'index' %}" id="navLogo">
-                Settle My Settle
-                <img src="{% static "images/logoWAD.png" %}" class="d-inline-block align-top" alt="logo" id="logo">
-            </a>
-        
-            <div class="nav navbar-nav" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <!-- Item 1 - Home -->
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'index' %}" id="homeText">Home<span class="sr-only">(current)</span></a>
-                    </li>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="nav navbar-expand-md navbar-dark pr-2" id="navBar">
 
-                    <!-- Item 2 - My Feed -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'feed' %}" id="linkText">My Feed</a>
-                    </li>
+        <!-- Logo and App Name -->
+        <a class="navbar-brand py-3 px-3" href="{% url 'index' %}">
+            Settle My Settle
+            <img src="{% static "images/logoWAD.png" %}" alt="logo" id="logo">
+        </a>
 
-                    <!-- Item 3 - Upload -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'upload' %}" id="uploadText">Upload</a>
-                    </li>
+        <!-- Toggle button for when browser size gets to 768px: lets us collapse the contents of the navbar -->
+        <button class="navbar-toggler ml-auto mr-2 my-2" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-                    <!-- Item 4 - Suggest Tag -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'tags' %}" id="tagText">Suggest Tag</a>
-                    </li>
+        <!-- Contents of the navbar (can be collapsed) -->
+        <div class="collapse navbar-collapse" id="navbarToggle">
 
-                    <!-- FOR THESE BUTTONS HERE: if logged in, display "Account" and "Log Out" insteaed -->
-                    <!-- Item 5 - Login Button -->
-                    <li>
-                        <button type="button" class="btn btn-primary" id="loginButton">Log in</button>
-                    </li>
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <!-- Item 1: Home -->
+                <li class="nav-item ml-3">
+                    <a class="nav-link navText" href="{% url 'index' %}">Home</a>
+                </li>
+                <!-- Item 2: My Feed -->
+                <li class="nav-item ml-3">
+                    <a class="nav-link navText" href="{% url 'feed' %}">My Feed</a>
+                </li>
+                <!-- Item 3: Upload -->
+                <li class="nav-item ml-3">
+                    <a class="nav-link navText" href="{% url 'upload' %}">Upload</a>
+                </li>
+                <!-- Item 4: Suggest Tag -->
+                <li class="nav-item ml-3">
+                    <a class="nav-link navText" href="{% url 'tags' %}">Suggest Tag</a>
+                </li>
+            </ul>
 
-                    <!-- Item 6 - Sign Up Button -->
-                    <li>
-                        <button type="button" class="btn btn-primary" id="signupButton">Sign Up</button>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+            <!-- Form for the username and password -->
+            <form class="form-row my-2 my-md-0">
+                <input class="form-control ml-3 mb-2 d-md-none smallMenuForm" type="text" placeholder="Username">
+                <input class="form-control ml-3 d-md-none smallMenuForm" type="password" placeholder="Password">
+            </form>
 
+            <!-- Putting the buttons in a line -->
+            <form class="form-inline my-2 my-lg-0">
+                <!-- Login button for when not collapsed -->
+                <button type="button" class="btn btn-primary ml-3 d-none d-md-block" id="loginButton">Login</button>
+                <!-- Login button for when collapsed -->
+                <button type="submit" class="btn btn-primary ml-3 d-md-none">Login</button>
+                <button type="button" class="btn btn-primary ml-1 mr-2 my-2 my-md-0" id="signupButton">Sign Up</button>
+            </form>
 
-        <!-- drop down menu for the login form -->
-        <div class="collapse" id="collapseMenu">
-            <div class="card card-body" id="loginDropdownBox">
-                <form>
-                    <input class="form-control form-control-sm" id="usernameField" type="text" placeholder="Username" aria-label="Username">
-                    <input class="form-control form-control-sm" id="passwordField" type="password" placeholder="Password" aria-label="Search">
-                    <button class="btn btn-primary" type="submit" id="finishLoginButton">Submit</button>
-                </form>
-            </div>
         </div>
 
-        <!-- Modal -->
-        <div class="modal fade bs-example-modal-lg" id="pic-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog modal-lg modal-vert-align-center" role="document">
-                <div class="modal-body">
-                    <div class="row no-margin flex-me">
-                        <div class="col-md-12">
-                            <div class="text-center image-bg">
-                              <img class="img-responsive" src="" id="full-img">
-                            </div>
+    </nav>
+
+    <!-- drop down menu for the login form -->
+    <div class="collapse" id="collapseMenu">
+        <div class="card card-body d-none d-md-block" id="loginDropdownBox">
+            <form class="form-row my-2 my-md-0">
+                <input class="form-control form-control-sm my-1 bigMenuForm" type="text" placeholder="Username" aria-label="Username">
+                <input class="form-control form-control-sm bigMenuForm" type="password" placeholder="Password" aria-label="Search">
+                <button class="btn btn-primary btn-sm my-1" type="submit" id="finishLoginButton">Submit</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal (click on a picture to fade background and show picture center) -->
+    <div class="modal fade bs-example-modal-lg" id="pic-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg modal-vert-align-center" role="document">
+            <div class="modal-body">
+                <div class="row no-margin flex-me">
+                    <div class="col-md-12">
+                        <div class="text-center image-bg">
+                            <img class="img-responsive" src="" id="full-img">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Page specific content goes here! -->
-        {% block body_block %}
-        {% endblock %}
+    {% block body_block %}
+    {% endblock %}
 
-        <!-- To modal a picture -->
-        <!-- <img src="<file location>" data-toggle="modal" data-target="#pic-modal" class="modalImg"> -->
+    <!-- To modal a picture -->
+    <!-- <img src="<file location>" data-toggle="modal" data-target="#pic-modal" class="modalImg"> -->
 
-        <!-- Optional JavaScript -->
-        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-        <script src="{% static "js/base.js" %}"></script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="{% static "js/base.js" %}"></script>
 
-    </body>
+</body>
 
 </html>
