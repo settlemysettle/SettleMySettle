@@ -1,13 +1,7 @@
-
 from settle.models import Tag, User, Post, Comment
 import os
 
 import django
-from django.conf import settings
-
-if not settings.configured:
-    settings.configure(settle_defaults, DEBUG=True)
-
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE',
                       'settle_my_settle.settings')
@@ -63,8 +57,8 @@ def populate():
     ]
 
     for tag in tags:
-        t = add_tag(t["text"], t["colour"], t["is_game_tag"],
-                    t["is_pending"], t.get("steamAppId", 0))
+        t = add_tag(tag["text"], tag["colour"], tag["is_game_tag"],
+                    tag["is_pending"], tag.get("steamAppId", 0))
 
 
 def add_tag(text, colour, is_game_tag, is_pending, steamAppId):
