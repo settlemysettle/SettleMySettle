@@ -21,7 +21,7 @@ from django.conf.urls.static import static
 from settle import views
 
 urlpatterns = [
-    url(r'^$', views.index, name="index"),
+    url(r'^$', views.redirectHome),
     url(r'^settle/', include('settle.urls')),
     url(r'^admin/', admin.site.urls),
     # Include the urls for registration redux

@@ -9,7 +9,23 @@
 
 {% block body_block %}
     <!-- Code here! -->
-    
+    <p>{{ message }}</p>
+    <div>
+        {% if result_list %}
+            <h3>Steam News</h3>
+            <!-- Display search results in an ordered list -->
+            <div class="list-group">
+            {% for result in result_list %}
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">
+                    <a href="{{ result.link }}">{{ result.title }}</a>
+                </h4>
+                <p>{{ result.summary }}</p>
+            </div>
+            {% endfor %}
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}
 
 {% block script_block %}
