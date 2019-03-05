@@ -39,6 +39,11 @@ a.nav-link:focus {
     color: #CCCCCC !important;
 }
 
+/* Currently selected page (active page) - text appears in Blue */
+nav ul li.active a {
+    color: #56C9FF !important;
+}
+
 #homeText {
     top: 11%;
     left: 17.5%;
