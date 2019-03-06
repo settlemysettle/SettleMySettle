@@ -103,7 +103,7 @@ def add_user(username, password, favourite_games):
     for game in favourite_games:
         print(game["text"])
         user.favourite_games.add(Tag.objects.get(text=game["text"]))
-    print(user.favourite_games)
+    print(user.favourite_games.all())
     return(user)
 
 
