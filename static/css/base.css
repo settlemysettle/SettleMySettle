@@ -18,7 +18,7 @@ body {
 
 #navLogo {
     color:#484C4F;
-    background-color:#56C9FF;
+    background-color:#56C9FF !important;
     padding: 1% 1% 1% 1%;
 }
 
@@ -41,6 +41,11 @@ a.nav-link:hover {
 
 a.nav-link:focus {
     color: #CCCCCC !important;
+}
+
+/* Currently selected page (active page) - text appears in Blue */
+.active {
+    color: #56C9FF !important;
 }
 
 /* ---------------------- DROPDOWN MENU FOR LOGIN */

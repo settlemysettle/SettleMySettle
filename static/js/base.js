@@ -1,5 +1,6 @@
 // when the document is ready, the functions below can be used
 $(document).ready(function () {
+
   // drop login menu down when login button is clicked
   $("#loginButton").click(function () {
     $("#collapseMenu").collapse("show");
@@ -22,6 +23,13 @@ $(document).ready(function () {
   $(document).click(function (e) {
     if ($("#navbarToggle").has(e.target).length == 0 && !$("#navbarToggle").is(e.target) && $(window).width() < 768) {
       $("#navbarToggle").collapse("hide");
+    }
+  });
+  
+  // Highlight currently selected page
+  $('.nav-link').each(function() {
+    if ($(this).prop('href') == window.location.href) {
+      $(this).addClass('active');
     }
   });
 
