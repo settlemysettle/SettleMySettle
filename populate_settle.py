@@ -155,7 +155,7 @@ def add_user(username, password, favourite_games):
 
 def add_post(author, picture, game_tag, info_tags, description):
     print("post being added?")
-    post = Post.objects.get_or_create(description=description, picture=picture, id=1)[0]
+    post = Post.objects.get_or_create(description=description, picture=picture)[0]
     post.save()
   
     print("adding game tag...")
