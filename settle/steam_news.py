@@ -17,7 +17,7 @@ def get_news(steamID, count=5):
             # look at all of the possible
             content = post['contents'][:1000]
             newsImage = getImage(content)
-            content = trimContent(html2text(content))[:500] + "..."
+            content = trimContent(html2text(content))[:200] + "..."
             results.append({'title': post['title'].replace(" s ", "'s "),
                             'link': post['url'],
                             'summary': content,
@@ -31,8 +31,6 @@ def get_news(steamID, count=5):
 
 def getImage(content):
     try:
-        # newsImage = re.findall(r'!\[\]\((.*)\/', content)[0]
-        # newsImage = re.findall(r'src\=\"(.*)\/\"', content)[0]
         newsImage = re.findall(r'(?:src=\"|\[img\])(.*?)(?:"|\[\/img\])', content)[0]
         return newsImage
     except Exception as ex:
