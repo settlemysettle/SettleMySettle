@@ -49,6 +49,7 @@ a.nav-link:focus {
     position: absolute;
     width: 29.5%;
     left: 69%;
+    z-index: 1;
 }
 
 #loginDropdownBox {

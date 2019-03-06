@@ -37,7 +37,8 @@ def post(request):
     result_list = []
 
     # testing - when we actually make it, we'll parameterise the app id
-    result_list = get_news(289070, 3)
+    result_list = get_news(289070, 10)
+    # result_list = get_news(440, 5)
     context_dict["result_list"] = result_list
 
 

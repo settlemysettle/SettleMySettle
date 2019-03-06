@@ -1,13 +1,12 @@
 import json
 import urllib.parse
 import urllib.request
-
-# might need to read key
+import re
+from html2text import html2text
 
 def get_news(steamID, count=5):
     root_url = ""
     searchUrl = "https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid={steamID}&count={count}".format(steamID=steamID, count=count)
-    print(searchUrl)
 
     results = []
     try:
@@ -16,16 +15,34 @@ def get_news(steamID, count=5):
         
         for post in json_response["appnews"]["newsitems"]:
             # look at all of the possible
+            content = post['contents'][:1000]
+            newsImage = getImage(content)
+            content = trimContent(html2text(content))[:500] + "..."
             results.append({'title': post['title'].replace(" s ", "'s "),
                             'link': post['url'],
-                            'summary': post['contents'][:300],
-                            'appid': post['appid']})
-
+                            'summary': content,
+                            'feedlabel': post['feedlabel'],
+                            'author': post['author']})
     except Exception as e:
-        print("Problem querying Steam API", e)
+        print("Problem querying Steam API:", e)
 
     return results
         
 
+def getImage(content):
+    try:
+        # newsImage = re.findall(r'!\[\]\((.*)\/', content)[0]
+        # newsImage = re.findall(r'src\=\"(.*)\/\"', content)[0]
+        newsImage = re.findall(r'(?:src=\"|\[img\])(.*?)(?:"|\[\/img\])', content)[0]
+        return newsImage
+    except Exception as ex:
+        return "noImg"
 
-# get_news(289070, 5)
+def trimContent(content):
+    for match in re.finditer(".*? ", content):
+        span = match.span()
+        group = match.group()
+        if (content[span[0]].isalpha()):
+            break
+    
+    return content[span[0]:]
