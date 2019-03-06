@@ -14,7 +14,7 @@ body {
 
 #navLogo {
     color:#484C4F;
-    background-color:#56C9FF;
+    background-color:#56C9FF !important;
     padding: 1% 1% 1% 1%;
 }
 
@@ -40,7 +40,7 @@ a.nav-link:focus {
 }
 
 /* Currently selected page (active page) - text appears in Blue */
-nav ul li.active a {
+.active {
     color: #56C9FF !important;
 }
 

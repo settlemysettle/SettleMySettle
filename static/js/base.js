@@ -1,5 +1,12 @@
 // when the document is ready, the functions below can be used
-$(document).ready(function(){
+$(document).ready(function() {
+
+  // Highlight currently selected page
+  $('.nav-link').each(function() {
+    if ($(this).prop('href') == window.location.href) {
+      $(this).addClass('active'); $(this).parents('li').addClass('active');
+    }
+  });
 
   // drop login menu down when login button is clicked
   $("#loginButton").click(function() {
