@@ -9,7 +9,6 @@
 
 {% block body_block %}
     <!-- Code here! -->
-    <p>{{ message }}</p>
     <div>
         {% if result_list %}
             <h3>Steam News</h3>
@@ -21,7 +20,10 @@
                         <a href="{{ result.link }}">{{ result.title }}</a>
                     </h4>
                     <strong>{{ result.feedlabel }}</strong>
-                    {{ result.summary }}
+                    {% if result.author %}
+                        - {{ result.author }}
+                    {% endif %}
+                    <p>{{ result.summary }}</p>
                 </div>
             {% endfor %}
             </div>
