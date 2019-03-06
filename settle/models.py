@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.utils import timezone
 from settle.fields import ColourField  # not sure if this import will work!
 
 # Create your models here.
@@ -48,8 +49,8 @@ class Post(models.Model):
         Tag, related_name='post_infos', blank=True)
     # how to validate this server-side?
     # use DateTime for multiple posts on same day
-    date_submitted = models.DateTimeField()
-    post_id = models.AutoField(primary_key=True)
+    date_submitted = models.DateTimeField(default=timezone.now)
+    #post_id = models.AutoField(primary_key=True)
     # or we could just use post_id to sort? could cause problems w/ deleted posts through
     description = models.CharField(max_length=300, blank=True)
 
@@ -69,7 +70,7 @@ class Comment(models.Model):
     parent_post = models.ForeignKey(Post, on_delete=models.DO_NOTHING)
     # post doesn't care if a comment is deleted
 
-    comment_id = models.AutoField(primary_key=True)
+    #comment_id = models.AutoField(primary_key=True)
 
     def __str__(self):
         return str(self.comment_id)

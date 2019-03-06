@@ -3,6 +3,9 @@ import os
 
 import django
 
+from PIL import Image
+import datetime
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE',
                       'settle_my_settle.settings')
 
@@ -37,6 +40,12 @@ def populate():
         "is_game_tag": True,
         "steamAppId": "294100",
     }
+    alpha = {
+        "text": "Alpha Centauri",
+        "colour": "#9B5039",
+        "is_pending": True,
+        "is_game_tag": True,
+    }
 
     petra = {
         "text": "Petra",
@@ -59,11 +68,8 @@ def populate():
         "is_game_tag": False,
     }
 
-    tags = [civ_6, rimworld, factorio, petra, canada, beginner]
+    tags = [civ_6, rimworld, factorio, alpha, petra, canada, beginner]
 
-    for tag in tags:
-        tag_added = add_tag(tag["text"], tag["colour"], tag["is_game_tag"],
-                            tag["is_pending"], tag.get("steamAppId", 0))
 
     # USERS
     secure_user = {
@@ -85,8 +91,49 @@ def populate():
 
     users = [secure_user, mid_seier, contrarian]
 
+    
+    
+
+
+    #centauri_im = Image.open("centauri.png")
+
+    # POSTS
+    centauri = {
+        "author": secure_user,
+        "picture": "centauri.png",
+        "game_tag": alpha,
+        "info_tags": [beginner],
+        "description": "If you haven't played this game, check it out! For a 20 year old game," + 
+                       "the UI is surprisingly snappy and it's quite a well grounded depiction of future-era technology.",
+        
+    }
+
+    #niani_im = Image.open("niani.png")
+
+    niani = {
+        "author": mid_seier,
+        "picture": "niani.png",
+        "game_tag": civ_6,
+        "info_tags": [petra],
+        "description": "A really nice start for my first Gathering Storm game! The gold is rolling in now.",      
+    }
+    
+    posts = [centauri, niani]
+
+    for tag in tags:
+        tag_added = add_tag(tag["text"], tag["colour"], tag["is_game_tag"],
+                            tag["is_pending"], tag.get("steamAppId", 0))
+
     for user in users:
-        u_added = add_user(user["username"], user["password"], user.get("favourite_games", []))
+        user_added = add_user(user["username"], user["password"], user.get("favourite_games", []))
+    
+    
+    print("----")
+    print("adding posts")
+    print("----")
+    for post in posts:
+        post_added = add_post(post["author"], post["picture"], post["game_tag"], post["info_tags"], post["description"])
+
 
 
 def add_tag(text, colour, is_game_tag, is_pending, steamAppId):
@@ -101,17 +148,29 @@ def add_user(username, password, favourite_games):
     user = User.objects.get_or_create(username=username, password=password)[0]
     user.save()
     for game in favourite_games:
-        print(game["text"])
         user.favourite_games.add(Tag.objects.get(text=game["text"]))
     print(user.favourite_games.all())
     return(user)
 
 
+def add_post(author, picture, game_tag, info_tags, description):
+    print("post being added?")
+    post = Post.objects.get_or_create(description=description, picture=picture, id=1)[0]
+    post.save()
+  
+    print("adding game tag...")
+    post.game_Tag.add(Tag.objects.get(text=game_tag["text"]))
+
+    for info_tag in info_tags:
+        post.info_tags.add(Tag.objects.get(text=info_tag["text"]))
+
+    print("checking author...")
+
+    post.author = User.objects.get(username=author["username"])
+
+    return(post)
+
 """
-def add_post(author, picture, game_tag, info_tags, date_submitted, post_id, description):
-    # TODO
-
-
 def add_comment(author, text, liking_users, parent_post, comment_id):
     # TODO
 
