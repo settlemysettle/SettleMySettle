@@ -9,7 +9,11 @@ body {
 
 #navBar {
     background-color:#305475;
-    padding: 0% 1% 0% 0%;
+}
+
+.navbar-brand {
+    color:#3F4244 !important;
+    background-color: #56c9ff;
 }
 
 #navLogo {
@@ -19,16 +23,16 @@ body {
 }
 
 #logo {
-    height: 1.55em;
-    width: 1.55em;
+    position: relative;
+    top:-9%;
+    width: 30px;
+    height: 30px;
 }
 
 /* ---------------------- NAVIGATION BAR TEXT */
 
-.nav-link {
-    color: white !important;
-    position: absolute;
-    font-size: 22px;
+.navText {
+    color: #E8EBED !important;
 }
 
 a.nav-link:hover {
@@ -44,81 +48,44 @@ a.nav-link:focus {
     color: #56C9FF !important;
 }
 
-#homeText {
-    top: 11%;
-    left: 17.5%;
-}
-
-#linkText {
-    top: 11%;
-    left: 34%;
-}
-
-#uploadText {
-    top: 11%;
-    left: 54%;
-}
-
-#tagText {
-    top: 11%;
-    left: 71%;
-}
-
-/* ---------------------- NAVIGATION BAR BUTTONS */
-
-#loginButton {
-    top: 20%;
-    left: 87.2%;
-    margin-right:0.5%
-}
-
-#signupButton {
-    top: 20%;
-    left: 92%;
-}
-
 /* ---------------------- DROPDOWN MENU FOR LOGIN */
 
 #collapseMenu {
     position: absolute;
-    width:29.5%;
-    left:69%;
+    width: 29.5%;
+    left: 69%;
 }
 
 #loginDropdownBox {
-    background-color:#305475;
-    border-radius:0px;
-    border-bottom-left-radius:5px;
-    border-bottom-right-radius:5px;
+    background-color: #305475;
+    border-radius: 0px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
-#usernameField {
-    width: 80%;
+/* ---------------------- FORM FORMATTING */
+
+.bigMenuForm {
+    width: 100%;
     margin-bottom: 1%;
 }
 
-#passwordField {
-    width: 80%;
-    margin-bottom: 1%;
+.smallMenuForm {
+    width: 95%;
 }
 
-#finishLoginButton {
-    top: 25%;
-    left: 80%;
-    margin-top: 1%;
-    padding: 2% 2% 2% 2%;
-}
+/* ---------------------- BUTTON FORMATTING */
 
 .btn-primary, .btn-primary:active, .btn-primary:visited {
-    color: #484C4F !important;
-    border-color: #56C9FF !important;
+    color: #3F4244 !important;
     background-color: #56C9FF !important;
-    position:absolute;
+    border-color: #56C9FF !important;
 }
 
 .btn-primary:hover {
-    border-color: #4FB9EA !important;
-    background-color: #4FB9EA !important;
+    color: #3F4244 !important;
+    background-color: #56c9ffd7 !important;
+    border-color: #56c9ffd7 !important;
 }
 
 /* ---------------------- MODAL CSS */
