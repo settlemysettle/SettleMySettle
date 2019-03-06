@@ -1,14 +1,33 @@
 /* ---------------------- FULL DOCUMENT FORMATTING */
 
+html {
+    overflow: auto;
+}
+
 body {
     background-color: #F5F5F5;
-    position: relative;
+}
+
+#bodyContent {
+    position: absolute;
+    left: 2px;
+    top: 70px;
+    max-height: calc(100% - 50px);
+    width: 99.3%;
 }
 
 /* ---------------------- NAVIGATION BAR */
 
 #navBar {
     background-color:#305475;
+}
+
+@media (max-width: 768px) {
+    #navBar {
+        position: absolute;
+        width: 100%;
+        z-index: 6;
+    }
 }
 
 .navbar-brand {
@@ -54,6 +73,7 @@ a.nav-link:focus {
     position: absolute;
     width: 29.5%;
     left: 69%;
+    z-index: 5;
 }
 
 #loginDropdownBox {

@@ -71,7 +71,7 @@
             <!-- Putting the buttons in a line -->
             <form class="form-inline my-2 my-lg-0">
                 <!-- Login button for when not collapsed -->
-                <button type="button" class="btn btn-primary ml-3 d-none d-md-block" id="loginButton">Login</button>
+                <button type="button" class="btn btn-primary ml-1 d-none d-md-block" id="loginButton">Login</button>
                 <!-- Login button for when collapsed -->
                 <button type="submit" class="btn btn-primary ml-3 d-md-none">Login</button>
                 <button type="button" class="btn btn-primary ml-1 mr-2 my-2 my-md-0" id="signupButton">Sign Up</button>
@@ -107,8 +107,13 @@
         </div>
     </div>
 
-    {% block body_block %}
-    {% endblock %}
+    <div id="bodyContent">
+        {% block body_block %}
+        {% endblock %}
+    </div>
+    
+    <!-- To add a responsive image -->
+    <!-- Add the class "img-fluid to it" -->
 
     <!-- To modal a picture -->
     <!-- <img src="<file location>" data-toggle="modal" data-target="#pic-modal" class="modalImg"> -->
@@ -120,8 +125,10 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="{% static "js/base.js" %}"></script>
 
+    
     {% block script_block %}
     {% endblock %}
+    
 
 </body>
 
