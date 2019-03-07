@@ -155,11 +155,15 @@ def add_user(username, password, favourite_games):
 
 def add_post(author, picture, game_tag, info_tags, description):
     print("post being added?")
-    post = Post.objects.get_or_create(description=description, picture=picture)[0]
+    auth = User.objects.get(username=author["username"])
+    print("adding game tag...")
+    game_t = Tag.objects.get(text=game_tag["text"])
+
+    print("trying to add post now...")
+    post = Post.objects.get_or_create(author = auth, game_tag = game_t, description=description, picture=picture)[0]
     post.save()
   
-    print("adding game tag...")
-    post.game_Tag.add(Tag.objects.get(text=game_tag["text"]))
+    
 
     for info_tag in info_tags:
         post.info_tags.add(Tag.objects.get(text=info_tag["text"]))

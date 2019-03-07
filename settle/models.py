@@ -55,7 +55,7 @@ class Post(models.Model):
     description = models.CharField(max_length=300, blank=True)
 
     def __str__(self):
-        return str(self.post_id)
+        return str(str(self.date_submitted) + ": by " +  str(self.author))
 
 
 class Comment(models.Model):
