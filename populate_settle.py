@@ -91,12 +91,6 @@ def populate():
 
     users = [secure_user, mid_seier, contrarian]
 
-    
-    
-
-
-    #centauri_im = Image.open("centauri.png")
-
     # POSTS
     centauri = {
         "author": secure_user,
@@ -108,17 +102,42 @@ def populate():
         
     }
 
-    #niani_im = Image.open("niani.png")
-
     niani = {
         "author": mid_seier,
         "picture": "niani.png",
         "game_tag": civ_6,
         "info_tags": [petra],
-        "description": "A really nice start for my first Gathering Storm game! The gold is rolling in now.",      
+        "description": "A really nice start for my first Gathering Storm game! " +
+        "The gold is rolling in now.",      
     }
     
     posts = [centauri, niani]
+
+    cent_comment = {
+        "author": mid_seier,
+        "text": "The manual of this game's pretty amazing as well - 250 pages of " + 
+                "instructions, strategies and even biological information about " + 
+                "the planet you're playing on. Check it out if you can!",
+        "liking_users": [secure_user, contrarian],
+        "parent_post": centauri,
+    }
+
+    cent_reply = {
+        "author": secure_user,
+        "text": "The manual's pretty great! The digital version comes with a PDF of the manual. Imagine what it would be" +
+                "like to have a physical copy of that thing.",
+        "liking_users": [mid_seier],
+        "parent_post": centauri,
+    }
+
+    niani_comment = {
+        "author": contrarian,
+        "text": "Why are you playing on strategic view? It's so ugly in this game, " +
+                "Civ 5 was way better in that regard.",
+        "parent_post": niani,
+    }
+
+    comments = [cent_comment, cent_reply, niani_comment]
 
     for tag in tags:
         tag_added = add_tag(tag["text"], tag["colour"], tag["is_game_tag"],
@@ -127,12 +146,11 @@ def populate():
     for user in users:
         user_added = add_user(user["username"], user["password"], user.get("favourite_games", []))
     
-    
-    print("----")
-    print("adding posts")
-    print("----")
     for post in posts:
         post_added = add_post(post["author"], post["picture"], post["game_tag"], post["info_tags"], post["description"])
+    
+    for comment in comments:
+        comment_added = add_comment(comment["author"], comment["text"], comment.get("liking_users", []), comment["parent_post"])
 
 
 
@@ -154,31 +172,35 @@ def add_user(username, password, favourite_games):
 
 
 def add_post(author, picture, game_tag, info_tags, description):
-    print("post being added?")
     auth = User.objects.get(username=author["username"])
-    print("adding game tag...")
     game_t = Tag.objects.get(text=game_tag["text"])
 
-    print("trying to add post now...")
     post = Post.objects.get_or_create(author = auth, game_tag = game_t, description=description, picture=picture)[0]
     post.save()
   
-    
-
     for info_tag in info_tags:
         post.info_tags.add(Tag.objects.get(text=info_tag["text"]))
-
-    print("checking author...")
 
     post.author = User.objects.get(username=author["username"])
 
     return(post)
 
-"""
-def add_comment(author, text, liking_users, parent_post, comment_id):
-    # TODO
+def add_comment(author, text, liking_users, parent_post):
+    auth = User.objects.get(username = author["username"])
+    par_post = Post.objects.get(picture=parent_post["picture"])
 
-"""
+    comment = Comment.objects.get_or_create(author=auth, text=text, parent_post=par_post)[0]
+    # this is a bit dodgy - could you have the same person write the same comment on the same post?
+    # might be worth enforcing some other restriction (no duplicate comments with the same
+    # parent post?)
+    comment.save()
+
+    for l_user in liking_users:
+        comment.liking_users.add(User.objects.get(username=l_user["username"]))
+    
+    return(comment)
+
 if __name__ == '__main__':
     print("Populating Settle...")
     populate()
+    print("Done!")

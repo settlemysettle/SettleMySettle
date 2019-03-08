@@ -3,10 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.utils import timezone
-from settle.fields import ColourField  # not sure if this import will work!
-
-# Create your models here.
-
+from settle.fields import ColourField 
 
 class Tag(models.Model):
     # 20 character max length, unique, required
@@ -70,7 +67,5 @@ class Comment(models.Model):
     parent_post = models.ForeignKey(Post, on_delete=models.DO_NOTHING)
     # post doesn't care if a comment is deleted
 
-    #comment_id = models.AutoField(primary_key=True)
-
     def __str__(self):
-        return str(self.comment_id)
+        return (self.text + " by " + str(self.author))
