@@ -7,65 +7,65 @@ class BaseTemTestCase(TestCase):
         self.client = Client()
 
     def test_index_and_base_templates_used(self):
-        res = self.client.get('/')
+        response = self.client.get('/')
         # Check it got a response back
-        self.assertEqual(res.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         # Check that the correct template is used
-        self.assertTemplateUsed(res, 'index.html')
+        self.assertTemplateUsed(response, 'index.html')
         # Should also use the base/html
-        self.assertTemplateUsed(res, 'base.html')
+        self.assertTemplateUsed(response, 'base.html')
 
     def test_if_name_on_nav_bar(self):
-        res = self.client.get('/')
+        response = self.client.get('/')
         # Check that index page was accessed
-        self.assertEqual(res.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         # Check that the name of the website appears on the template
-        self.assertContains(res, 'Settle My Settle')
+        self.assertContains(response, 'Settle My Settle')
 
     def test_logo_on_nav_bar(self):
-        res = self.client.get('/')
+        response = self.client.get('/')
 
         # Make sure index page was accessed
-        self.assertEqual(res.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         # Make sure logo is present
-        self.assrtContains(res, "images/favicon.ico")
+        self.assrtContains(response, "images/favicon.ico")
 
     def test_home_link_is_visible_on_nav_bar(self):
-        res = self.client.get('/')
+        response = self.client.get('/')
 
         # check that the index page was found
-        self.assertEqual(res.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         # Check that the home page is visible
-        self.assertContains(res, 'Home')
+        self.assertContains(response, 'Home')
 
     def test_myFeed_link_is_visible_on_nav_bar(self):
-        res = self.client.get('/')
+        response = self.client.get('/')
 
         # check that the index page was found
-        self.assertEqual(res.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         # Check that the feed page is visible
-        self.assertContains(res, 'My Feed')
+        self.assertContains(response, 'My Feed')
 
     def test_upload_link_is_visible_on_nav_bar(self):
-        res = self.client.get('/')
+        response = self.client.get('/')
 
         # check that the index page was found
-        self.assertEqual(res.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         # Check that the upload page is visible
-        self.assertContains(res, 'Upload')
+        self.assertContains(response, 'Upload')
 
     def test_suggestTag_link_is_visible_on_nav_bar(self):
-        res = self.client.get('/')
+        response = self.client.get('/')
 
         # check that the index page was found
-        self.assertEqual(res.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         # Check that the suggest tag page is visible
-        self.assertContains(res, 'Suggest Tag')
+        self.assertContains(response, 'Suggest Tag')
 
 
 class loginTestCase(TestCase):
@@ -73,27 +73,27 @@ class loginTestCase(TestCase):
         self.client = Client()
 
     def check_it_uses_template(self):
-        res = self.client.get('/login')
+        response = self.client.get('/login')
         # Check it uses the base template
-        self.assertTemplateUsed(res, 'base.html')
+        self.assertTemplateUsed(response, 'base.html')
         # Check it uses the login template
-        self.assertTemplateUsed(res, 'login.html')
+        self.assertTemplateUsed(response, 'login.html')
 
     def access_login_page(self):
-        res = self.client.get('/login')
+        response = self.client.get('/login')
         # Check that login page was accessed
-        self.assertEqual(res.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         # Check it contains a link to login
-        self.assertContains(res, 'Sign in')
+        self.assertContains(response, 'Sign in')
 
     def contains_username_and_password_fileds(self):
-        res = self.client.get('/login')
+        response = self.client.get('/login')
         # Check that the page was accessed
-        self.assertEqual(res.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         # Check it contains the correct fields
-        self.assertContains(res, 'Username')
-        self.assertContains(res, 'Password')
+        self.assertContains(response, 'Username')
+        self.assertContains(response, 'Password')
 
 
 class logoutTestCase(TestCase):
@@ -101,19 +101,19 @@ class logoutTestCase(TestCase):
         self.client = Client()
 
     def check_it_uses_template(self):
-        res = self.client.get('/logout')
+        response = self.client.get('/logout')
         # Check it uses the base template
-        self.assertTemplateUsed(res, 'base.html')
+        self.assertTemplateUsed(response, 'base.html')
         # Check it uses the logout template
-        self.assertTemplateUsed(res, 'logout.html')
+        self.assertTemplateUsed(response, 'logout.html')
 
     def access_logout_page(self):
-        res = self.client.get('/logout')
+        response = self.client.get('/logout')
         # Check that logout page was accessed
-        self.assertEqual(res.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         # Check it contains a message saying we've logged out
-        self.assertContains(res, 'You are now logged out.')
+        self.assertContains(response, 'You are now logged out.')
 
 
 class feedTempTestCase(TestCase):
@@ -121,16 +121,16 @@ class feedTempTestCase(TestCase):
         self.client = Client()
 
     def check_it_uses_template(self):
-        res = self.client.get('/feed')
+        response = self.client.get('/feed')
         # Check it uses the base template
-        self.assertTemplateUsed(res, 'base.html')
+        self.assertTemplateUsed(response, 'base.html')
         # Check it uses the feed template
-        self.assertTemplateUsed(res, 'feed.html')
+        self.assertTemplateUsed(response, 'feed.html')
 
     def access_feed_page(self):
-        res = self.client.get('/feed')
+        response = self.client.get('/feed')
         # Check that feed page was accessed
-        self.assertEqual(res.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
 
 class indexTempTestCase(TestCase):
@@ -138,19 +138,19 @@ class indexTempTestCase(TestCase):
         self.client = Client()
 
     def check_it_uses_template(self):
-        res = self.client.get('/')
+        response = self.client.get('/')
         # Check it uses the base template
-        self.assertTemplateUsed(res, 'base.html')
+        self.assertTemplateUsed(response, 'base.html')
         # Check it uses the index template
-        self.assertTemplateUsed(res, 'index.html')
+        self.assertTemplateUsed(response, 'index.html')
 
     def access_index_page(self):
-        res = self.client.get('/')
+        response = self.client.get('/')
         # Check that index page was accessed
-        self.assertEqual(res.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         # Check it contains a message saying we've logged out
-        self.assertContains(res, 'You are now logged out.')
+        self.assertContains(response, 'You are now logged out.')
 
 
 class suggestTagTempTestCase(TestCase):
@@ -158,48 +158,77 @@ class suggestTagTempTestCase(TestCase):
         self.client = Client()
 
     def check_it_uses_template(self):
-        res = self.client.get('/suggest-tag')
+        response = self.client.get('/suggest-tag')
         # Check it uses the base template
-        self.assertTemplateUsed(res, 'base.html')
+        self.assertTemplateUsed(response, 'base.html')
         # Check it uses the suggest-tag template
-        self.assertTemplateUsed(res, 'suggest-tag.html')
+        self.assertTemplateUsed(response, 'suggest-tag.html')
 
     def access_suggest_tag_page(self):
-        res = self.client.get('/suggest-tag')
+        response = self.client.get('/suggest-tag')
         # Check that suggest-tag page was accessed
-        self.assertEqual(res.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         # Check it contains a message saying we can make a tag
-        self.assertContains(res, 'Create a Tag')
+        self.assertContains(response, 'Create a Tag')
 
     def contains_tag_options(self):
-        res = self.client.get('/suggest-tag')
+        response = self.client.get('/suggest-tag')
         # Check that suggest-tag page was accessed
-        self.assertEqual(res.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         # Check it contains a tag type option
-        self.assertContains(res, 'Tag Type')
+        self.assertContains(response, 'Tag Type')
 
         # Check it Contains a colour type
-        self.assertContains(res, 'Colour')
+        self.assertContains(response, 'Colour')
 
         # Check it contains a tag field
-        self.assertContains(res, 'Tag Text')
+        self.assertContains(response, 'Tag Text')
 
         # Check it contains a Steam AppID and url
-        self.assertContains(res, 'Steam AppID')
-        self.assertContains(res, 'Test Steam URL')
+        self.assertContains(response, 'Steam AppID')
+        self.assertContains(response, 'Test Steam URL')
 
     def contains_preview_and_submit(self):
-        res = self.client.get('/suggest-tag')
+        response = self.client.get('/suggest-tag')
         # Check that suggest-tag page was accessed
-        self.assertEqual(res.status_code, 200)
+        self.assertEqual(response.status_code, 200)
 
         # Check it contains a preview
-        self.assertContains(res, 'Preview')
+        self.assertContains(response, 'Preview')
         # Check it contains a submit button
-        self.assertContains(res, 'Submit')
+        self.assertContains(response, 'Submit')
 
 
 class uploadTempTestCase(TestCase):
-    print("todo")
+    def setUp(self):
+        self.client = Client()
+
+    def check_it_uses_template(self):
+        response = self.client.get('/upload')
+        # Check it uses the base template
+        self.assertTemplateUsed(response, 'base.html')
+        # Check it uses the upload template
+        self.assertTemplateUsed(response, 'upload.html')
+
+    def check_it_contains_upload_options(self):
+        response = self.client.get('/upload')
+        self.assertEqual(response.status_code, 200)
+        # Check it contains an image field with the ability to upload
+        # an image
+        self.assertContains(response, 'Image')
+        self.assertContains(response, 'Choose Photo')
+
+    def check_it_contains_tag_options(self):
+        response = self.client.get('/upload')
+        self.assertEqual(response.status_code, 200)
+        # Check it contains a game and info tag box
+        self.assertContains(response, 'Select Game Tag')
+        self.assertContains(response, 'Select Info Tags (max 5)')
+
+    def test_it_has_describtion_box(self):
+        response = self.client.get('/upload')
+        self.assertEqual(response.status_code, 200)
+        # Check it contains description box
+        self.assertContains(response, 'Description')
