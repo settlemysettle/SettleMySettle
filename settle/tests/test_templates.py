@@ -90,7 +90,16 @@ class loginTestCase(TestCase):
 
 
 class logoutTestCase(TestCase):
-    print("todo")
+    def setUp(self):
+        self.client = Client()
+
+    def access_login_page(self):
+        res = self.client.get('/logout')
+        # Check that login page was accessed
+        self.assertEqual(res.status_code, 200)
+
+        # Check it contains a message saying we've logged out
+        self.assertContains(res, 'You are now logged out.')
 
 
 class passChangeTestCase(TestCase):
