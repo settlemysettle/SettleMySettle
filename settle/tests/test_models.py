@@ -2,6 +2,7 @@ from django.test import TestCase
 # Import the models
 from settle.models import Tag, User, Post, Comment
 from settle.fields import ColourField
+from django.utils import timezone
 
 
 class TagTestCase(TestCase):
@@ -67,7 +68,18 @@ class UserTestCase(TestCase):
 
 
 class PostTestCase(TestCase):
-    print("Todo")
+    def create_post(self, a, p, gt, it, ds, pi, de):
+        # Make a user object
+        return Post.objects.create(author=a, picture=p, game_tag=gt, info_tags=it, date_submitted=ds, post_id=pi, description=de)
+
+    def test_making_post(self):
+        # Try to make a post object
+        userTest = User.objects.create("test", "password")
+        tagTest = Tag.objects.create(
+            text="test", colour="#FFFFF", is_game_tag=True, is_pendging=True, steamAppId="")
+        # Try to make a new post
+        postTest = self.create_post(
+            userTest, 'static/images/logoWAS.png', tagTest, tagTest, timezone.now(), 2222, "description")
 
 
 class CommentTestCase(TestCase):
