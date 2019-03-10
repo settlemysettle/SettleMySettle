@@ -72,6 +72,13 @@ class loginTestCase(TestCase):
     def setUp(self):
         self.client = Client()
 
+    def check_it_uses_template(self):
+        res = self.client.get('/login')
+        # Check it uses the base template
+        self.assertTemplateUsed(res, 'base.html')
+        # Check it uses the login template
+        self.assertTemplateUsed(res, 'login.html')
+
     def access_login_page(self):
         res = self.client.get('/login')
         # Check that login page was accessed
@@ -93,33 +100,105 @@ class logoutTestCase(TestCase):
     def setUp(self):
         self.client = Client()
 
-    def access_login_page(self):
+    def check_it_uses_template(self):
         res = self.client.get('/logout')
-        # Check that login page was accessed
+        # Check it uses the base template
+        self.assertTemplateUsed(res, 'base.html')
+        # Check it uses the logout template
+        self.assertTemplateUsed(res, 'logout.html')
+
+    def access_logout_page(self):
+        res = self.client.get('/logout')
+        # Check that logout page was accessed
         self.assertEqual(res.status_code, 200)
 
         # Check it contains a message saying we've logged out
         self.assertContains(res, 'You are now logged out.')
 
 
-class passChangeTestCase(TestCase):
-    print("todo")
-
-
-class regFormTestCase(TestCase):
-    print("todo")
-
-
 class feedTempTestCase(TestCase):
-    print("todo")
+    def setUp(self):
+        self.client = Client()
+
+    def check_it_uses_template(self):
+        res = self.client.get('/feed')
+        # Check it uses the base template
+        self.assertTemplateUsed(res, 'base.html')
+        # Check it uses the feed template
+        self.assertTemplateUsed(res, 'feed.html')
+
+    def access_feed_page(self):
+        res = self.client.get('/feed')
+        # Check that feed page was accessed
+        self.assertEqual(res.status_code, 200)
 
 
 class indexTempTestCase(TestCase):
-    print("todo")
+    def setUp(self):
+        self.client = Client()
+
+    def check_it_uses_template(self):
+        res = self.client.get('/')
+        # Check it uses the base template
+        self.assertTemplateUsed(res, 'base.html')
+        # Check it uses the index template
+        self.assertTemplateUsed(res, 'index.html')
+
+    def access_index_page(self):
+        res = self.client.get('/')
+        # Check that index page was accessed
+        self.assertEqual(res.status_code, 200)
+
+        # Check it contains a message saying we've logged out
+        self.assertContains(res, 'You are now logged out.')
 
 
 class suggestTagTempTestCase(TestCase):
-    print("todo")
+    def setUp(self):
+        self.client = Client()
+
+    def check_it_uses_template(self):
+        res = self.client.get('/suggest-tag')
+        # Check it uses the base template
+        self.assertTemplateUsed(res, 'base.html')
+        # Check it uses the suggest-tag template
+        self.assertTemplateUsed(res, 'suggest-tag.html')
+
+    def access_suggest_tag_page(self):
+        res = self.client.get('/suggest-tag')
+        # Check that suggest-tag page was accessed
+        self.assertEqual(res.status_code, 200)
+
+        # Check it contains a message saying we can make a tag
+        self.assertContains(res, 'Create a Tag')
+
+    def contains_tag_options(self):
+        res = self.client.get('/suggest-tag')
+        # Check that suggest-tag page was accessed
+        self.assertEqual(res.status_code, 200)
+
+        # Check it contains a tag type option
+        self.assertContains(res, 'Tag Type')
+
+        # Check it Contains a colour type
+        self.assertContains(res, 'Colour')
+
+        # Check it contains a tag field
+        self.assertContains(res, 'Tag Text')
+
+        # Check it contains a Steam AppID and url
+        self.assertContains(res, 'Steam AppID')
+        self.assertContains(res, 'Test Steam URL')
+
+    def contains_preview_and_submit(self):
+        res = self.client.get('/suggest-tag')
+        # Check that suggest-tag page was accessed
+        self.assertEqual(res.status_code, 200)
+
+        # Check it contains a preview
+        self.assertContains(res, 'Preview')
+        # Check it contains a submit button
+        self.assertContains(res, 'Submit')
 
 
 class uploadTempTestCase(TestCase):
