@@ -13,15 +13,15 @@ class TagTestCase(TestCase):
 
     def try_making_tag(self):
         # Make Tag with method
-        tagTest = self.create_tag("test tag", "#FFFFFF", True, False, "")
+        tagTest = self.create_tag("test tag", "#FFFFFF", True, False, 222)
         # Assert tagTest is a Tag object
         self.assertTrue(isinstance(tagTest, Tag))
 
     def test_tag_toString(self):
         # Make Tag with method
-        tagTest = self.create_tag("test tag", "#FFFFFF", True, False, "")
+        tagTest = self.create_tag("test tag", "#FFFFFF", True, False, 222)
         # Assert the toString method returns the title
-        self.assertEqual(tagTest.__str__, tagTest.title)
+        self.assertEqual(tagTest.__str__, tagTest.text)
 
     def test_max_length(self):
         # Make a tag with a large name
@@ -30,11 +30,12 @@ class TagTestCase(TestCase):
 
     def test_colour_field(self):
         # Try to set the colour using an invalid code
-        self.asserRaises(
+        self.assertRaises(
             Exception, Tag, colour="this isn't a valid colour code")
 
     def test_unique_tag(self):
-        testTag = self.create_tag("DukeIsAGoodBoy", "#FFFFFF", True, False, "")
+        testTag = self.create_tag(
+            "DukeIsAGoodBoy", "#FFFFFF", True, False, 222)
         # This should raise an error when we try to make a new one
         self.assertRaises(Exception, Tag, text="DukeIsAGoodBoy")
 
@@ -48,7 +49,7 @@ class UserTestCase(TestCase):
         # Make a user using our method
         userTest = self.create_user("test", "password")
         # Check it is an instance of the User class
-        self.asserTue(isinstance(userTest, User))
+        self.assertTrue(isinstance(userTest, User))
 
     def test_max_length_username(self):
         # make a test user with a username too long
@@ -70,13 +71,14 @@ class UserTestCase(TestCase):
 class PostTestCase(TestCase):
     def create_post(self, a, p, gt, it, ds, pi, de):
         # Make a user object
-        return Post.objects.create(author=a, picture=p, game_tag=gt, info_tags=it, date_submitted=ds, post_id=pi, description=de)
+        return Post.objects.create(author=a, picture=p, game_tag=gt, info_tags=it, date_submitted=ds,
+                                   post_id=pi, description=de)
 
     def test_making_post(self):
         # Try to make a post object
-        userTest = User.objects.create("test", "password")
+        userTest = User.objects.create(username="test", password="password")
         tagTest = Tag.objects.create(
-            text="test", colour="#FFFFF", is_game_tag=True, is_pendging=True, steamAppId="")
+            text="test", colour="#FFFFF", is_game_tag=True, is_pending=True, steamAppId=222)
         # Try to make a new post
         postTest = self.create_post(
             userTest, 'static/images/logoWAS.png', tagTest, tagTest, timezone.now(), 2222, "description")
