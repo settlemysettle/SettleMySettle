@@ -1,0 +1,36 @@
+{% extends 'settle/base.html' %}
+{% load staticfiles %}
+
+{% block style_block %}
+    <!-- Import custom CSS here! -->
+{% endblock %}
+
+{% block title_block %}View Post{% endblock %}
+
+{% block body_block %}
+    <!-- Code here! -->
+    <div>
+        {% if result_list %}
+            <h3>Steam News</h3>
+            <!-- Display search results in an ordered list -->
+            <div class="list-group">
+                {% for result in result_list %}
+                <div class="list-group-item" >
+                    <h4 class="list-group-item-heading">
+                        <a href="{{ result.link }}">{{ result.title }}</a>
+                    </h4>
+                    <strong>{{ result.feedlabel }}</strong>
+                    {% if result.author %}
+                        - {{ result.author }}
+                    {% endif %}
+                    <p>{{ result.summary }}</p>
+                </div>
+            {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block script_block %}
+    <!-- Import custom JS here! -->
+{% endblock %}
