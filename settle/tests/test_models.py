@@ -21,7 +21,7 @@ class TagTestCase(TestCase):
         # Make Tag with method
         tagTest = self.create_tag("test tag", "#FFFFFF", True, False, 222)
         # Assert the toString method returns the title
-        self.assertEqual(tagTest.__str__, tagTest.text)
+        self.assertEqual(str(tagTest), tagTest.text)
 
     def test_max_length(self):
         # Make a tag with a large name
@@ -75,7 +75,7 @@ class PostTestCase(TestCase):
                                    post_id=pi, description=de)
 
     def test_making_post(self):
-        # Try to make a post object
+        # Need a user and a tag object
         userTest = User.objects.create(username="test", password="password")
         tagTest = Tag.objects.create(
             text="test", colour="#FFFFF", is_game_tag=True, is_pending=True, steamAppId=222)
@@ -83,6 +83,37 @@ class PostTestCase(TestCase):
         postTest = self.create_post(
             userTest, 'static/images/logoWAS.png', tagTest, tagTest, timezone.now(), 2222, "description")
 
+    def test_to_string(self):
+        # Need a user and a tag object
+        userTest = User.objects.create(username="test", password="password")
+        tagTest = Tag.objects.create(
+            text="test", colour="#FFFFF", is_game_tag=True, is_pending=True, steamAppId=222)
+        # Try to make a new post
+        postTest = self.create_post(
+            userTest, 'static/images/logoWAS.png', tagTest, tagTest, timezone.now(), 2222, "description")
+
+        self.assertEqual(str(postTest), postTest.text +
+                         " by " + str(postTest.author))
+
 
 class CommentTestCase(TestCase):
-    print("Todo")
+    def create_comment(self, a, t, lu, pp):
+        # Make a comment object
+        return Comment.objects.create(author=a, text=t, liking_users=lu, parent_post=pp)
+
+    def test_making_comment_and_to_string(self):
+        # Need a user and post object
+        userTest = User.objects.create(username="test", password="password")
+        tagTest = Tag.objects.create(
+            text="test", colour="#FFFFF", is_game_tag=True, is_pending=True, steamAppId=222)
+
+        postTest = Post.objects.create(author=userTest, picture='static/images/logoWAS.png', game_tag=tagTest,
+                                       info_tags=tagTest, date_submitted=timezone.now(),
+                                       post_id=222, description="test")
+        # Try to make a comment object
+        commentTest = self.create_comment(
+            userTest, "This is a comment", userTest, postTest)
+
+        # Test the toString of comment object
+        self.assertEqual(str(commentTest), commentTest.text +
+                         " by " + str(commentTest.author))
