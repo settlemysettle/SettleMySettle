@@ -23,22 +23,6 @@ class TagTestCase(TestCase):
         # Assert the toString method returns the title
         self.assertEqual(str(tagTest), tagTest.text)
 
-    def test_max_length(self):
-        # Make a tag with a large name
-        # Should raise an error
-        self.assertRaises(Exception, Tag, text="this is a long test string")
-
-    def test_colour_field(self):
-        # Try to set the colour using an invalid code
-        self.assertRaises(
-            Exception, Tag, colour="this isn't a valid colour code")
-
-    def test_unique_tag(self):
-        testTag = self.create_tag(
-            "DukeIsAGoodBoy", "#FFFFFF", True, False, 222)
-        # This should raise an error when we try to make a new one
-        self.assertRaises(Exception, Tag, text="DukeIsAGoodBoy")
-
 
 class UserTestCase(TestCase):
     def create_user(self, un, pa):
@@ -51,21 +35,11 @@ class UserTestCase(TestCase):
         # Check it is an instance of the User class
         self.assertTrue(isinstance(userTest, User))
 
-    def test_max_length_username(self):
-        # make a test user with a username too long
-        self.assertRaises(
-            Exception, User, username="This is a very long username")
-
-    def test_max_length_password(self):
-        # Try to make a user with a very long password
-        self.assertRaises(
-            Exception, User, password="This password is far too long, you will never remember it")
-
-    def test_unique_username(self):
-        userTest = self.create_user("testUser", "password")
-        # Should raise an issue as this is already a user
-        self.assertRaises(Exception, User, username="testUser",
-                          password="password")
+    def test_user_toString(self):
+        # Make a user using our method
+        userTest = self.create_user("test", "password")
+        # CHeck the string method works
+        self.assertEqual(userTest.username, str(userTest))
 
 
 class PostTestCase(TestCase):
