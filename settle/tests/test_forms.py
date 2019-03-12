@@ -1,6 +1,7 @@
 from django.test import TestCase
 # from settle.forms import ...
 from settle.models import Tag, User, Post, Comment
+from django.utils import timezone
 
 
 class LoginTestCase(TestCase):
@@ -50,14 +51,49 @@ class Signup(TestCase):
         with self.assertRaises(KeyError):
             SignupForm(self.user)
 
-    def test_password_length(self):
+    def test_password_length_short(self):
         # Should give exception with very short password
         with self.assertRaises(KeyError):
             SignupForm(user={'username': "test", 'password': "abc"})
 
+    def test_long_password_length(self):
+        # Should raise exception with a very long password
+        with self.assertRaises(KeyError):
+            SignupForm(user={
+                       'username': "test", 'password': "ThisPasswordIsFarToolongItsQuiteSillyActually"})
+
+    def test_long_username_length(self):
+        # Should raise exception with a very long password
+        with self.assertRaises(KeyError):
+            SignupForm(user={
+                       'username': "thisisaverylongusername", 'password': "password"})
+
 
 class UploadTestCase(TestCase):
-    print("todo")
+    def setUp(self):
+        self.author = User.objects(
+            username="Duke", password="GoodBoy"
+        )
+        self.picture = "static/images/logoWAD.png"
+        self.tag = Tag.objects.create(
+            text="test", colour="#FFFFFF", is_game_tag=True, is_pending=False, steamAppId=222)
+        self.post = Post.objects.create(author=self.author, picture=self.picture,
+                                        game_tag=self.tag, date_submitted=timezone.now(), description="description")
+
+    def test_init(self):
+        # Check it accepts a new post
+        UploadForm(post=self.post)
+
+    def test_empty(self):
+        # Check it won't accept empty imput
+        with self.assertRaises(KeyError):
+            UploadForm()
+
+    def check_it_must_have_game_tag(self):
+        # Check it won't accept a post without a game_tag selected
+        with self.assertRaises(KeyError):
+            UploadForm(post={'author': self.author, 'picture': self.picture,
+                             'date_submitted': timezone.now(), 'description': "description"})
 
 
 class NewtagTestCase(TestCase):
