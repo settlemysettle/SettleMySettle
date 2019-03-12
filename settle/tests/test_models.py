@@ -43,10 +43,14 @@ class UserTestCase(TestCase):
 
 
 class PostTestCase(TestCase):
-    def create_post(self, a, p, gt, it, ds, pi, de):
+    def create_post(self, a, p, gt, it, ds, de):
         # Make a user object
-        return Post.objects.create(author=a, picture=p, game_tag=gt, info_tags=it, date_submitted=ds,
-                                   post_id=pi, description=de)
+        ret = Post.objects.create(
+            author=a, picture=p, game_tag=gt, date_submitted=ds, description=de)
+        ret.save()
+
+        ret.info_tags.add(it)
+        return ret
 
     def test_making_post(self):
         # Need a user and a tag object
@@ -55,7 +59,7 @@ class PostTestCase(TestCase):
             text="test", colour="#FFFFF", is_game_tag=True, is_pending=True, steamAppId=222)
         # Try to make a new post
         postTest = self.create_post(
-            userTest, 'static/images/logoWAS.png', tagTest, tagTest, timezone.now(), 2222, "description")
+            userTest, 'static/images/logoWAS.png', tagTest, tagTest, timezone.now(), "description")
 
     def test_to_string(self):
         # Need a user and a tag object
@@ -64,16 +68,20 @@ class PostTestCase(TestCase):
             text="test", colour="#FFFFF", is_game_tag=True, is_pending=True, steamAppId=222)
         # Try to make a new post
         postTest = self.create_post(
-            userTest, 'static/images/logoWAS.png', tagTest, tagTest, timezone.now(), 2222, "description")
+            userTest, 'static/images/logoWAS.png', tagTest, tagTest, timezone.now(), "description")
 
-        self.assertEqual(str(postTest), postTest.text +
-                         " by " + str(postTest.author))
+        self.assertEqual(str(postTest), str(postTest.date_submitted) +
+                         ": by " + str(postTest.author))
 
 
 class CommentTestCase(TestCase):
     def create_comment(self, a, t, lu, pp):
         # Make a comment object
-        return Comment.objects.create(author=a, text=t, liking_users=lu, parent_post=pp)
+        ret = Comment.objects.create(author=a, text=t, parent_post=pp)
+        ret.save()
+        ret.liking_users.add(lu)
+
+        return ret
 
     def test_making_comment_and_to_string(self):
         # Need a user and post object
@@ -82,8 +90,9 @@ class CommentTestCase(TestCase):
             text="test", colour="#FFFFF", is_game_tag=True, is_pending=True, steamAppId=222)
 
         postTest = Post.objects.create(author=userTest, picture='static/images/logoWAS.png', game_tag=tagTest,
-                                       info_tags=tagTest, date_submitted=timezone.now(),
-                                       post_id=222, description="test")
+                                       date_submitted=timezone.now(), description="test")
+        postTest.save()
+        postTest.info_tags.add(tagTest)
         # Try to make a comment object
         commentTest = self.create_comment(
             userTest, "This is a comment", userTest, postTest)

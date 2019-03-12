@@ -24,14 +24,36 @@ class LoginTestCase(TestCase):
             LoginForm(user={'username': "Duke", 'password': "wrongPassword"})
 
     def test_wrong_username(self):
-        # Should raise issue when trying to login with a very large username
-        with self.asserRaises(KeyError):
+        # Should raise issue when trying to login with a incorrect username
+        with self.assertRaises(KeyError):
             LoginForm(
                 user={'username': "wrongUsername", 'password': "testPassword123!"})
 
 
 class Signup(TestCase):
-    print("Todo")
+    def setUp(self):
+        self.user = User.objects.create(
+            username="Duke", password="testPassword123!")
+
+    def test_init(self):
+        # Check it accepts a new user?
+        SignupForm(user={'username': "newUsername",
+                         'password': "testPassword123!"})
+
+    def test_sign_up_without_text(self):
+        # Shouldn't take this as a valid form?
+        form = SignupForm()
+        self.assertFalse(form.is_valid())
+
+    def test_signup_exsisting_user(self):
+        # should give an exception when trying to make an account with a username already taken
+        with self.assertRaises(KeyError):
+            SignupForm(self.user)
+
+    def test_password_length(self):
+        # Should give exception with very short password
+        with self.assertRaises(KeyError):
+            SignupForm(user={'username': "test", 'password': "abc"})
 
 
 class UploadTestCase(TestCase):
