@@ -18,12 +18,10 @@ class uploadViewTestCase(TestCase):
 
 class sugTagViewTestCase(TestCase):
     print("todo")
-<<<<<<< HEAD
 
 
 class postViewTestCase(TestCase):
     print("todo")
-=======
     # Login
     # def test_wrong_password(self):
     #     # Shouldn't accept the wrong password
@@ -83,4 +81,3 @@ class postViewTestCase(TestCase):
     #     form = UploadForm(form={
     #                       'colour': "#FFFFFF", 'is_game_tag': True, 'is_pending': False, 'steamAppId': 222})
     #     self.assertFalse(form.is_valid())
->>>>>>> 76fb66243011c658ee15964554d8bbddaafb410c
