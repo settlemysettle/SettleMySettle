@@ -3,6 +3,8 @@ from django.test import TestCase
 
 
 class IndexViewTestCase(TestCase):
+    # Check it has pictures (context dict)
+    #
     print("todo")
 
 
@@ -15,4 +17,8 @@ class uploadViewTestCase(TestCase):
 
 
 class sugTagViewTestCase(TestCase):
+    print("todo")
+
+
+class postViewTestCase(TestCase):
     print("todo")
