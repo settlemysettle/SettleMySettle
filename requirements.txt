@@ -5,12 +5,14 @@ cffi==1.11.5
 chardet==3.0.4
 conda==4.5.12
 cryptography==2.4.2
-Django==1.11.19
+Django==1.11.20
 django-cors-headers==2.4.0
 django-registration-redux==1.4
+html2text==2018.1.9
 idna==2.8
 menuinst==1.4.14
 Pillow==5.4.1
+pycodestyle==2.5.0
 pycosat==0.6.3
 pycparser==2.19
 pyOpenSSL==18.0.0
