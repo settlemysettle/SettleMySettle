@@ -95,6 +95,12 @@ class UploadTestCase(TestCase):
             UploadForm(post={'author': self.author, 'picture': self.picture,
                              'date_submitted': timezone.now(), 'description': "description"})
 
+    def check_it_must_have_a_picture_seleted(self):
+        # Check it won't accept a post that doesn't contain an image
+        with self.assertRaises(KeyError):
+            UploadForm(post={'author': self.author, 'date_submitted': timezone.now(
+            ), 'description': "description"})
+
 
 class NewtagTestCase(TestCase):
     print("Todo")
