@@ -1,5 +1,5 @@
 from django.test import TestCase
-from settle.forms import LoginForm, SignupForm
+from settle.forms import LoginForm, SignupForm, CommentForm, UploadForm, UploadTag
 from settle.models import Tag, User, Post, Comment
 from django.utils import timezone
 
@@ -45,7 +45,7 @@ class UploadTestCase(TestCase):
         self.tag = Tag.objects.create(
             text="test", colour="#FFFFFF", is_game_tag=True, is_pending=False, steamAppId=222)
         self.post = {'author': self.author, 'picture': self.picture,
-                     'game_tag': self.tag, 'date_submitted': timezone.now(), 'description': "description"}
+                     'game_tag': self.tag, 'description': "description"}
 
     def test_init(self):
         # Check it accepts a new post
@@ -59,7 +59,7 @@ class UploadTestCase(TestCase):
 
 
 class NewtagTestCase(TestCase):
-    def set_up(self):
+    def setUp(self):
         self.tag = {'text': "test", 'colour': "#FFFFFF",
                     'is_game_tag': True, 'is_pending': False, 'steamAppId': 222}
 
@@ -75,7 +75,7 @@ class NewtagTestCase(TestCase):
 
 
 class CommentFormTestCase(TestCase):
-    def set_up(self):
+    def setUp(self):
         userTest = User.objects.create(username="test", password="password")
         tagTest = Tag.objects.create(
             text="test", colour="#FFFFF", is_game_tag=True, is_pending=True, steamAppId=222)
@@ -85,14 +85,15 @@ class CommentFormTestCase(TestCase):
         postTest.save()
         postTest.info_tags.add(tagTest)
         # Try to make a comment object
-        self.comment = {'author':userTest, 'text':"This is a comment", 'linking_users':userTest,'parent_post': postTest}
+        self.comment = {'author': userTest, 'text': "This is a comment",
+                        'linking_users': userTest, 'parent_post': postTest}
 
     def test_init(self):
         # Test it will accept a comment
-        form = UploadComment(self.comment)
+        form = CommentForm(self.comment)
         self.assertTrue(form.is_valid())
-    
+
     def test_empty_form(self):
         # An empty form shouldn't be valid
-        form = UploadComment({})
+        form = CommentForm({})
         self.assertFalse(form.is_valid())
