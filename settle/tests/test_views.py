@@ -83,8 +83,8 @@ class sugTagViewTestCase(TestCase):
 
     def test_new_post(self):
         # Send the data as a post request
-        response = self.client.post(reverse(
-            'suggest-tag'), {'text': self.text, 'colour': self.colour, 'is_game_tag': self.is_game_tag, 'steamAppId': self.steamAppId})
+        response = self.client.post(reverse('suggest-tag'),
+                                    {'text': self.text, 'colour': self.colour, 'is_game_tag': self.is_game_tag, 'steamAppId': self.steamAppId})
         # CHeck the data we sent is valid
         form = response.context[-1]['form']
         self.assertTrue(form.is_valid())
@@ -93,7 +93,7 @@ class sugTagViewTestCase(TestCase):
 class postViewTestCase(TestCase):
     def setUp(self):
         # Placeholder untill I can choose a post
-        self.post = Post.objects[1]
+        self.post = list(Post.objects.all())[0]
         self.client = Client()
 
     def test_look_at_post(self):
