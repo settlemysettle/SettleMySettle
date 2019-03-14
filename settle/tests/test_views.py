@@ -1,15 +1,42 @@
 from django.test import TestCase
-# from settle.views import ...
+from django.core.urlresolvers import reverse
+from django.test import Client
+from settle.models import User, Tag
 
 
 class IndexViewTestCase(TestCase):
-    # Check it has pictures (context dict)
-    #
-    print("todo")
+    def setUp(self):
+        self.client = Client()
+
+    def test_context_dict(self):
+        response = self.client.get(reverse('index'))
+        # The context_dict should contain a list of images it will display to the page
+        posts = response.context[-1]['post_list']
+        # Should return 6 images
+        self.assertTrue(len(posts) == 6)
 
 
 class feedViewTestCase(TestCase):
-    print("todo")
+    def setUp(self):
+        self.client = Client()
+        # Get a tag object that we will add to the fav games of our new user
+        self.tag = Tag.objects.get(text="Civ 6")
+        # Make a new user
+        self.user = User.objects.create(
+            username="test", password="testPassword")
+        self.user.save()
+        # Add a new tag to it's fav games
+        self.user.favourite_games.add(self.tag)
+
+    def test_context_dict(self):
+        # Get the response when you use a specfic user
+        response = self.client.get(reverse('feed'), {'user': self.user})
+        # Get the post objects from the context dictionary
+        posts = response.context[-1]['post_list']
+
+        # Check every post contains the Civ 6 tag
+        for post in posts:
+            self.assertTrue(post.game_tag == self.tag)
 
 
 class uploadViewTestCase(TestCase):
