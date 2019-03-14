@@ -73,7 +73,21 @@ class uploadViewTestCase(TestCase):
 
 
 class sugTagViewTestCase(TestCase):
-    print("todo")
+    def setUp(self):
+        self.client = Client()
+        # Get data that we will send as a post request
+        self.text = "TestTag"
+        self.colour = "#FFFFFF"
+        self.is_game_tag = True
+        self.steamAppId = 222
+
+    def test_new_post(self):
+        # Send the data as a post request
+        response = self.client.post(reverse(
+            'suggest-tag'), {'text': self.text, 'colour': self.colour, 'is_game_tag': self.is_game_tag, 'steamAppId': self.steamAppId})
+        # CHeck the data we sent is valid
+        form = response.context[-1]['form']
+        self.assertTrue(form.is_valid())
 
 
 class postViewTestCase(TestCase):
