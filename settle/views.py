@@ -42,7 +42,7 @@ def post(request, post_id):
 
     all_comments = Comment.objects.filter(parent_post=post_id)
 
-    comm_pagin = Paginator(all_comments, 10) # show 10 comments at once
+    comm_pagin = Paginator(all_comments, 3) # show 3 comments at once
 
     page = request.GET.get('page', 1) # get page no. from URL, or 1 if just loading in
 
