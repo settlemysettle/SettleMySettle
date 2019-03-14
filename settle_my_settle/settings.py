@@ -147,3 +147,5 @@ REGISTRATION_OPEN = True
 LOGIN_REDIRECT_URL = '/settle/'
 # Gonna leave this commented until we work out the login form
 # LOGIN_URL = '/users/login/'
+
+AUTH_USER_MODEL = 'settle.User'
