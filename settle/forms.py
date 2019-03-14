@@ -46,3 +46,11 @@ class UploadForm(forms.ModelForm):
         # Make it inherit fields from Post model
         model = Post
         exclude = ['author', 'date_submitted']
+
+
+class UploadTag(forms.ModelForm):
+    # Will inherit the fields from the model
+    class Meta:
+        model = Tag
+        # Don't show is_pending field
+        exclude = ['is_pending']
