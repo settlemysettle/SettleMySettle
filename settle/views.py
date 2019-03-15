@@ -40,7 +40,19 @@ def index(request, template="settle/index.html"):
 
 def feed(request):
     context_dict = {}
-    return render(request, 'settle/feed.html', context=context_dict)
+
+    # need to filter this for feed
+    numbers_list = Post.objects.all()
+    
+    page = request.GET.get('page', 1)
+    paginator = Paginator(numbers_list, 3)
+    try:
+        numbers = paginator.page(page)
+    except PageNotAnInteger:
+        numbers = paginator.page(1)
+    except EmptyPage:
+        numbers = paginator.page(paginator.num_pages)
+    return render(request, 'settle/feed.html', {'numbers': numbers})
 
 
 def upload(request):

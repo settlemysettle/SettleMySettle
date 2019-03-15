@@ -12,9 +12,15 @@
     <div class="row infinite-container">
         {% for number in numbers %}
 
-            <div class="col-sm-4 infinite-item" align="center" style="border-style:solid;padding:64px">
+            <div class="col-sm-4 infinite-item" align="center" style="padding-top:45px">
                 <p class="col sm-4" style="background-color:#56c9ff;padding:2px;font-size:1.2vw">{{ number.author }}</p>
-                <img class="img-fluid" style="height:150px;" src="{{ MEDIA_URL }}{{ number.picture }}" alt="pic">
+                <a href="{% url 'post' %}"><img class="img-fluid" style="height:150px;" src="{{ MEDIA_URL }}{{ number.picture }}" alt="pic"></a>
+                <p>Game Tag: {{ number.game_tag }}</p>
+                <p> |
+                {% for tag in number.info_tags.all %}
+                    {{ tag }} |
+                {% endfor %}
+                </p>
             </div>
             
             {% if forloop.counter|divisibleby:3 %}
