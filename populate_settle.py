@@ -26,6 +26,20 @@ def populate():
         "is_game_tag": True,
         "steamAppId": "289070",
     }
+    civ_5 = {
+        "text": "Civ 5",
+        "colour": "#D4AFB9",
+        "is_pending": False,
+        "is_game_tag": True,
+        "steamAppId": "8930",
+    }
+    civ_3 = {
+        "text": "Civ 3",
+        "colour": "#D8D8D8",
+        "is_pending": False,
+        "is_game_tag": True,
+        "steamAppId": "3910",
+    }
     factorio = {
         "text": "Factorio",
         "colour": "#C97628",
@@ -68,7 +82,7 @@ def populate():
         "is_game_tag": False,
     }
 
-    tags = [civ_6, rimworld, factorio, alpha, petra, canada, beginner]
+    tags = [civ_6, civ_5, civ_3, rimworld, factorio, alpha, petra, canada, beginner]
 
 
     # USERS
@@ -110,8 +124,104 @@ def populate():
         "description": "A really nice start for my first Gathering Storm game! " +
         "The gold is rolling in now.",      
     }
+
+    bigCity = {
+        "author": contrarian,
+        "picture": "bigCity.png",
+        "game_tag": civ_6,
+        "info_tags": [petra, beginner],
+        "description": "Made a great city to support the best lecturer this year"    
+    }
+
+    civ3celts = {
+        "author": contrarian,
+        "picture": "civ3Celts.png",
+        "game_tag": civ_3,
+        "info_tags": [canada],
+        "description": "Start of a game in civ 3"    
+    }
+
+    civ5_2 = {
+        "author": mid_seier,
+        "picture": "civ5-2.png",
+        "game_tag": civ_5,
+        "info_tags": [canada, beginner],
+        "description": "Great civ 5 game so far!!"    
+    }
+
+    civ5London = {
+        "author": secure_user,
+        "picture": "civ5London.png",
+        "game_tag": civ_5,
+        "info_tags": [canada],
+        "description": "Civ 5 best civ"     
+    }
+
+    factorio1 = {
+        "author": mid_seier,
+        "picture": "factorio1.png",
+        "game_tag": factorio,
+        "info_tags": [beginner],
+        "description": "Who even plays civ these days?"
+    }
+
+    factorio2 = {
+        "author": contrarian,
+        "picture": "factorio2.png",
+        "game_tag": factorio,
+        "info_tags": [petra],
+        "description": "Not sure if I like this game..."
+    }
+
+    lukeEngland = {
+        "author": secure_user,
+        "picture": "lukeEngland.png",
+        "game_tag": civ_6,
+        "info_tags": [canada, petra],
+        "description": "Started really good, think I might win!"
+    }
+
+    melbourne = {
+        "author": mid_seier,
+        "picture": "melbourne.png",
+        "game_tag": civ_6,
+        "info_tags": [petra],
+        "description": "Playing as Austrailia!"
+    }
+
+    newCiv6 = {
+        "author": contrarian,
+        "picture": "newCiv6.png",
+        "game_tag": civ_6,
+        "info_tags": [beginner],
+        "description": "Not sure what I'm doing here"
+    }
+
+    rimworld1 = {
+        "author": mid_seier,
+        "picture": "rimworld1.png",
+        "game_tag": rimworld,
+        "info_tags": [beginner],
+        "description": "Just started playing Rimworld! It's great!"
+    }
+
+    rimworld2 = {
+        "author": contrarian,
+        "picture": "rimworld2.png",
+        "game_tag": rimworld,
+        "info_tags": [petra],
+        "description": "What a great game so far"
+    }
+
+    wad = {
+        "author": secure_user,
+        "picture": "wad.png",
+        "game_tag": civ_6,
+        "info_tags": [petra, beginner, canada],
+        "description": "Wad"
+    }
     
-    posts = [centauri, niani]
+    posts = [centauri, niani, bigCity, civ3celts, civ5_2, civ5London, factorio1, factorio2, lukeEngland, melbourne, newCiv6, rimworld1, rimworld2, wad]
 
     cent_comment = {
         "author": mid_seier,

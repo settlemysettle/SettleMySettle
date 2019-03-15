@@ -9,29 +9,51 @@
 
 {% block body_block %}
     <!-- Code here! -->
-    <div class="container">
-        {% for picRow in pictures %}
-            <div class="row">
-            {% for pic in picRow %}
-                <div class="col" align="center" style="padding:10px">
-                    <p>{{ pic.author }} - Number of comments: {{pic.comments}}</p>
-                    <img class="img-fluid" style="max-height:200px;" src="{{ pic.img }}" alt="">
-                    <p>
-                        | Game: {{ pic.game }} |
-                        {% if pic.info %}
-                            {% for tag in pic.info %}
-                                Tag: {{ tag }} |
-                            {% endfor %}
-                        {% endif %}
-                    </p>
-                </div>
-            {% endfor %}
+    <div class="row infinite-container">
+        {% for post in posts %}
+
+            <div class="col-sm-4 infinite-item" align="center" style="padding-top:45px">
+                <p class="col sm-4" style="background-color:#56c9ff;padding:2px;font-size:1.2vw">{{ post.author }}</p>
+                <a href="{% url "post" post.id %}"><img class="img-fluid" style="height:150px;max-width: 300px;" src="{{ MEDIA_URL }}{{ post.picture }}" alt="pic"></a>
+                <p>Game Tag: {{ post.game_tag }}</p>
+                <p> | {{ post.info_tags.all.0 }} | 
+                  {% if post.info_tags.all.1 %}
+                    {{ post.info_tags.all.1 }} |
+                  {% endif %}
+                </p>
             </div>
+            
+            {% if forloop.counter|divisibleby:3 %}
+                </div>
+                <div class="row infinite-container">
+            {% endif %}
+
         {% endfor %}
     </div>
-
+    
+      {% if posts.has_next %}
+        <a class="infinite-more-link" href="?page={{ posts.next_page_number }}"></a>
+      {% endif %}
+    
+      <div class="loading" style="display: none;">
+        Loading...
+      </div>
+    
 {% endblock %}
 
 {% block script_block %}
     <!-- Import custom JS here! -->
+    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'js/infinite.min.js' %}"></script>
+    <script>
+        var infinite = new Waypoint.Infinite({
+          element: $('.infinite-container')[0],
+          onBeforePageLoad: function () {
+            $('.loading').show();
+          },
+          onAfterPageLoad: function ($items) {
+            $('.loading').hide();
+          }
+        });
+      </script>
 {% endblock %}

@@ -10,12 +10,29 @@
 {% block body_block %}
     <!-- Code here! -->
 
-{% for comment in comments %}
-    {{ comment.text }}
+<div>
+    <p>{{ post.author }}</p>
+    <img src="{{ MEDIA_URL }}{{ post.picture }}" data-toggle="modal" data-target="#pic-modal" class="modalImg" style="max-height:100px">
+    <p>Number of comments: {{ comment_count }}</p>
+    <p>Description: {{ post.description }}</p>
+    <p>Game Tag: | {{ post.game_tag }} |</p>
+    <p>Info Tags:
+    {% for tag in post.info_tags.all %}
+        | {{ tag }}
+    {% endfor %}
+    |
+    </p>
+</div>
 
-    <br/>
-    <br/>
-{% endfor %}
+<div>
+    <p>Comments:</p>
+    {% for comment in comments %}
+        {{ comment.text }}
+        ( {{ comment.liking_users.count }} likes)
+        <br/>
+        <br/>
+    {% endfor %}
+</div>
 
 <div class="pagination">
     <span class="step-links">
