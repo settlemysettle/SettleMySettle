@@ -12,7 +12,7 @@
 
 {% for comment in comments %}
     {{ comment.text }}
-
+    ( {{ comment.liking_users.count }} likes)
     <br/>
     <br/>
 {% endfor %}

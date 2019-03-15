@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Count
 from settle.steam_news import get_news
 from settle.models import Post, Comment
 
@@ -40,7 +41,7 @@ def post(request, post_id):
 
     post = Post.objects.filter(id=post_id)
 
-    all_comments = Comment.objects.filter(parent_post=post_id)
+    all_comments = Comment.objects.filter(parent_post=post_id).annotate(num_likes = Count('liking_users')).order_by('-num_likes')
 
     comm_pagin = Paginator(all_comments, 3) # show 3 comments at once
 
