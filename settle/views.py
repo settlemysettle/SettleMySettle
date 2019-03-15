@@ -46,8 +46,8 @@ def feed(request):
 def upload(request):
     context_dict = {}
 
-    game_tags = Tag.objects.filter(is_game_tag=True).order_by("text")
-    info_tags = Tag.objects.filter(is_game_tag=False).order_by("text")
+    game_tags = Tag.objects.filter(is_game_tag=True).filter(is_pending=False).order_by("text")
+    info_tags = Tag.objects.filter(is_game_tag=False).filter(is_pending=False).order_by("text")
     context_dict["game_tags"] = game_tags
     context_dict["info_tags"] = info_tags
 
