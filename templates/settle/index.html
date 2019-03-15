@@ -9,7 +9,26 @@
 
 {% block body_block %}
     <!-- Code here! -->
-    
+    <div class="container">
+        {% for picRow in pictures %}
+            <div class="row">
+            {% for pic in picRow %}
+                <div class="col" align="center" style="padding:10px">
+                    <p>{{ pic.author }} - Number of comments: {{pic.comments}}</p>
+                    <img class="img-fluid" style="max-height:200px;" src="{{ pic.img }}" alt="">
+                    <p>
+                        | Game: {{ pic.game }} |
+                        {% if pic.info %}
+                            {% for tag in pic.info %}
+                                Tag: {{ tag }} |
+                            {% endfor %}
+                        {% endif %}
+                    </p>
+                </div>
+            {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
 
 {% endblock %}
 

@@ -1,7 +1,6 @@
 from django.test import TestCase
 # Import the models
 from settle.models import Tag, User, Post, Comment
-from settle.fields import ColourField
 from django.utils import timezone
 
 
