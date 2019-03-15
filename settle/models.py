@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import AbstractUser
 from settle.fields import ColourField 
 
 class Tag(models.Model):
@@ -19,7 +20,7 @@ class Tag(models.Model):
         return self.text
 
 
-class User(models.Model):
+class User(AbstractUser):
     username = models.CharField(max_length=20, unique=True)
     password = models.CharField(max_length=30)
 
