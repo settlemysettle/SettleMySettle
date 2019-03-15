@@ -38,7 +38,7 @@ class feedViewTestCase(TestCase):
         for post in posts:
             self.assertTrue(post.game_tag == self.tag)
 
-    def test_empty_fav_games(TestCase):
+    def test_empty_fav_games(self):
         user = User.objects.create(username="newUser", password="newPassword")
         user.save()
         # Get the response with the new user
@@ -84,7 +84,8 @@ class sugTagViewTestCase(TestCase):
     def test_new_post(self):
         # Send the data as a post request
         response = self.client.post(reverse('suggest-tag'),
-                                    {'text': self.text, 'colour': self.colour, 'is_game_tag': self.is_game_tag, 'steamAppId': self.steamAppId})
+                                    {'text': self.text, 'colour': self.colour, 'is_game_tag': self.is_game_tag,
+                                     'steamAppId': self.steamAppId})
         # CHeck the data we sent is valid
         form = response.context[-1]['form']
         self.assertTrue(form.is_valid())
