@@ -6,5 +6,5 @@ urlpatterns = [
     url(r'^feed$', views.feed, name="feed"),
     url(r'^upload$', views.upload, name="upload"),
     url(r'^suggest-tag$', views.suggest_tag, name="tags"),
-    url(r'^post$', views.post, name="post"),
+    url(r'^post/(?P<post_id>(\d+))$', views.post, name="post"),
 ]

@@ -9,6 +9,51 @@
 
 {% block body_block %}
     <!-- Code here! -->
+
+<div>
+    <p>{{ post.author }}</p>
+    <img src="{{ MEDIA_URL }}{{ post.picture }}" data-toggle="modal" data-target="#pic-modal" class="modalImg" style="max-height:100px">
+    <p>Number of comments: {{ comment_count }}</p>
+    <p>Description: {{ post.description }}</p>
+    <p>Game Tag: | {{ post.game_tag }} |</p>
+    <p>Info Tags:
+    {% for tag in post.info_tags.all %}
+        | {{ tag }}
+    {% endfor %}
+    |
+    </p>
+</div>
+
+<div>
+    <p>Comments:</p>
+    {% for comment in comments %}
+        {{ comment.text }}
+        ( {{ comment.liking_users.count }} likes)
+        <br/>
+        <br/>
+    {% endfor %}
+</div>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if comments.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ comments.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ comments.number }} of {{ comments.paginator.num_pages }}.
+        </span>
+
+        {% if comments.has_next %}
+            <a href="?page={{ comments.next_page_number }}">next</a>
+            <a href="?page={{ comments.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+
+
     <div>
         {% if result_list %}
             <h3>Steam News</h3>
