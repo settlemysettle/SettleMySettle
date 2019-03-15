@@ -130,6 +130,21 @@ def populate():
         "parent_post": centauri,
     }
 
+    cent_retort = {
+        "author": mid_seier,
+        "text": "I owned a physical copy back in 1999! It was a christmas present, and a rather great " + 
+                "one at that. But we moved out and unfortunately I lost it...",
+        "parent_post": centauri,
+    }
+
+
+    cent_comeback = {
+        "author": secure_user,
+        "text": "That's got to be awful! At least thanks to digital copies you never have to worry about losing it now.",
+        "liking_users": [mid_seier],
+        "parent_post": centauri,
+    }
+
     niani_comment = {
         "author": contrarian,
         "text": "Why are you playing on strategic view? It's so ugly in this game, " +
@@ -137,7 +152,7 @@ def populate():
         "parent_post": niani,
     }
 
-    comments = [cent_comment, cent_reply, niani_comment]
+    comments = [cent_comment, cent_reply, cent_retort, cent_comeback, niani_comment]
 
     for tag in tags:
         tag_added = add_tag(tag["text"], tag["colour"], tag["is_game_tag"],
