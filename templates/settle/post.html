@@ -10,6 +10,18 @@
 {% block body_block %}
     <!-- Code here! -->
 
+{% for pos in post%}
+<img src="{{ MEDIA_URL }}{{ pos.picture }}"> </img>
+<p>Created by {{ pos.author }} </p>
+
+<br/>
+
+{{ pos.description }}
+
+
+{% endfor %}
+<hl>
+
 {% for comment in comments %}
     {{ comment.text }}
     ( {{ comment.liking_users.count }} likes)

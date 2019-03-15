@@ -57,6 +57,7 @@ def post(request, post_id):
     # testing - when we actually make it, we'll parameterise the app id
     result_list = get_news(289070, 10)
     # result_list = get_news(440, 5)
+    context_dict["post"] = post
     context_dict["result_list"] = result_list
     context_dict["comments"] = comments
 
