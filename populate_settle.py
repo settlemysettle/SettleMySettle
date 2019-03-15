@@ -110,8 +110,116 @@ def populate():
         "description": "A really nice start for my first Gathering Storm game! " +
         "The gold is rolling in now.",      
     }
+
+    dog1 = {
+        "author": mid_seier,
+        "picture": "dog1.jpg",
+        "game_tag": civ_6,
+        "info_tags": [petra],
+        "description": "" +
+        "",      
+    }
+
+    dog2 = {
+        "author": mid_seier,
+        "picture": "dog2.jpg",
+        "game_tag": civ_6,
+        "info_tags": [petra],
+        "description": "" +
+        "",      
+    }
+
+    dog3 = {
+        "author": mid_seier,
+        "picture": "dog3.jpg",
+        "game_tag": civ_6,
+        "info_tags": [petra],
+        "description": "" +
+        "",      
+    }
+
+    dog4 = {
+        "author": mid_seier,
+        "picture": "dog4.jpg",
+        "game_tag": civ_6,
+        "info_tags": [petra],
+        "description": "" +
+        "",      
+    }
+
+    dog5 = {
+        "author": mid_seier,
+        "picture": "dog5.jpg",
+        "game_tag": civ_6,
+        "info_tags": [petra],
+        "description": "" +
+        "",      
+    }
+
+    dog6 = {
+        "author": mid_seier,
+        "picture": "dog6.jpg",
+        "game_tag": civ_6,
+        "info_tags": [petra],
+        "description": "" +
+        "",      
+    }
+
+    dog7 = {
+        "author": mid_seier,
+        "picture": "dog7.jpg",
+        "game_tag": civ_6,
+        "info_tags": [petra],
+        "description": "" +
+        "",      
+    }
+
+    dog8 = {
+        "author": mid_seier,
+        "picture": "dog8.png",
+        "game_tag": civ_6,
+        "info_tags": [petra],
+        "description": "" +
+        "",      
+    }
+
+    dog9 = {
+        "author": mid_seier,
+        "picture": "dog9.jpg",
+        "game_tag": civ_6,
+        "info_tags": [petra],
+        "description": "" +
+        "",      
+    }
+
+    dog10 = {
+        "author": mid_seier,
+        "picture": "dog10.jpg",
+        "game_tag": civ_6,
+        "info_tags": [petra],
+        "description": "" +
+        "",      
+    }
+
+    dog11 = {
+        "author": mid_seier,
+        "picture": "dog11.jpeg",
+        "game_tag": civ_6,
+        "info_tags": [petra],
+        "description": "" +
+        "",      
+    }
+
+    dog12 = {
+        "author": mid_seier,
+        "picture": "dog12.jpg",
+        "game_tag": civ_6,
+        "info_tags": [petra],
+        "description": "" +
+        "",      
+    }
     
-    posts = [centauri, niani]
+    posts = [centauri, niani, dog1, dog2, dog3, dog4, dog5, dog6, dog7, dog8, dog9, dog10, dog11, dog12]
 
     cent_comment = {
         "author": mid_seier,
