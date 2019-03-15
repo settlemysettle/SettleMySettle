@@ -10,14 +10,14 @@
 {% block body_block %}
     <!-- Code here! -->
     <div class="row infinite-container">
-        {% for number in numbers %}
+        {% for post in posts %}
 
             <div class="col-sm-4 infinite-item" align="center" style="padding-top:45px">
-                <p class="col sm-4" style="background-color:#56c9ff;padding:2px;font-size:1.2vw">{{ number.author }}</p>
-                <a href="{% url 'post' %}"><img class="img-fluid" style="height:150px;" src="{{ MEDIA_URL }}{{ number.picture }}" alt="pic"></a>
-                <p>Game Tag: {{ number.game_tag }}</p>
+                <p class="col sm-4" style="background-color:#56c9ff;padding:2px;font-size:1.2vw">{{ post.author }}</p>
+                <a href="{% url 'post' %}"><img class="img-fluid" style="height:150px;" src="{{ MEDIA_URL }}{{ post.picture }}" alt="pic"></a>
+                <p>Game Tag: {{ post.game_tag }}</p>
                 <p> |
-                {% for tag in number.info_tags.all %}
+                {% for tag in post.info_tags.all %}
                     {{ tag }} |
                 {% endfor %}
                 </p>
@@ -31,8 +31,8 @@
         {% endfor %}
     </div>
     
-      {% if numbers.has_next %}
-        <a class="infinite-more-link" href="?page={{ numbers.next_page_number }}">More</a>
+      {% if posts.has_next %}
+        <a class="infinite-more-link" href="?page={{ posts.next_page_number }}">More</a>
       {% endif %}
     
       <div class="loading" style="display: none;">

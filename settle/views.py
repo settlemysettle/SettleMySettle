@@ -20,16 +20,16 @@ def index(request, template="settle/index.html"):
     # 1 game tag
     # 2 info tags
     # picture
-    numbers_list = Post.objects.all()
+    post_list = Post.objects.all()
     page = request.GET.get('page', 1)
-    paginator = Paginator(numbers_list, 3)
+    paginator = Paginator(post_list, 3)
     try:
-        numbers = paginator.page(page)
+        posts = paginator.page(page)
     except PageNotAnInteger:
-        numbers = paginator.page(1)
+        posts = paginator.page(1)
     except EmptyPage:
-        numbers = paginator.page(paginator.num_pages)
-    return render(request, 'settle/index.html', {'numbers': numbers})
+        posts = paginator.page(paginator.num_pages)
+    return render(request, 'settle/index.html', {'posts': posts})
 
     # "pic<x>": {
     # "author": "",
@@ -42,17 +42,6 @@ def feed(request):
     context_dict = {}
 
     # need to filter this for feed
-    numbers_list = Post.objects.all()
-    
-    page = request.GET.get('page', 1)
-    paginator = Paginator(numbers_list, 3)
-    try:
-        numbers = paginator.page(page)
-    except PageNotAnInteger:
-        numbers = paginator.page(1)
-    except EmptyPage:
-        numbers = paginator.page(paginator.num_pages)
-    return render(request, 'settle/feed.html', {'numbers': numbers})
 
 
 def upload(request):
