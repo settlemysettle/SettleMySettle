@@ -1,11 +1,8 @@
 /* ---------------------- FULL DOCUMENT FORMATTING */
 
-html {
-    overflow: auto;
-}
-
 body {
     background-color: #F5F5F5;
+    overflow-x: hidden;
 }
 
 #bodyContent {

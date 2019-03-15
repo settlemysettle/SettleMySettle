@@ -9,29 +9,45 @@
 
 {% block body_block %}
     <!-- Code here! -->
-    <div class="container">
-        {% for picRow in pictures %}
-            <div class="row">
-            {% for pic in picRow %}
-                <div class="col" align="center" style="padding:10px">
-                    <p>{{ pic.author }} - Number of comments: {{pic.comments}}</p>
-                    <img class="img-fluid" style="max-height:200px;" src="{{ pic.img }}" alt="">
-                    <p>
-                        | Game: {{ pic.game }} |
-                        {% if pic.info %}
-                            {% for tag in pic.info %}
-                                Tag: {{ tag }} |
-                            {% endfor %}
-                        {% endif %}
-                    </p>
-                </div>
-            {% endfor %}
+    <div class="row infinite-container">
+        {% for number in numbers %}
+
+            <div class="col-sm-4 infinite-item" align="center" style="border-style:solid;padding:64px">
+                <p class="col sm-4" style="background-color:#56c9ff;padding:2px;font-size:1.2vw">{{ number.author }}</p>
+                <img class="img-fluid" style="height:150px;" src="{{ MEDIA_URL }}{{ number.picture }}" alt="pic">
             </div>
+            
+            {% if forloop.counter|divisibleby:3 %}
+                </div>
+                <div class="row infinite-container">
+            {%endif%}
+
         {% endfor %}
     </div>
-
+    
+      {% if numbers.has_next %}
+        <a class="infinite-more-link" href="?page={{ numbers.next_page_number }}">More</a>
+      {% endif %}
+    
+      <div class="loading" style="display: none;">
+        Loading...
+      </div>
+    
 {% endblock %}
 
 {% block script_block %}
     <!-- Import custom JS here! -->
+    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+    <script src="{% static 'js/infinite.min.js' %}"></script>
+    <script>
+        var infinite = new Waypoint.Infinite({
+          element: $('.infinite-container')[0],
+          onBeforePageLoad: function () {
+            $('.loading').show();
+          },
+          onAfterPageLoad: function ($items) {
+            $('.loading').hide();
+          }
+        });
+      </script>
 {% endblock %}
