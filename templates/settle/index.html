@@ -16,23 +16,23 @@
                 <p class="col sm-4" style="background-color:#56c9ff;padding:2px;font-size:1.2vw">{{ post.author }}</p>
                 <a href="{% url "post" post.id %}"><img class="img-fluid" style="height:150px;" src="{{ MEDIA_URL }}{{ post.picture }}" alt="pic"></a>
                 <p>Game Tag: {{ post.game_tag }}</p>
-                <p> |
-                {% for tag in post.info_tags.all %}
-                    {{ tag }} |
-                {% endfor %}
+                <p> | {{ post.info_tags.all.0 }} | 
+                  {% if post.info_tags.all.1 %}
+                    {{ post.info_tags.all.1 }} |
+                  {% endif %}
                 </p>
             </div>
             
             {% if forloop.counter|divisibleby:3 %}
                 </div>
                 <div class="row infinite-container">
-            {%endif%}
+            {% endif %}
 
         {% endfor %}
     </div>
     
       {% if posts.has_next %}
-        <a class="infinite-more-link" href="?page={{ posts.next_page_number }}">More</a>
+        <a class="infinite-more-link" href="?page={{ posts.next_page_number }}"></a>
       {% endif %}
     
       <div class="loading" style="display: none;">

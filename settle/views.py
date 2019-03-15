@@ -6,7 +6,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.db.models import Count
 from settle.steam_news import get_news
-from settle.models import Post, Comment
+from settle.models import Post, Comment, Tag
 
 # Create your views here.
 
@@ -16,12 +16,7 @@ def redirectHome(request):
 
 def index(request, template="settle/index.html"):
     context_dict = {}
-    # author
-    # number of comments
-    # 1 game tag
-    # 2 info tags
-    # picture
-    post_list = Post.objects.all()
+    post_list = Post.objects.all().order_by("-date_submitted")
     page = request.GET.get('page', 1)
     paginator = Paginator(post_list, 3)
     try:
@@ -32,21 +27,30 @@ def index(request, template="settle/index.html"):
         posts = paginator.page(paginator.num_pages)
     return render(request, 'settle/index.html', {'posts': posts})
 
-    # "pic<x>": {
-    # "author": "",
-    # "comments": <y>,
-    # "game": "",
-    # "info": [],
-    # "img": ""}
-
 def feed(request):
     context_dict = {}
 
     # need to filter this for feed
+    post_list = Post.objects.all()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(post_list, 3)
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+    return render(request, 'settle/feed.html', {'posts': posts})
 
 
 def upload(request):
     context_dict = {}
+
+    game_tags = Tag.objects.filter(is_game_tag=True).order_by("text")
+    info_tags = Tag.objects.filter(is_game_tag=False).order_by("text")
+    context_dict["game_tags"] = game_tags
+    context_dict["info_tags"] = info_tags
+
     return render(request, 'settle/upload.html', context=context_dict)
 
 
@@ -59,9 +63,10 @@ def post(request, post_id):
     context_dict = {}
     result_list = []
 
-    post = Post.objects.filter(id=post_id)
+    post = Post.objects.filter(id=post_id)[0]
 
     all_comments = Comment.objects.filter(parent_post=post_id).annotate(num_likes = Count('liking_users')).order_by('-num_likes')
+    comment_count = len(all_comments)
 
     comm_pagin = Paginator(all_comments, 3) # show 3 comments at once
 
@@ -78,7 +83,9 @@ def post(request, post_id):
     result_list = get_news(289070, 10)
     # result_list = get_news(440, 5)
     context_dict["result_list"] = result_list
+    context_dict["post"] = post
     context_dict["comments"] = comments
+    context_dict["comment_count"] = comment_count
 
 
     return render(request, 'settle/post.html', context=context_dict)
