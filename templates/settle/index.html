@@ -14,7 +14,7 @@
 
             <div class="col-sm-4 infinite-item" align="center" style="padding-top:45px">
                 <p class="col sm-4" style="background-color:#56c9ff;padding:2px;font-size:1.2vw">{{ post.author }}</p>
-                <a href="{% url 'post' %}"><img class="img-fluid" style="height:150px;" src="{{ MEDIA_URL }}{{ post.picture }}" alt="pic"></a>
+                <a href="{% url "post" post.id %}"><img class="img-fluid" style="height:150px;" src="{{ MEDIA_URL }}{{ post.picture }}" alt="pic"></a>
                 <p>Game Tag: {{ post.game_tag }}</p>
                 <p> |
                 {% for tag in post.info_tags.all %}
