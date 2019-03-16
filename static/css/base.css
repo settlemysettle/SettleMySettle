@@ -105,6 +105,13 @@ a.nav-link:focus {
     border-color: #56c9ffd7 !important;
 }
 
+.btn {
+    font-weight: bold;
+    padding-right: 5px;
+    padding-left: 5px;
+    min-width: 75px;
+}
+
 /* ---------------------- MODAL CSS */
 
 .img-responsive {
