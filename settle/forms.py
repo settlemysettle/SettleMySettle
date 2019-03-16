@@ -44,7 +44,7 @@ class UploadForm(forms.ModelForm):
         exclude = ['author', 'date_submitted']
 
 
-class UploadTag(forms.ModelForm):
+class SuggestTag(forms.ModelForm):
     """A form used to upload a tag suggestion."""
 
     # Will inherit the fields from the model
