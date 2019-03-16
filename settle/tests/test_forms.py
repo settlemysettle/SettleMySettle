@@ -1,28 +1,13 @@
 from django.test import TestCase
-from settle.forms import LoginForm, SignupForm, CommentForm, UploadForm, UploadTag
+from settle.forms import SignupForm, CommentForm, UploadForm, UploadTag
 from settle.models import Tag, User, Post, Comment
 from django.utils import timezone
 
 
-class LoginTestCase(TestCase):
-    def setUp(self):
-        self.user = {'username': "Duke", 'password': "testPassword123!"}
-
-    def test_init(self):
-        # LoginForm doesn't exist yet
-        # Want to check it accepts a user
-        form = LoginForm(self.user)
-        self.assertTrue(form.is_valid())
-
-    def test_login_without_user(self):
-        # Shouldn't accept empty details
-        form = LoginForm({})
-        self.assertFalse(form.is_valid())
-
-
 class Signup(TestCase):
     def setUp(self):
-        User.objects.create(username="test", password="testPassword")
+        u = User.objects.create(username="test", password="testPassword")
+        u.save()
         self.user = {'username': "Duke", 'password': "testPassword123!"}
 
     def test_init(self):
@@ -31,25 +16,31 @@ class Signup(TestCase):
         self.assertTrue(form.is_valid())
 
     def test_sign_up_without_text(self):
-        # Shouldn't take this as a valid form?
+        # Shouldn't take this as a valid form
         form = SignupForm({})
+        self.assertFalse(form.is_valid())
+
+    def test_signup_existing_user(self):
+        # Shouldn't allow an existing user to signup
+        form = SignupForm({'username': "test", 'password': "testPassword"})
         self.assertFalse(form.is_valid())
 
 
 class UploadTestCase(TestCase):
     def setUp(self):
-        self.author = User.objects.create(
-            username="Duke", password="GoodBoy"
-        )
-        self.picture = "static/images/logoWAD.png"
+        self.picture = open("static/images/logoWAD.png")
         self.tag = Tag.objects.create(
             text="test", colour="#FFFFFF", is_game_tag=True, is_pending=False, steamAppId=222)
-        self.post = {'author': self.author, 'picture': self.picture,
-                     'game_tag': self.tag, 'description': "description"}
+        self.tag.save()
+        self.post = {'picture': self.picture,
+                     'game_tag': Tag.objects.all()[0], 'description': "description"}
 
     def test_init(self):
         # Check it accepts a new post
         form = UploadForm(self.post)
+        print("\n\n")
+        print(form.errors)
+        print("\n\n")
         self.assertTrue(form.is_valid())
 
     def test_empty(self):
