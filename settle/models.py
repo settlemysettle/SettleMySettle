@@ -27,7 +27,7 @@ class User(AbstractUser):
     username = models.CharField(max_length=20, unique=True)
     password = models.CharField(max_length=30)
 
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['email']
     favourite_games = models.ManyToManyField(Tag)
     # TODO: implement validation to only allow game tags to be included here.
     # It doesn't seem to be possible in the same way as for the ColourField, since

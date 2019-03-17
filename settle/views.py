@@ -12,6 +12,8 @@ from django import forms
 from django.utils import timezone
 from settle.validators import CPasswordValidator
 from django.core.exceptions import ValidationError
+from django.contrib.auth import authenticate, login
+from django.core.urlresolvers import reverse
 
 # Create your views here.
 
@@ -145,3 +147,23 @@ def signup(request):
         signup_form = SignupForm()
 
     return render(request, 'settle/register.html', {'form': signup_form, 'registered': registered})
+
+
+def user_login(request):
+    # If request is post, pull out relevent data
+    if request.method == 'POST':
+        # Get username and password from the post data
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        # Check if it is a valid user
+        user = authenticate(username=username, password=password)
+
+        # If a valid user
+        if user:
+            login(request, user)
+            return redirectHome(request)
+        else:
+            return HttpResponse("Invalid login details supplied")
+    else:
+        return render(request, 'settle/index.html', {})

@@ -77,8 +77,9 @@
                 <button type="button" class="btn btn-primary ml-1 d-none d-md-block" id="loginButton">Login</button>
                 <!-- Login button for when collapsed -->
                 <button type="submit" class="btn btn-primary ml-3 d-md-none">Login</button>
-                <button type="button" class="btn btn-primary ml-1 mr-2 my-2 my-md-0" id="signupButton">Sign up</button>
-                <a href="{% url 'register' %}">Sign up</a>
+                <a href="{% url 'register' %}"><button type="button" class="btn btn-primary ml-1 mr-2 my-2 my-md-0"
+                        id="signupButton">Sign up</button></a>
+
             </form>
 
         </div>
@@ -88,11 +89,12 @@
     <!-- drop down menu for the login form -->
     <div class="collapse" id="collapseMenu">
         <div class="card card-body d-none d-md-block" id="loginDropdownBox">
-            <form class="form-row my-2 my-md-0">
-                <input class="form-control form-control-sm my-1 bigMenuForm" type="text" placeholder="Username"
-                    aria-label="Username">
-                <input class="form-control form-control-sm bigMenuForm" type="password" placeholder="Password"
-                    aria-label="Search">
+            <form class="form-row my-2 my-md-0" d="login_form" method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <input class="form-control form-control-sm my-1 bigMenuForm" type="text" name="username" value=""
+                    placeholder="Username" aria-label="Username">
+                <input class="form-control form-control-sm bigMenuForm" type="password" name="password" value=""
+                    placeholder="Password" aria-label="Search">
                 <button class="btn btn-primary btn-sm my-1" type="submit" id="finishLoginButton">Submit</button>
             </form>
         </div>

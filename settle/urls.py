@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^suggest-tag$', views.suggest_tag, name="tags"),
     url(r'^post/(?P<post_id>(\d+))$', views.post, name="post"),
     url(r'^register/$', views.signup, name='register'),
+    url(r'^login/$', views.user_login, name='login'),
 ]
