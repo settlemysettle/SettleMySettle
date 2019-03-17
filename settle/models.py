@@ -3,8 +3,10 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.utils import timezone
+from settle.fields import ColourField
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import AbstractUser
-from settle.fields import ColourField 
+
 
 class Tag(models.Model):
     # 20 character max length, unique, required
@@ -21,9 +23,11 @@ class Tag(models.Model):
 
 
 class User(AbstractUser):
+    email = models.EmailField(max_length=100, unique=True)
     username = models.CharField(max_length=20, unique=True)
     password = models.CharField(max_length=30)
 
+    REQUIRED_FIELDS = []
     favourite_games = models.ManyToManyField(Tag)
     # TODO: implement validation to only allow game tags to be included here.
     # It doesn't seem to be possible in the same way as for the ColourField, since
@@ -53,7 +57,7 @@ class Post(models.Model):
     description = models.CharField(max_length=300, blank=True)
 
     def __str__(self):
-        return str(str(self.date_submitted) + ": by " +  str(self.author))
+        return str(str(self.date_submitted) + ": by " + str(self.author))
 
 
 class Comment(models.Model):

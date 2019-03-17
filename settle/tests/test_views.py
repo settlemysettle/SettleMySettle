@@ -118,3 +118,51 @@ class sugTagViewTestCase(TestCase):
         # CHeck the data we sent is valid
         form = response.context[-1]['form']
         self.assertTrue(form.is_valid())
+
+
+class SignupView(TestCase):
+    def setUp(self):
+        # Get the client we will use
+        self.client = Client()
+        # Use we will try to signup
+        self.newUser = {'email': "testemail@test.com",
+                        'username': "Duke", 'password': "testPassword123!",
+                        'confirm_password': "testPassword123!"}
+
+    def test_new_user(self):
+        response = self.client.post(reverse('register'), self.newUser)
+        # Check if the form we submit is valid
+        form = response.context[-1]['form']
+        self.assertTrue(form.is_valid())
+
+    def test_lowercase_password(self):
+        response = self.client.post(reverse('register'), {'email': "testemail@test.com",
+                                                          'username': "Duke", 'password': "password",
+                                                          'confirm_password': "password"})
+        # Should be returned with form errors
+        form = response.context[-1]['form']
+        self.assertFalse(form.is_valid())
+
+    def test_short_password(self):
+        response = self.client.post(reverse('register'), {'email': "testemail@test.com",
+                                                          'username': "Duke", 'password': "pw1",
+                                                          'confirm_password': "pw1"})
+        # Should be returned with form errors
+        form = response.context[-1]['form']
+        self.assertFalse(form.is_valid())
+
+    def test_justUpper_password(self):
+        response = self.client.post(reverse('register'), {'email': "testemail@test.com",
+                                                          'username': "Duke", 'password': "PASSWORD",
+                                                          'confirm_password': "PASSWORD"})
+        # Should be returned with form errors
+        form = response.context[-1]['form']
+        self.assertFalse(form.is_valid())
+
+    def test_noDigits_password(self):
+        response = self.client.post(reverse('register'), {'email': "testemail@test.com",
+                                                          'username': "Duke", 'password': "Password",
+                                                          'confirm_password': "Password"})
+        # Should be returned with form errors
+        form = response.context[-1]['form']
+        self.assertFalse(form.is_valid())

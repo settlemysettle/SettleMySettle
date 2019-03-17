@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'settle',
-    'registration'   # Add registration redux
 ]
 
 MIDDLEWARE = [
@@ -98,12 +97,16 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {'min_length': 8}
     },
     {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+    {
+        'NAME': 'settle.validators.CPasswordValidator'
     },
 ]
 # Passowrd hashers
@@ -136,16 +139,4 @@ STATICFILES_DIRS = [STATIC_DIR, ]
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
 
-
-# Let's users register
-REGISTRATION_OPEN = True
-# Use this if we want email activation, will remove if we don't need it
-# ACCOUNT_ACTIVATION_DAYS = 7
-# Again, not sure how this will work with the login form
-# REGISTRATION_AUTO_LOGIN = True
-# Go to home pages after log in
-LOGIN_REDIRECT_URL = '/settle/'
-# Gonna leave this commented until we work out the login form
-# LOGIN_URL = '/users/login/'
-
-AUTH_USER_MODEL = 'settle.User'
+AUTH_USER_MODEL = 'settle.user'

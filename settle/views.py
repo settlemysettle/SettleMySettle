@@ -6,13 +6,20 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.db.models import Count
 from settle.steam_news import get_news
-from settle.models import Post, Comment, Tag
+from settle.models import Post, Comment, Tag, User
+from settle.forms import SignupForm
+from django import forms
+from django.utils import timezone
+from settle.validators import CPasswordValidator
+from django.core.exceptions import ValidationError
 
 # Create your views here.
+
 
 def redirectHome(request):
     response = redirect('/settle')
     return response
+
 
 def index(request, template="settle/index.html"):
     context_dict = {}
@@ -26,6 +33,7 @@ def index(request, template="settle/index.html"):
     except EmptyPage:
         posts = paginator.page(paginator.num_pages)
     return render(request, 'settle/index.html', {'posts': posts})
+
 
 def feed(request):
     context_dict = {}
@@ -46,8 +54,10 @@ def feed(request):
 def upload(request):
     context_dict = {}
 
-    game_tags = Tag.objects.filter(is_game_tag=True).order_by("text")
-    info_tags = Tag.objects.filter(is_game_tag=False).order_by("text")
+    game_tags = Tag.objects.filter(is_game_tag=True).filter(
+        is_pending=False).order_by("text")
+    info_tags = Tag.objects.filter(is_game_tag=False).filter(
+        is_pending=False).order_by("text")
     context_dict["game_tags"] = game_tags
     context_dict["info_tags"] = info_tags
 
@@ -65,27 +75,73 @@ def post(request, post_id):
 
     post = Post.objects.filter(id=post_id)[0]
 
-    all_comments = Comment.objects.filter(parent_post=post_id).annotate(num_likes = Count('liking_users')).order_by('-num_likes')
+    all_comments = Comment.objects.filter(parent_post=post_id).annotate(
+        num_likes=Count('liking_users')).order_by('-num_likes')
     comment_count = len(all_comments)
 
-    comm_pagin = Paginator(all_comments, 3) # show 3 comments at once
+    comm_pagin = Paginator(all_comments, 3)  # show 3 comments at once
 
-    page = request.GET.get('page', 1) # get page no. from URL, or 1 if just loading in
+    # get page no. from URL, or 1 if just loading in
+    page = request.GET.get('page', 1)
 
     try:
-        comments = comm_pagin.page(page) # get the given page of comments
+        comments = comm_pagin.page(page)  # get the given page of comments
     except PageNotAnInteger:
-        comments = comm_pagin.page(1) # default to 1st page if not a number
-    except EmptyPage:   
-        comments = comm_pagin.page(comm_pagin.num_pages) # default to last page if too big
+        comments = comm_pagin.page(1)  # default to 1st page if not a number
+    except EmptyPage:
+        # default to last page if too big
+        comments = comm_pagin.page(comm_pagin.num_pages)
 
     # testing - when we actually make it, we'll parameterise the app id
-    result_list = get_news(289070, 10)
+
+    app_id = post.game_tag.steamAppId
+
+    if app_id != 0:
+        result_list = get_news(app_id, 10)
     # result_list = get_news(440, 5)
     context_dict["result_list"] = result_list
     context_dict["post"] = post
     context_dict["comments"] = comments
     context_dict["comment_count"] = comment_count
 
-
     return render(request, 'settle/post.html', context=context_dict)
+
+
+def signup(request):
+    # Used to tell us if signup was successful
+    registered = False
+
+    if request.method == 'POST':
+        # Use the signup_form
+        signup_form = SignupForm(data=request.POST)
+
+        # Check the data given is valid
+        if signup_form.is_valid():
+            # Get the user from the form
+            newUser = signup_form.save(commit=False)
+            # Get the cleaned data
+            username = signup_form.cleaned_data['username']
+            password = signup_form.cleaned_data['password']
+            # Make a new valdator from our custom class
+            pwValidator = CPasswordValidator()
+            try:
+                # Check the password is valid
+                pwValidator.validate(password, newUser)
+            except ValidationError as e:
+                # Else add the errors to the form
+                signup_form.add_error('password', e)
+                # Return the falied form
+                return render(request, 'settle/register.html', {'form': signup_form, 'registered': registered})
+            # Save the new user
+            newUser.save()
+
+            registered = True
+
+        else:
+            # Print the errors from the form
+            print(signup_form.errors)
+    else:
+        # Give it back an empty form
+        signup_form = SignupForm()
+
+    return render(request, 'settle/register.html', {'form': signup_form, 'registered': registered})

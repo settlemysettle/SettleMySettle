@@ -10,7 +10,9 @@ class Signup(TestCase):
         u = User.objects.create(username="test", password="testPassword")
         u.save()
         # A user we will try to create
-        self.user = {'username': "Duke", 'password': "testPassword123!"}
+        self.user = {'email': "testemail@test.com",
+                     'username': "Duke", 'password': "testPassword123!",
+                     'confirm_password': "testPassword123!"}
 
     def test_init(self):
         # Check it accepts a new user
@@ -25,6 +27,18 @@ class Signup(TestCase):
     def test_signup_existing_user(self):
         # Shouldn't allow an existing user to signup
         form = SignupForm({'username': "test", 'password': "testPassword"})
+        self.assertFalse(form.is_valid())
+
+    def test_incorrect_email(self):
+        # Shouldn't accept an incorrect email
+        form = SignupForm({'email': "wrongEmail", 'username': "Duke", 'password': "testPassword123!",
+                           'confirm_password': "testPassword123!"})
+        self.assertFalse(form.is_valid())
+
+    def test_different_passwords(self):
+        # Shoudn't accept the data if the passwords are different
+        form = SignupForm({'email': "testemail@test.com", 'username': "Duke", 'password': "testPassword123!",
+                           'confirm_password': "wrongPassword"})
         self.assertFalse(form.is_valid())
 
 

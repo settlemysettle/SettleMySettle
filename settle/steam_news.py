@@ -6,7 +6,7 @@ from html2text import html2text
 
 def get_news(steamID, count=5):
     root_url = ""
-    searchUrl = "https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid={steamID}&count={count}".format(steamID=steamID, count=count)
+    searchUrl = "https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?appid={steamID}&count={count}&feeds=steam_community_announcements".format(steamID=steamID, count=count)
 
     results = []
     try:

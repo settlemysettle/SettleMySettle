@@ -1,0 +1,34 @@
+{% extends 'settle/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+Register
+{% endblock %}
+
+{% block body_block %}
+<h1>Your username is how other settlers will see you. It will be used to identify you when you post, comment or like
+    things.</h1>
+{% if registered %}
+<strong>*Should redirect*</strong>
+<a href="{% url 'index' %}">Return to the homepage.</a><br />
+{% else %}
+<form id="signup_form" method="post" action="{% url 'register' %}" enctype="multipart.form-data">
+
+    {% csrf_token %}
+    {% for field in form %}
+    <p>
+        {{ field.label_tag }}<br>
+        {{ field }}
+        {% if field.help_text %}
+        <small style="color: grey">{{ field.help_text }}</small>
+        {% endif %}
+        {% for error in field.errors %}
+        <p style="color: red">{{ error }}</p>
+        {% endfor %}
+    </p>
+    {% endfor %}
+
+    <input type="submit" name="submit" value="Register" />
+</form>
+{% endif %}
+{% endblock %}
