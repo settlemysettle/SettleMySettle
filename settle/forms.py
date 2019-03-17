@@ -34,8 +34,7 @@ class SignupForm(forms.ModelForm):
     class Meta:
         model = User
         # Don't show fav games filled as this will be updated in another form
-        exclude = ['favourite_games', 'date_joined',
-                   'is_active', 'is_staff', 'is_superuser']
+        fields = ['email', 'username', 'password']
 
 
 class UploadForm(forms.ModelForm):
