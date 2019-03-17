@@ -3,7 +3,9 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.utils import timezone
-from settle.fields import ColourField 
+from settle.fields import ColourField
+from django.utils.translation import ugettext_lazy as _
+
 
 class Tag(models.Model):
     # 20 character max length, unique, required
@@ -20,9 +22,15 @@ class Tag(models.Model):
 
 
 class User(models.Model):
+    email = models.EmailField(_('email address'), max_length=254, unique=True)
     username = models.CharField(max_length=20, unique=True)
     password = models.CharField(max_length=30)
-
+    first_name = models.CharField(_('first name'), max_length=30, blank=True)
+    last_name = models.CharField(_('last name'), max_length=30, blank=True)
+    is_active = models.BooleanField(_('active'), default=True)
+    is_staff = models.BooleanField(_('staff status'), default=False)
+    date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
+    is_superuser = models.BooleanField(_('superuser'), default=False)
     favourite_games = models.ManyToManyField(Tag)
     # TODO: implement validation to only allow game tags to be included here.
     # It doesn't seem to be possible in the same way as for the ColourField, since
@@ -52,7 +60,7 @@ class Post(models.Model):
     description = models.CharField(max_length=300, blank=True)
 
     def __str__(self):
-        return str(str(self.date_submitted) + ": by " +  str(self.author))
+        return str(str(self.date_submitted) + ": by " + str(self.author))
 
 
 class Comment(models.Model):
