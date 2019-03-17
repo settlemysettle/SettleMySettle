@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'settle',
-    'registration'   # Add registration redux
+    'registration',   # Add registration redux
 ]
 
 MIDDLEWARE = [

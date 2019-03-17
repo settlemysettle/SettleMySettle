@@ -105,6 +105,16 @@ a.nav-link:focus {
     border-color: #56c9ffd7 !important;
 }
 
+.btn {
+    padding-right: 5px;
+    padding-left: 5px;
+    min-width: 90px;
+}
+
+.tag {
+    font-weight: 500;
+}
+
 /* ---------------------- MODAL CSS */
 
 .img-responsive {

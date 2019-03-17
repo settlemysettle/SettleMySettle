@@ -18,7 +18,7 @@ def index(request, template="settle/index.html"):
     context_dict = {}
     post_list = Post.objects.all().order_by("-date_submitted")
     page = request.GET.get('page', 1)
-    paginator = Paginator(post_list, 3)
+    paginator = Paginator(post_list, 6)
     try:
         posts = paginator.page(page)
     except PageNotAnInteger:
