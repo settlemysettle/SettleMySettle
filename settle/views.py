@@ -46,8 +46,8 @@ def feed(request):
 def upload(request):
     context_dict = {}
 
-    game_tags = Tag.objects.filter(is_game_tag=True).order_by("text")
-    info_tags = Tag.objects.filter(is_game_tag=False).order_by("text")
+    game_tags = Tag.objects.filter(is_game_tag=True).filter(is_pending=False).order_by("text")
+    info_tags = Tag.objects.filter(is_game_tag=False).filter(is_pending=False).order_by("text")
     context_dict["game_tags"] = game_tags
     context_dict["info_tags"] = info_tags
 
@@ -80,7 +80,11 @@ def post(request, post_id):
         comments = comm_pagin.page(comm_pagin.num_pages) # default to last page if too big
 
     # testing - when we actually make it, we'll parameterise the app id
-    result_list = get_news(289070, 10)
+
+    app_id = post.game_tag.steamAppId
+
+    if app_id != 0:
+        result_list = get_news(app_id, 10)
     # result_list = get_news(440, 5)
     context_dict["result_list"] = result_list
     context_dict["post"] = post
