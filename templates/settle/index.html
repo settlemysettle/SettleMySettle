@@ -9,18 +9,37 @@
 
 {% block body_block %}
     <!-- Code here! -->
+    {% if user.is_authenticated %}
+      <p>Logged in: {{ user }}</p>
+    {% endif %}
     <div class="row infinite-container">
         {% for post in posts %}
 
             <div class="col-sm-4 infinite-item" align="center" style="padding-top:45px">
                 <p class="col sm-4" style="background-color:#56c9ff;padding:2px;font-size:1.2vw">{{ post.author }}</p>
-                <a href="{% url "post" post.id %}"><img class="img-fluid" style="height:150px;max-width: 300px;" src="{{ MEDIA_URL }}{{ post.picture }}" alt="pic"></a>
-                <p>Game Tag: {{ post.game_tag }}</p>
-                <p> | {{ post.info_tags.all.0 }} | 
-                  {% if post.info_tags.all.1 %}
-                    {{ post.info_tags.all.1 }} |
-                  {% endif %}
-                </p>
+                <a href="{% url "post" post.id %}"><img class="img-fluid" style="max-height:auto;width: 525px;" src="{{ MEDIA_URL }}{{ post.picture }}" alt="pic"></a>
+                <div class = "row" style= "padding-top:10px">
+                    <div class = "col sm-4">
+                        <button type = "button" class= "btn" style="background-color:{{ post.game_tag.colour }}">{{ post.game_tag }}</button>
+                    </div>
+                    <div class = "col sm-8">
+                        <div class = "row">
+                            <div class = "col sm-3 mr-auto">
+                                <button type = "button" class= "btn" style="background-color:{{ post.info_tags.all.0.colour }}">{{ post.info_tags.all.0 }}</button>
+                            </div>
+                            {% if post.info_tags.all.1 %}
+                            <div class = "col sm-3 mr-auto">
+                                <button type = "button" class= "btn" style="background-color:{{ post.info_tags.all.1.colour }}">{{ post.info_tags.all.1 }}</button>
+                            </div>
+                            {% endif %}
+                            {% if post.info_tags.all.2 %}
+                            <div class = "col sm-3 mr-auto">
+                                <button type = "button" class= "btn" style="background-color:{{ post.info_tags.all.2.colour }}">{{ post.info_tags.all.2 }}</button>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
             </div>
             
             {% if forloop.counter|divisibleby:3 %}

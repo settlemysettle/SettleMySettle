@@ -156,14 +156,14 @@ class suggestTagTempTestCase(TestCase):
         self.client = Client()
 
     def check_it_uses_template(self):
-        response = self.client.get(reverse('suggest-tag'))
+        response = self.client.get(reverse('tags'))
         # Check it uses the base template
         self.assertTemplateUsed(response, 'settle/base.html')
         # Check it uses the suggest-tag template
         self.assertTemplateUsed(response, 'settle/suggest-tag.html')
 
     def access_suggest_tag_page(self):
-        response = self.client.get(reverse('suggest-tag'))
+        response = self.client.get(reverse('tags'))
         # Check that suggest-tag page was accessed
         self.assertEqual(response.status_code, 200)
 
@@ -171,7 +171,7 @@ class suggestTagTempTestCase(TestCase):
         self.assertContains(response, 'Create a Tag')
 
     def contains_tag_options(self):
-        response = self.client.get(reverse('suggest-tag'))
+        response = self.client.get(reverse('tags'))
         # Check that suggest-tag page was accessed
         self.assertEqual(response.status_code, 200)
 
