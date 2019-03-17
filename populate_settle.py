@@ -3,6 +3,7 @@ import os
 
 import django
 
+from django.contrib.auth.hashers import make_password
 from PIL import Image
 import datetime
 
@@ -89,18 +90,21 @@ def populate():
     secure_user = {
         "username": "VerySecureUser",
         "password": "Luk3",
+        "email": "verysecure@hotmail.co.uk",
         "favourite_games": [civ_6]
     }
 
     mid_seier = {
         "username": "MidSeier",
         "password": "fire axes",
+        "email": "civ5forever@hotmail.co.uk",
         "favourite_games": [rimworld, factorio]
     }
 
     contrarian = {
         "username": "EverythingIsAwful",
         "password": "it'll get hacked anyway",
+        "email": "tetris99@hotmail.co.uk",
     }
 
     users = [secure_user, mid_seier, contrarian]
@@ -269,7 +273,7 @@ def populate():
                             tag["is_pending"], tag.get("steamAppId", 0))
 
     for user in users:
-        user_added = add_user(user["username"], user["password"], user.get("favourite_games", []))
+        user_added = add_user(user["username"], user["password"], user["email"], user.get("favourite_games", []))
     
     for post in posts:
         post_added = add_post(post["author"], post["picture"], post["game_tag"], post["info_tags"], post["description"])
@@ -287,8 +291,8 @@ def add_tag(text, colour, is_game_tag, is_pending, steamAppId):
     return(tag)
 
 
-def add_user(username, password, favourite_games):
-    user = User.objects.get_or_create(username=username, password=password)[0]
+def add_user(username, password, email, favourite_games):
+    user = User.objects.get_or_create(username=username, password=make_password(password, hasher="pbkdf2_sha256"), email=email)[0]
     user.save()
     for game in favourite_games:
         user.favourite_games.add(Tag.objects.get(text=game["text"]))
@@ -300,7 +304,7 @@ def add_post(author, picture, game_tag, info_tags, description):
     auth = User.objects.get(username=author["username"])
     game_t = Tag.objects.get(text=game_tag["text"])
 
-    post = Post.objects.get_or_create(author = auth, game_tag = game_t, description=description, picture=picture)[0]
+    post = Post.objects.get_or_create(author=auth, game_tag=game_t, description=description, picture=picture)[0]
     post.save()
   
     for info_tag in info_tags:
@@ -311,7 +315,7 @@ def add_post(author, picture, game_tag, info_tags, description):
     return(post)
 
 def add_comment(author, text, liking_users, parent_post):
-    auth = User.objects.get(username = author["username"])
+    auth = User.objects.get(username=author["username"])
     par_post = Post.objects.get(picture=parent_post["picture"])
 
     comment = Comment.objects.get_or_create(author=auth, text=text, parent_post=par_post)[0]

@@ -14,6 +14,7 @@ from settle.validators import CPasswordValidator
 from django.core.exceptions import ValidationError
 from django.contrib.auth import authenticate, login
 from django.core.urlresolvers import reverse
+from django.contrib.auth.hashers import make_password
 
 # Create your views here.
 
@@ -135,6 +136,7 @@ def signup(request):
                 # Return the falied form
                 return render(request, 'settle/register.html', {'form': signup_form, 'registered': registered})
             # Save the new user
+            newUser.password = make_password(password, hasher="pbkdf2_sha256")
             newUser.save()
 
             registered = True

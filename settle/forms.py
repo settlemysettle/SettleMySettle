@@ -21,7 +21,7 @@ class SignupForm(forms.ModelForm):
     # Make the passowrd field use password input
     password = forms.CharField(
         max_length=30, widget=forms.PasswordInput(), required=True,
-        help_text="The password msut be at least 8 characters in length, contain an upper and lowercase letter and contain at least one digit")
+        help_text="The password must be at least 8 characters in length, contain an upper and lowercase letter and contain at least one digit")
     # Make sure the put in the same password
     confirm_password = forms.CharField(widget=forms.PasswordInput())
 

@@ -9,6 +9,9 @@
 
 {% block body_block %}
     <!-- Code here! -->
+    {% if user.is_authenticated %}
+      <p>Logged in: {{ user }}</p>
+    {% endif %}
     <div class="row infinite-container">
         {% for post in posts %}
 
