@@ -20,14 +20,19 @@
                 </div>
                 <div class = "row justify-content-center" style= "padding-top:20px">
                     <div class = "col-3 col-lg-4 col-xl-3">
-                        <span class= "btn tag mb-1" style="background-color:{{ post.game_tag.colour }};width:80%;">{{ post.game_tag }}</span>
+                        <span class= "btn tag mb-1" style="background-color:{{ post.game_tag.colour }};width:80%">{{ post.game_tag }}</span>
                     </div>
-                    <div class = "col-3 col-lg-4 col-xl-3">
-                        <span class= "btn tag mb-1" style="background-color:{{ post.info_tags.all.0.colour }};width:80%;">{{ post.info_tags.all.0 }}</span>
+                    <div class = "col-2 col-lg-3 col-xl-2">
+                        <span class= "btn tag mb-1" style="background-color:{{ post.info_tags.all.0.colour }};width:80%">{{ post.info_tags.all.0 }}</span>
                     </div>
                     {% if post.info_tags.all.1 %}
-                    <div class = "col-3 col-lg-4 col-xl-3">
-                        <span class= "btn tag" style="background-color:{{ post.info_tags.all.1.colour }};width:80%;">{{ post.info_tags.all.1 }}</span>
+                    <div class = "col-2 col-lg-3 col-xl-2">
+                        <span class= "btn tag" style="background-color:{{ post.info_tags.all.1.colour }};width:80%">{{ post.info_tags.all.1 }}</span>
+                    </div>
+                    {% endif %}
+                    {% if post.info_tags.all.2 %}
+                    <div class = "col-2 col-lg-3 col-xl-2">
+                        <span class= "btn tag" style="background-color:{{ post.info_tags.all.2.colour }};width:80%">{{ post.info_tags.all.2 }}</span>
                     </div>
                     {% endif %}
                 </div>

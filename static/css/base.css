@@ -112,7 +112,7 @@ a.nav-link:focus {
 }
 
 .tag {
-    font-weight: 500;
+    font-weight: bold;
 }
 
 /* ---------------------- MODAL CSS */
