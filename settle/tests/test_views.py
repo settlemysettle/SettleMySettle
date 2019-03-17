@@ -132,7 +132,7 @@ class SignupView(TestCase):
     def test_new_user(self):
         response = self.client.post(reverse('register'), self.newUser)
         # Check if the form we submit is valid
-        form = response.context[-1]['form']
+        form = response.context['form']
         self.assertTrue(form.is_valid())
 
     def test_lowercase_password(self):
@@ -140,7 +140,7 @@ class SignupView(TestCase):
                                                           'username': "Duke", 'password': "password",
                                                           'confirm_password': "password"})
         # Should be returned with form errors
-        form = response.context[-1]['form']
+        form = response.context['form']
         self.assertFalse(form.is_valid())
 
     def test_short_password(self):
@@ -148,7 +148,7 @@ class SignupView(TestCase):
                                                           'username': "Duke", 'password': "pw1",
                                                           'confirm_password': "pw1"})
         # Should be returned with form errors
-        form = response.context[-1]['form']
+        form = response.context['form']
         self.assertFalse(form.is_valid())
 
     def test_justUpper_password(self):
@@ -156,7 +156,7 @@ class SignupView(TestCase):
                                                           'username': "Duke", 'password': "PASSWORD",
                                                           'confirm_password': "PASSWORD"})
         # Should be returned with form errors
-        form = response.context[-1]['form']
+        form = response.context['form']
         self.assertFalse(form.is_valid())
 
     def test_noDigits_password(self):
@@ -164,5 +164,5 @@ class SignupView(TestCase):
                                                           'username': "Duke", 'password': "Password",
                                                           'confirm_password': "Password"})
         # Should be returned with form errors
-        form = response.context[-1]['form']
+        form = response.context['form']
         self.assertFalse(form.is_valid())
