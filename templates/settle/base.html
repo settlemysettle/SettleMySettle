@@ -3,7 +3,7 @@
 {% load staticfiles %}
 
 <html lang="EN">
-  
+
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -12,7 +12,8 @@
     <!-- Favicon -->
     <link rel="icon" href="{% static "images/favicon.ico" %}">
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!-- Custom CSS -->
     <link rel="stylesheet" type="text/css" href="{% static "css/base.css" %}">
 
@@ -36,7 +37,9 @@
         </a>
 
         <!-- Toggle button for when browser size gets to 768px: lets us collapse the contents of the navbar -->
-        <button class="navbar-toggler ml-auto mr-2 my-2" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler ml-auto mr-2 my-2" type="button" data-toggle="collapse"
+            data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false"
+            aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -74,7 +77,9 @@
                 <button type="button" class="btn btn-primary d-none d-md-block" id="loginButton">Login</button>
                 <!-- Login button for when collapsed -->
                 <button type="submit" class="btn btn-primary ml-3 d-md-none">Login</button>
-                <button type="button" class="btn btn-primary ml-1 mr-2 my-2 my-md-0" id="signupButton">Sign Up</button>
+                <a href="{% url 'register' %}"><button type="button" class="btn btn-primary ml-1 mr-2 my-2 my-md-0"
+                        id="signupButton">Sign up</button></a>
+
             </form>
 
         </div>
@@ -84,16 +89,20 @@
     <!-- drop down menu for the login form -->
     <div class="collapse" id="collapseMenu">
         <div class="card card-body d-none d-md-block" id="loginDropdownBox">
-            <form class="form-row my-2 my-md-0">
-                <input class="form-control form-control-sm my-1 bigMenuForm" type="text" placeholder="Username" aria-label="Username">
-                <input class="form-control form-control-sm bigMenuForm" type="password" placeholder="Password" aria-label="Search">
+            <form class="form-row my-2 my-md-0" d="login_form" method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <input class="form-control form-control-sm my-1 bigMenuForm" type="text" name="username" value=""
+                    placeholder="Username" aria-label="Username">
+                <input class="form-control form-control-sm bigMenuForm" type="password" name="password" value=""
+                    placeholder="Password" aria-label="Search">
                 <button class="btn btn-primary btn-sm my-1" type="submit" id="finishLoginButton">Submit</button>
             </form>
         </div>
     </div>
 
     <!-- Modal (click on a picture to fade background and show picture center) -->
-    <div class="modal fade bs-example-modal-lg" id="pic-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal fade bs-example-modal-lg" id="pic-modal" tabindex="-1" role="dialog"
+        aria-labelledby="myModalLabel">
         <div class="modal-dialog modal-lg modal-vert-align-center" role="document">
             <div class="modal-body">
                 <div class="row no-margin flex-me">
@@ -111,7 +120,7 @@
         {% block body_block %}
         {% endblock %}
     </div>
-    
+
     <!-- To add a responsive image -->
     <!-- Add the class "img-fluid to it" -->
 
@@ -120,13 +129,17 @@
 
     <!-- JavaScript (For Bootstrap/Jquery) -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
     {% block script_block %}
     {% endblock %}
     <script src="{% static "js/base.js" %}"></script>
-    
+
 
 </body>
 

@@ -1,29 +1,18 @@
 from django.test import TestCase
-from settle.forms import LoginForm, SignupForm
+from settle.forms import SignupForm, CommentForm, UploadForm, SuggestTag
 from settle.models import Tag, User, Post, Comment
 from django.utils import timezone
 
 
-class LoginTestCase(TestCase):
-    def setUp(self):
-        self.user = {'username': "Duke", 'password': "testPassword123!"}
-
-    def test_init(self):
-        # LoginForm doesn't exist yet
-        # Want to check it accepts a user
-        form = LoginForm(self.user)
-        self.assertTrue(form.is_valid())
-
-    def test_login_without_user(self):
-        # Shouldn't accept empty details
-        form = LoginForm({})
-        self.assertFalse(form.is_valid())
-
-
 class Signup(TestCase):
     def setUp(self):
-        User.objects.create(username="test", password="testPassword")
-        self.user = {'username': "Duke", 'password': "testPassword123!"}
+        # Make a user that has already signed up
+        u = User.objects.create(username="test", password="testPassword")
+        u.save()
+        # A user we will try to create
+        self.user = {'email': "testemail@test.com",
+                     'username': "Duke", 'password': "testPassword123!",
+                     'confirm_password': "testPassword123!"}
 
     def test_init(self):
         # Check it accepts a new user
@@ -31,51 +20,57 @@ class Signup(TestCase):
         self.assertTrue(form.is_valid())
 
     def test_sign_up_without_text(self):
-        # Shouldn't take this as a valid form?
+        # Shouldn't take this as a valid form
         form = SignupForm({})
         self.assertFalse(form.is_valid())
 
+    def test_signup_existing_user(self):
+        # Shouldn't allow an existing user to signup
+        form = SignupForm({'username': "test", 'password': "testPassword"})
+        self.assertFalse(form.is_valid())
 
-class UploadTestCase(TestCase):
-    def setUp(self):
-        self.author = User.objects.create(
-            username="Duke", password="GoodBoy"
-        )
-        self.picture = "static/images/logoWAD.png"
-        self.tag = Tag.objects.create(
-            text="test", colour="#FFFFFF", is_game_tag=True, is_pending=False, steamAppId=222)
-        self.post = {'author': self.author, 'picture': self.picture,
-                     'game_tag': self.tag, 'date_submitted': timezone.now(), 'description': "description"}
+    def test_incorrect_email(self):
+        # Shouldn't accept an incorrect email
+        form = SignupForm({'email': "wrongEmail", 'username': "Duke", 'password': "testPassword123!",
+                           'confirm_password': "testPassword123!"})
+        self.assertFalse(form.is_valid())
 
-    def test_init(self):
-        # Check it accepts a new post
-        form = UploadForm(self.post)
-        self.assertTrue(form.is_valid())
-
-    def test_empty(self):
-        # Check it won't accept empty imput
-        form = UploadForm({})
+    def test_different_passwords(self):
+        # Shoudn't accept the data if the passwords are different
+        form = SignupForm({'email': "testemail@test.com", 'username': "Duke", 'password': "testPassword123!",
+                           'confirm_password': "wrongPassword"})
         self.assertFalse(form.is_valid())
 
 
 class NewtagTestCase(TestCase):
-    def set_up(self):
+    def setUp(self):
+        # The tag we will try to upload
         self.tag = {'text': "test", 'colour': "#FFFFFF",
                     'is_game_tag': True, 'is_pending': False, 'steamAppId': 222}
+        # Make a tag object that we won't be apply to suggest again
+        t = Tag.objects.create(text="Civ 6", colour="#FFFFFF",
+                               is_game_tag=True, is_pending=False, steamAppId=222)
+        t.save()
 
     def test_init(self):
         # Test it will accept a tag
-        form = UploadTag(self.tag)
+        form = SuggestTag(self.tag)
         self.assertTrue(form.is_valid())
 
     def test_empty_tag(self):
         # An empty form won't be accepted
-        form = UploadTag({})
+        form = SuggestTag({})
         self.assertFalse(form.is_valid())
+
+    def test_suggest_existing_tag(self):
+        # Try to suggest a tag that already exists
+        form = SuggestTag({'text': "Civ 6", 'colour': "#FFFFFF",
+                           'is_game_tag': True, 'is_pending': False, 'steamAppId': 222})
 
 
 class CommentFormTestCase(TestCase):
-    def set_up(self):
+    def setUp(self):
+        # Need a user, tag and post in order to comment
         userTest = User.objects.create(username="test", password="password")
         tagTest = Tag.objects.create(
             text="test", colour="#FFFFF", is_game_tag=True, is_pending=True, steamAppId=222)
@@ -84,15 +79,16 @@ class CommentFormTestCase(TestCase):
                                        date_submitted=timezone.now(), description="test")
         postTest.save()
         postTest.info_tags.add(tagTest)
-        # Try to make a comment object
-        self.comment = {'author':userTest, 'text':"This is a comment", 'linking_users':userTest,'parent_post': postTest}
+        # The request we will send to try and make a comment
+        self.comment = {'author': userTest, 'text': "This is a comment",
+                        'linking_users': userTest, 'parent_post': postTest}
 
     def test_init(self):
         # Test it will accept a comment
-        form = UploadComment(self.comment)
+        form = CommentForm(self.comment)
         self.assertTrue(form.is_valid())
-    
+
     def test_empty_form(self):
         # An empty form shouldn't be valid
-        form = UploadComment({})
+        form = CommentForm({})
         self.assertFalse(form.is_valid())
