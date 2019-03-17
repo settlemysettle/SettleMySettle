@@ -10,6 +10,8 @@ from settle.models import Post, Comment, Tag, User
 from settle.forms import SignupForm
 from django import forms
 from django.utils import timezone
+from settle.validators import CPasswordValidator
+from django.core.exceptions import ValidationError
 
 # Create your views here.
 
@@ -110,19 +112,36 @@ def signup(request):
     registered = False
 
     if request.method == 'POST':
+        # Use the signup_form
         signup_form = SignupForm(data=request.POST)
 
+        # Check the data given is valid
         if signup_form.is_valid():
+            # Get the user from the form
             newUser = signup_form.save(commit=False)
-            newUser.date_joined = timezone.now()
-
+            # Get the cleaned data
+            username = signup_form.cleaned_data['username']
+            password = signup_form.cleaned_data['password']
+            # Make a new valdator from our custom class
+            pwValidator = CPasswordValidator()
+            try:
+                # Check the password is valid
+                pwValidator.validate(password, newUser)
+            except ValidationError as e:
+                # Else add the errors to the form
+                signup_form.add_error('password', e)
+                # Return the falied form
+                return render(request, 'settle/register.html', {'form': signup_form, 'registered': registered})
+            # Save the new user
             newUser.save()
 
             registered = True
 
         else:
+            # Print the errors from the form
             print(signup_form.errors)
     else:
+        # Give it back an empty form
         signup_form = SignupForm()
 
     return render(request, 'settle/register.html', {'form': signup_form, 'registered': registered})

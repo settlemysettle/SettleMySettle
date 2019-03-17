@@ -105,6 +105,9 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
+    {
+        'NAME': 'settle.validators.CPasswordValidator'
+    },
 ]
 # Passowrd hashers
 PASSWORD_HASHERS = (
