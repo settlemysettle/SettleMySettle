@@ -100,6 +100,7 @@ def post(request, post_id):
     result_list = []
 
     post = Post.objects.filter(id=post_id)[0]
+    context_dict['form'] = CommentForm()
 
     if request.method == 'POST':
         if request.POST.get('type') == "com":
@@ -128,10 +129,10 @@ def post(request, post_id):
             un = request.POST.get('liker')
             liker = User.objects.get(username=un)
 
-            if liker not in comment.liking_users:
-                comment.liking_users.add(liker.username)
+            if liker not in comment.liking_users.all():
+                comment.liking_users.add(liker)
             else:
-                comment.liking_users.filter(username=un).delete()
+                pass
     else:
         # Give it back an empty form
         context_dict['form'] = CommentForm()

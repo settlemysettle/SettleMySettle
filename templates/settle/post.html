@@ -79,7 +79,7 @@
                 <form id="like_button" method="post" action="" enctype="multipart.form-data">
                     {% csrf_token %}
                     <input type="hidden" value="like" name="type">
-                    <input type="hidden" value="{{ comment }}" name="comment">
+                    <input type="hidden" value="{{ comment.id }}" name="comment">
                     <input type="hidden" value="{{ user }}" name="liker">
                     <input type="submit" name="like" value="Like" />
                 </form>
