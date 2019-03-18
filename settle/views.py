@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.db.models import Count
 from settle.steam_news import get_news
 from settle.models import Post, Comment, Tag, User
-from settle.forms import SignupForm, CommentForm
+from settle.forms import SignupForm, CommentForm, UploadForm
 from django import forms
 from django.utils import timezone
 from settle.validators import CPasswordValidator
 from django.core.exceptions import ValidationError
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse
 from django.contrib.auth.hashers import make_password
 
@@ -64,8 +64,28 @@ def upload(request):
         is_pending=False).order_by("text")
     info_tags = Tag.objects.filter(is_game_tag=False).filter(
         is_pending=False).order_by("text")
+
+    if request.method == "POST":
+        upload_form = UploadForm(request.POST, request.FILES)
+
+        if upload_form.is_valid():
+            user_post = upload_form.save(commit=False)
+            user_post.author = request.user
+
+            if 'picture' in request.FILES:
+                user_post.picture = request.FILES['picture']
+
+            user_post.save()
+            upload_form.save_m2m()
+
+        else:
+            print(upload_form.errors)
+    else:
+        upload_form = UploadForm()
+
     context_dict["game_tags"] = game_tags
     context_dict["info_tags"] = info_tags
+    context_dict["upload_form"] = upload_form
 
     return render(request, 'settle/upload.html', context=context_dict)
 
@@ -119,6 +139,10 @@ def post(request, post_id):
         if comment_form.is_valid():
             # Get the user from the form
             newComment = comment_form.save(commit=False)
+            u = request.POST.get('author')
+            p = request.POST.get('parent_post')
+            newComment.author = User.objects.get(username=u)
+            newComment.parent_post = Post.objects.filter(id=post_id)[0]
             # Get the cleaned data
             text = comment_form.cleaned_data['text']
             newComment.save()
@@ -194,3 +218,8 @@ def user_login(request):
             return index(request, valid=valid)
     else:
         return index(request, valid=valid)
+
+
+def user_logout(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('index'))
