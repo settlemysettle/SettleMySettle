@@ -103,6 +103,7 @@ def post(request, post_id):
     context_dict['form'] = CommentForm()
 
     if request.method == 'POST':
+        # Check the type of post request
         if request.POST.get('type') == "com":
             # Use the CommentForm
             comment_form = CommentForm(data=request.POST)
@@ -123,12 +124,16 @@ def post(request, post_id):
             else:
                 # Print the errors from the form
                 print(comment_form.errors)
+        # If a like request, update the comment
         elif request.POST.get('type') == "like":
+            # Get the id of the comment and get the comment object
             c = request.POST.get('comment')
             comment = Comment.objects.get(id=c)
+            # Get the user id and find the user object
             un = request.POST.get('liker')
             liker = User.objects.get(username=un)
 
+            # If the user hasn't liked the comment, like it, else unlike it
             if liker not in comment.liking_users.all():
                 comment.liking_users.add(liker)
             else:

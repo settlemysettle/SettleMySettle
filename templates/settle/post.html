@@ -81,7 +81,11 @@
                     <input type="hidden" value="like" name="type">
                     <input type="hidden" value="{{ comment.id }}" name="comment">
                     <input type="hidden" value="{{ user }}" name="liker">
-                    <input type="submit" name="like" value="Like" />
+                    {% if user in comment.liking_users.all %}
+                    <input type="submit" name="like" value="Unlike" />
+                    {% else %}
+                    <input type="submit" name="unlike" value="Like" />
+                    {% endif %}
                 </form>
                 <br />
                 <br />
