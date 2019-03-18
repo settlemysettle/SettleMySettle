@@ -24,8 +24,10 @@ def redirectHome(request):
     return response
 
 
-def index(request, template="settle/index.html"):
+def index(request, template="settle/index.html", valid=0):
     context_dict = {}
+    context_dict['valid'] = valid
+
     post_list = Post.objects.all().order_by("-date_submitted")
     page = request.GET.get('page', 1)
     paginator = Paginator(post_list, 6)
@@ -35,7 +37,8 @@ def index(request, template="settle/index.html"):
         posts = paginator.page(1)
     except EmptyPage:
         posts = paginator.page(paginator.num_pages)
-    return render(request, 'settle/index.html', {'posts': posts})
+    context_dict['posts'] = posts
+    return render(request, 'settle/index.html', context_dict)
 
 
 def feed(request):
@@ -126,8 +129,6 @@ def post(request, post_id):
         # Give it back an empty form
         comment_form = CommentForm()
         context_dict['form'] = comment_form
-    
-    
 
     return render(request, 'settle/post.html', context=context_dict)
 
@@ -172,8 +173,10 @@ def signup(request):
 
     return render(request, 'settle/register.html', {'form': signup_form, 'registered': registered})
 
+
 def user_login(request):
     # If request is post, pull out relevent data
+    valid = False
     if request.method == 'POST':
         # Get username and password from the post data
         username = request.POST.get('username')
@@ -185,8 +188,9 @@ def user_login(request):
         # If a valid user
         if user:
             login(request, user)
-            return redirectHome(request)
+            valid = True
+            return index(request, valid=valid)
         else:
-            return HttpResponse("Invalid login details supplied")
+            return index(request, valid=valid)
     else:
-        return render(request, 'settle/index.html', {})
+        return index(request, valid=valid)

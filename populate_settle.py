@@ -1,4 +1,5 @@
 
+from settle.models import Tag, User, Post, Comment
 import os
 
 import django
@@ -12,8 +13,6 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE',
 
 
 django.setup()
-
-from settle.models import Tag, User, Post, Comment
 
 
 def populate():
@@ -83,8 +82,8 @@ def populate():
         "is_game_tag": False,
     }
 
-    tags = [civ_6, civ_5, civ_3, rimworld, factorio, alpha, petra, canada, beginner]
-
+    tags = [civ_6, civ_5, civ_3, rimworld,
+            factorio, alpha, petra, canada, beginner]
 
     # USERS
     secure_user = {
@@ -115,9 +114,9 @@ def populate():
         "picture": "centauri.png",
         "game_tag": alpha,
         "info_tags": [beginner],
-        "description": "If you haven't played this game, check it out! For a 20 year old game," + 
+        "description": "If you haven't played this game, check it out! For a 20 year old game," +
                        "the UI is surprisingly snappy and it's quite a well grounded depiction of future-era technology.",
-        
+
     }
 
     niani = {
@@ -126,7 +125,7 @@ def populate():
         "game_tag": civ_6,
         "info_tags": [petra],
         "description": "A really nice start for my first Gathering Storm game! " +
-        "The gold is rolling in now.",      
+        "The gold is rolling in now.",
     }
 
     bigCity = {
@@ -134,7 +133,7 @@ def populate():
         "picture": "bigCity.png",
         "game_tag": civ_6,
         "info_tags": [petra, beginner],
-        "description": "Made a great city to support the best lecturer this year"    
+        "description": "Made a great city to support the best lecturer this year"
     }
 
     civ3celts = {
@@ -142,7 +141,7 @@ def populate():
         "picture": "civ3Celts.png",
         "game_tag": civ_3,
         "info_tags": [canada],
-        "description": "Start of a game in civ 3"    
+        "description": "Start of a game in civ 3"
     }
 
     civ5_2 = {
@@ -150,7 +149,7 @@ def populate():
         "picture": "civ5-2.png",
         "game_tag": civ_5,
         "info_tags": [canada, beginner],
-        "description": "Great civ 5 game so far!!"    
+        "description": "Great civ 5 game so far!!"
     }
 
     civ5London = {
@@ -158,7 +157,7 @@ def populate():
         "picture": "civ5London.png",
         "game_tag": civ_5,
         "info_tags": [canada],
-        "description": "Civ 5 best civ"     
+        "description": "Civ 5 best civ"
     }
 
     factorio1 = {
@@ -224,13 +223,14 @@ def populate():
         "info_tags": [petra, beginner, canada],
         "description": "Wad"
     }
-    
-    posts = [centauri, niani, bigCity, civ3celts, civ5_2, civ5London, factorio1, factorio2, lukeEngland, melbourne, newCiv6, rimworld1, rimworld2, wad]
+
+    posts = [centauri, niani, bigCity, civ3celts, civ5_2, civ5London, factorio1,
+             factorio2, lukeEngland, melbourne, newCiv6, rimworld1, rimworld2, wad]
 
     cent_comment = {
         "author": mid_seier,
-        "text": "The manual of this game's pretty amazing as well - 250 pages of " + 
-                "instructions, strategies and even biological information about " + 
+        "text": "The manual of this game's pretty amazing as well - 250 pages of " +
+                "instructions, strategies and even biological information about " +
                 "the planet you're playing on. Check it out if you can!",
         "liking_users": [secure_user, contrarian],
         "parent_post": centauri,
@@ -246,11 +246,10 @@ def populate():
 
     cent_retort = {
         "author": mid_seier,
-        "text": "I owned a physical copy back in 1999! It was a christmas present, and a rather great " + 
+        "text": "I owned a physical copy back in 1999! It was a christmas present, and a rather great " +
                 "one at that. But we moved out and unfortunately I lost it...",
         "parent_post": centauri,
     }
-
 
     cent_comeback = {
         "author": secure_user,
@@ -266,21 +265,24 @@ def populate():
         "parent_post": niani,
     }
 
-    comments = [cent_comment, cent_reply, cent_retort, cent_comeback, niani_comment]
+    comments = [cent_comment, cent_reply,
+                cent_retort, cent_comeback, niani_comment]
 
     for tag in tags:
         tag_added = add_tag(tag["text"], tag["colour"], tag["is_game_tag"],
                             tag["is_pending"], tag.get("steamAppId", 0))
 
     for user in users:
-        user_added = add_user(user["username"], user["password"], user["email"], user.get("favourite_games", []))
-    
-    for post in posts:
-        post_added = add_post(post["author"], post["picture"], post["game_tag"], post["info_tags"], post["description"])
-    
-    for comment in comments:
-        comment_added = add_comment(comment["author"], comment["text"], comment.get("liking_users", []), comment["parent_post"])
+        user_added = add_user(
+            user["username"], user["password"], user["email"], user.get("favourite_games", []))
 
+    for post in posts:
+        post_added = add_post(post["author"], post["picture"],
+                              post["game_tag"], post["info_tags"], post["description"])
+
+    for comment in comments:
+        comment_added = add_comment(comment["author"], comment["text"], comment.get(
+            "liking_users", []), comment["parent_post"])
 
 
 def add_tag(text, colour, is_game_tag, is_pending, steamAppId):
@@ -292,7 +294,8 @@ def add_tag(text, colour, is_game_tag, is_pending, steamAppId):
 
 
 def add_user(username, password, email, favourite_games):
-    user = User.objects.get_or_create(username=username, password=make_password(password, hasher="pbkdf2_sha256"), email=email)[0]
+    user = User.objects.get_or_create(username=username, password=make_password(
+        password, hasher="pbkdf2_sha256"), email=email)[0]
     user.save()
     for game in favourite_games:
         user.favourite_games.add(Tag.objects.get(text=game["text"]))
@@ -304,9 +307,10 @@ def add_post(author, picture, game_tag, info_tags, description):
     auth = User.objects.get(username=author["username"])
     game_t = Tag.objects.get(text=game_tag["text"])
 
-    post = Post.objects.get_or_create(author=auth, game_tag=game_t, description=description, picture=picture)[0]
+    post = Post.objects.get_or_create(
+        author=auth, game_tag=game_t, description=description, picture=picture)[0]
     post.save()
-  
+
     for info_tag in info_tags:
         post.info_tags.add(Tag.objects.get(text=info_tag["text"]))
 
@@ -314,11 +318,13 @@ def add_post(author, picture, game_tag, info_tags, description):
 
     return(post)
 
+
 def add_comment(author, text, liking_users, parent_post):
     auth = User.objects.get(username=author["username"])
     par_post = Post.objects.get(picture=parent_post["picture"])
 
-    comment = Comment.objects.get_or_create(author=auth, text=text, parent_post=par_post)[0]
+    comment = Comment.objects.get_or_create(
+        author=auth, text=text, parent_post=par_post)[0]
     # this is a bit dodgy - could you have the same person write the same comment on the same post?
     # might be worth enforcing some other restriction (no duplicate comments with the same
     # parent post?)
@@ -326,8 +332,9 @@ def add_comment(author, text, liking_users, parent_post):
 
     for l_user in liking_users:
         comment.liking_users.add(User.objects.get(username=l_user["username"]))
-    
+
     return(comment)
+
 
 if __name__ == '__main__':
     print("Populating Settle...")
