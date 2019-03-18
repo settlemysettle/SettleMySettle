@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
 from django.shortcuts import redirect
@@ -12,7 +12,7 @@ from django import forms
 from django.utils import timezone
 from settle.validators import CPasswordValidator
 from django.core.exceptions import ValidationError
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse
 from django.contrib.auth.hashers import make_password
 
@@ -209,4 +209,9 @@ def user_login(request):
             return HttpResponse("Invalid login details supplied")
     else:
         return render(request, 'settle/index.html', {})
+
+
+def user_logout(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('index'))
 
