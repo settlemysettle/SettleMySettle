@@ -132,7 +132,7 @@ def post(request, post_id):
             if liker not in comment.liking_users.all():
                 comment.liking_users.add(liker)
             else:
-                pass
+                comment.liking_users.remove(liker)
     else:
         # Give it back an empty form
         context_dict['form'] = CommentForm()
