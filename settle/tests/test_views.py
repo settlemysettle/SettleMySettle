@@ -77,30 +77,6 @@ class feedViewTestCase(TestCase):
         self.assertEqual(len(posts), 0)
 
 
-class uploadViewTestCase(TestCase):
-    def setUp(self):
-        self.client = Client()
-        # Picture we will try to upload
-        self.picture = "logoWAD.png"
-        # Make a new user
-        self.user = User.objects.create(
-            username="test", password="testPassword")
-        self.user.save()
-        # Get a tag object that will be the gametag of the upload
-        self.tag = Tag.objects.create(
-            text="Civ 6", colour="#FFFFFF", is_game_tag=True, is_pending=False, steamAppId=222)
-        self.description = "test description"
-
-    def test_upload_response(self):
-        # Post a new image using a HTTP post
-        response = self.client.post(
-            reverse('upload'), {'author': self.user, 'picture': self.picture,
-                                'game_tag': self.tag, 'description': self.description, 'info_tags': []})
-        # Check the request form is valid
-        form = response.context[-1]['form']
-        self.assertTrue(form.is_valid())
-
-
 class sugTagViewTestCase(TestCase):
     def setUp(self):
         self.client = Client()
