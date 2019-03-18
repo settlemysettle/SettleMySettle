@@ -40,8 +40,8 @@ class feedViewTestCase(TestCase):
             text="Civ 5", colour="#FF8FFF", is_game_tag=True, is_pending=False, steamAppId=222)
         # Make a new user
         self.user = User.objects.create(
-            username="test", password="testPassword")
-        # self.user.save()
+            username="test", password="testPassword", email="testemail@email.com")
+        self.user.save()
         # Add a new tag to it's fav games
         self.user.favourite_games.add(self.tag)
         self.userTest = User.objects.create(
@@ -68,37 +68,14 @@ class feedViewTestCase(TestCase):
             self.assertTrue(post.game_tag == self.tag)
 
     def test_empty_fav_games(self):
-        user = User.objects.create(username="newUser", password="newPassword")
+        user = User.objects.create(
+            username="newUser", password="newPassword", email="test@email.com")
         user.save()
         # Get the response with the new user
         response = self.client.get(reverse('feed'), {'user': user})
         # Post list sould be empty as we have no fav games
         posts = response.context[-1]['posts']
         self.assertEqual(len(posts), 0)
-
-
-class uploadViewTestCase(TestCase):
-    def setUp(self):
-        self.client = Client()
-        # Picture we will try to upload
-        self.picture = "logoWAD.png"
-        # Make a new user
-        self.user = User.objects.create(
-            username="test", password="testPassword")
-        self.user.save()
-        # Get a tag object that will be the gametag of the upload
-        self.tag = Tag.objects.create(
-            text="Civ 6", colour="#FFFFFF", is_game_tag=True, is_pending=False, steamAppId=222)
-        self.description = "test description"
-
-    def test_upload_response(self):
-        # Post a new image using a HTTP post
-        response = self.client.post(
-            reverse('upload'), {'author': self.user, 'picture': self.picture,
-                                'game_tag': self.tag, 'description': self.description, 'info_tags': []})
-        # Check the request form is valid
-        form = response.context[-1]['form']
-        self.assertTrue(form.is_valid())
 
 
 class sugTagViewTestCase(TestCase):
