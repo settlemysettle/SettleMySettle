@@ -16,7 +16,7 @@ class LoginForm(forms.ModelForm):
 
 class CommentForm(forms.ModelForm):
     # Will inherit the fields from the comment model
-    text = forms.CharField(max_length=300, widget=forms.Textarea)
+    text = forms.CharField(max_length=300, widget=forms.Textarea, required=True)
 
     class Meta:
         # Choose the Comment model
