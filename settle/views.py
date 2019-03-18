@@ -101,6 +101,30 @@ def post(request, post_id):
 
     post = Post.objects.filter(id=post_id)[0]
 
+    if request.method == 'POST':
+        # Use the CommentForm
+        comment_form = CommentForm(data=request.POST)
+        context_dict['form'] = comment_form
+
+        # Check the data given is valid
+        if comment_form.is_valid():
+            # Get the user from the request data
+            newComment = comment_form.save(commit=False)
+            # Get the user that submitted the comment
+            un = request.POST.get('author')
+            # Set the author and the parent post
+            newComment.author = User.objects.get(username=un)
+            newComment.parent_post = Post.objects.filter(id=post_id)[0]
+
+            # Save the comment
+            comment_form.save()
+        else:
+            # Print the errors from the form
+            print(comment_form.errors)
+    else:
+        # Give it back an empty form
+        context_dict['form'] = CommentForm()
+
     all_comments = Comment.objects.filter(parent_post=post_id).annotate(
         num_likes=Count('liking_users')).order_by('-num_likes')
     comment_count = len(all_comments)
@@ -129,30 +153,6 @@ def post(request, post_id):
     context_dict["post"] = post
     context_dict["comments"] = comments
     context_dict["comment_count"] = comment_count
-
-    if request.method == 'POST':
-        # Use the signup_form
-        comment_form = CommentForm(data=request.POST)
-        context_dict['form'] = comment_form
-
-        # Check the data given is valid
-        if comment_form.is_valid():
-            # Get the user from the form
-            newComment = comment_form.save(commit=False)
-            u = request.POST.get('author')
-            p = request.POST.get('parent_post')
-            newComment.author = User.objects.get(username=u)
-            newComment.parent_post = Post.objects.filter(id=post_id)[0]
-            # Get the cleaned data
-            text = comment_form.cleaned_data['text']
-            newComment.save()
-        else:
-            # Print the errors from the form
-            print(comment_form.errors)
-    else:
-        # Give it back an empty form
-        comment_form = CommentForm()
-        context_dict['form'] = comment_form
 
     return render(request, 'settle/post.html', context=context_dict)
 
