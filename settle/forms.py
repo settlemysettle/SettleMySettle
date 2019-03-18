@@ -54,7 +54,7 @@ class UploadForm(forms.ModelForm):
     game_tag = forms.ModelChoiceField(queryset=Tag.objects.filter(is_game_tag=True).filter(is_pending=False).order_by("text"))
 
 
-    info_tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.filter(is_game_tag=False).filter(is_pending=False).order_by("text"), widget=forms.SelectMultiple)
+    info_tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.filter(is_game_tag=False).filter(is_pending=False).order_by("text"), widget=forms.CheckboxSelectMultiple)
     class Meta:
         # Make it inherit fields from Post model
         model = Post
