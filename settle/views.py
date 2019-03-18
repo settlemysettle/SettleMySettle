@@ -7,6 +7,7 @@ from django.shortcuts import redirect
 from django.db.models import Count
 from settle.steam_news import get_news
 from settle.models import Post, Comment, Tag
+from settle.forms import SignupForm, CommentForm
 
 # Create your views here.
 
@@ -86,6 +87,26 @@ def post(request, post_id):
     context_dict["post"] = post
     context_dict["comments"] = comments
     context_dict["comment_count"] = comment_count
+
+    if request.method == 'POST':
+        # Use the signup_form
+        comment_form = CommentForm(data=request.POST)
+        context_dict['form'] = comment_form
+
+        # Check the data given is valid
+        if comment_form.is_valid():
+            # Get the user from the form
+            newComment = comment_form.save(commit=False)
+            # Get the cleaned data
+            text = comment_form.cleaned_data['text']
+            newComment.save()
+        else:
+            # Print the errors from the form
+            print(comment_form.errors)
+    else:
+        # Give it back an empty form
+        comment_form = CommentForm()
+        context_dict['form'] = comment_form
 
 
     return render(request, 'settle/post.html', context=context_dict)
