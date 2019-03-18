@@ -11,63 +11,30 @@
 <div class="row" style="margin-top:6px">
     <div class = "col-lg" style="margin-left:25px">
         <div class = "row" style = "background-color: #56c9ff;border-style:solid;border-width: 1px;">
-            <p style = "font-weight: bold">{{ post.author }}</p>
-            <p style = "text-align: right">Comments: {{ comment_count }}</p>
+            <div class="col-10">
+                <p style = "font-weight: bold">{{ post.author }}</p>
+            </div>
+            <div class="col-2">
+                <p style = "text-align: right">Comments: {{ comment_count }}</p>
+            </div>
         </div>
 
-<div>
-    <p>{{ post.author }}</p>
-    <img src="{{ MEDIA_URL }}{{ post.picture }}" data-toggle="modal" data-target="#pic-modal" class="modalImg" style="max-height:100px">
-    <p>Number of comments: {{ comment_count }}</p>
-    <p>Description: {{ post.description }}</p>
-    <p>Game Tag: | {{ post.game_tag }} |</p>
-    <p>Info Tags:
-    {% for tag in post.info_tags.all %}
-        | {{ tag }}
-    {% endfor %}
-    |
-    </p>
-</div>
-
-<div>
-    <p>Post a comment:</p>
-    <form id="comment_form" method="post" action="" enctype="multipart.form-data">
-
-    {% csrf_token %}
-    {% for field in form %}
-    <p>
-        {{ field.label_tag }}<br>
-        {{ field }}
-        {% if field.help_text %}
-        <small style="color: grey">{{ field.help_text }}</small>
-        {% endif %}
-        {% for error in field.errors %}
-        <p style="color: red">{{ error }}</p>
-        {% endfor %}
-    </p>
-    {% endfor %}
-
-    <input type="submit" name="submit" value="Submit" />
-</form>
-</div>
-
-<div>
-    <p>Comments:</p>
-    {% for comment in comments %}
-        {{ comment.text }}
-        ( {{ comment.liking_users.count }} likes)
-        <br/>
-        <br/>
-    {% endfor %}
-</div>
-
-<div class="pagination">
-    <span class="step-links">
-        {% if comments.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ comments.previous_page_number }}">previous</a>
-        {% endif %}
->>>>>>> fef507cc00902823b2859e58b8bd55584a82b540
+        <div class = "row" style="border-style:solid;border-width: 1px;">
+            <div class = "row-8" style="margin: auto;">
+                <img src="{{ MEDIA_URL }}{{ post.picture }}" data-toggle="modal" data-target="#pic-modal" class="modalImg" style="max-height:550px;padding-top: 15px">
+            </div>
+            <div class="w-100"></div>
+            <div class = "row-2" style ="padding: 20px;margin: auto;">
+                <span class= "btn tag mb-1" style="background-color:{{ post.game_tag.colour }}">{{ post.game_tag }}</span>
+                <span class= "btn tag mb-1" style="background-color:{{ post.info_tags.all.0.colour }}">{{ post.info_tags.all.0 }}</span>
+                {% if post.info_tags.all.1 %}
+                    <span class= "btn tag" style="background-color:{{ post.info_tags.all.1.colour }}">{{ post.info_tags.all.1 }}</span>
+                {% endif %}
+                {% if post.info_tags.all.2 %}
+                    <span class= "btn tag" style="background-color:{{ post.info_tags.all.2.colour }}">{{ post.info_tags.all.2 }}</span>
+                {% endif %}
+            </div>
+        </div> 
 
         <div class = "row" style="border-style:solid;border-width: 1px;">
             <span>
@@ -77,7 +44,25 @@
         </div>
 
         <div class = "row" style = "border-style:solid;border-width: 1px;">
-            <p>Add a Comment:</p>
+            <p>Post a comment:</p>
+            <form id="comment_form" method="post" action="" enctype="multipart.form-data">
+
+            {% csrf_token %}
+            {% for field in form %}
+            <p>
+                {{ field.label_tag }}<br>
+                {{ field }}
+                {% if field.help_text %}
+                <small style="color: grey">{{ field.help_text }}</small>
+                {% endif %}
+                {% for error in field.errors %}
+                <p style="color: red">{{ error }}</p>
+                {% endfor %}
+            </p>
+            {% endfor %}
+
+            <input type="submit" name="submit" value="Submit" />
+            </form>
         </div>
 
         <div class = "row">

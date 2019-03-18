@@ -6,9 +6,8 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from django.db.models import Count
 from settle.steam_news import get_news
-<<<<<<< HEAD
 from settle.models import Post, Comment, Tag, User
-from settle.forms import SignupForm, CommentForm
+from settle.forms import SignupForm, CommentForm, UploadForm
 from django import forms
 from django.utils import timezone
 from settle.validators import CPasswordValidator
@@ -16,10 +15,6 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth import authenticate, login
 from django.core.urlresolvers import reverse
 from django.contrib.auth.hashers import make_password
-=======
-from settle.models import Post, Comment, Tag
-from settle.forms import SignupForm, CommentForm
->>>>>>> e5c3f983af0976a6a6c5670d8b82afe41e1e9388
 
 # Create your views here.
 
@@ -66,8 +61,29 @@ def upload(request):
         is_pending=False).order_by("text")
     info_tags = Tag.objects.filter(is_game_tag=False).filter(
         is_pending=False).order_by("text")
+
+    if request.method == "POST":
+        upload_form = UploadForm(request.POST, request.FILES)
+
+        if upload_form.is_valid():
+            user_post = upload_form.save(commit=False)
+            user_post.author = request.user
+        
+            if 'picture' in request.FILES:
+                user_post.picture = request.FILES['picture']
+            
+            user_post.save()
+            upload_form.save_m2m()
+
+        else:
+            print(upload_form.errors)
+    else:
+        upload_form = UploadForm()
+
     context_dict["game_tags"] = game_tags
     context_dict["info_tags"] = info_tags
+    context_dict["upload_form"] = upload_form
+    
 
     return render(request, 'settle/upload.html', context=context_dict)
 
