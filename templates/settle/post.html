@@ -64,6 +64,7 @@
                     {% endfor %}
                 </p>
                 {% endfor %}
+                <input type="hidden" value="com" name="type">
                 <input type="hidden" value={{ user }} name="author">
                 <input type="submit" name="submit" value="Submit" />
             </form>
@@ -75,6 +76,13 @@
                 {% for comment in comments %}
                 {{ comment.text }}
                 ( {{ comment.liking_users.count }} likes)
+                <form id="like_button" method="post" action="" enctype="multipart.form-data">
+                    {% csrf_token %}
+                    <input type="hidden" value="like" name="type">
+                    <input type="hidden" value="{{ comment }}" name="comment">
+                    <input type="hidden" value="{{ user }}" name="liker">
+                    <input type="submit" name="like" value="Like" />
+                </form>
                 <br />
                 <br />
                 {% endfor %}

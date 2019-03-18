@@ -102,25 +102,36 @@ def post(request, post_id):
     post = Post.objects.filter(id=post_id)[0]
 
     if request.method == 'POST':
-        # Use the CommentForm
-        comment_form = CommentForm(data=request.POST)
-        context_dict['form'] = comment_form
+        if request.POST.get('type') == "com":
+            # Use the CommentForm
+            comment_form = CommentForm(data=request.POST)
+            context_dict['form'] = comment_form
 
-        # Check the data given is valid
-        if comment_form.is_valid():
-            # Get the user from the request data
-            newComment = comment_form.save(commit=False)
-            # Get the user that submitted the comment
-            un = request.POST.get('author')
-            # Set the author and the parent post
-            newComment.author = User.objects.get(username=un)
-            newComment.parent_post = Post.objects.filter(id=post_id)[0]
+            # Check the data given is valid
+            if comment_form.is_valid():
+                # Get the user from the request data
+                newComment = comment_form.save(commit=False)
+                # Get the user that submitted the comment
+                un = request.POST.get('author')
+                # Set the author and the parent post
+                newComment.author = User.objects.get(username=un)
+                newComment.parent_post = Post.objects.filter(id=post_id)[0]
 
-            # Save the comment
-            comment_form.save()
-        else:
-            # Print the errors from the form
-            print(comment_form.errors)
+                # Save the comment
+                comment_form.save()
+            else:
+                # Print the errors from the form
+                print(comment_form.errors)
+        elif request.POST.get('type') == "like":
+            c = request.POST.get('comment')
+            comment = Comment.objects.get(id=c)
+            un = request.POST.get('liker')
+            liker = User.objects.get(username=un)
+
+            if liker not in comment.liking_users:
+                comment.liking_users.add(liker.username)
+            else:
+                comment.liking_users.filter(username=un).delete()
     else:
         # Give it back an empty form
         context_dict['form'] = CommentForm()
