@@ -12,12 +12,12 @@
     <div class = "col-lg" style="margin-left:25px">
         <div class = "row" style = "background-color: #56c9ff;border-style:solid;border-width: 1px;">
             <p style = "font-weight: bold">{{ post.author }}</p>
-            <p style = "text-align: right;">Comments: {{ comment_count }}</p>
+            <p style = "text-align: right">Comments: {{ comment_count }}</p>
         </div>
 
         <div class = "row" style="border-style:solid;border-width: 1px;">
             <div class = "row-8" style="margin: auto;">
-                <img src="{{ MEDIA_URL }}{{ post.picture }}" data-toggle="modal" data-target="#pic-modal" class="modalImg" style="max-height:400px;padding-top: 20px">
+                <img src="{{ MEDIA_URL }}{{ post.picture }}" data-toggle="modal" data-target="#pic-modal" class="modalImg" style="max-height:550px;padding-top: 15px">
             </div>
             <div class="w-100"></div>
             <div class = "row-2" style ="padding: 20px;margin: auto;">
@@ -34,13 +34,13 @@
 
         <div class = "row" style="border-style:solid;border-width: 1px;">
             <span>
-                <p>Description:</p>
+                <p style="background-color:#56c9ff;">Description:</p>
                 <p>{{ post.description }}</p>
             </span>
         </div>
 
         <div class = "row" style = "border-style:solid;border-width: 1px;">
-            <p>Add a Comment</p>
+            <p>Add a Comment:</p>
         </div>
 
         <div class = "row">
