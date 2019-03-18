@@ -154,8 +154,6 @@ def post(request, post_id):
         # default to last page if too big
         comments = comm_pagin.page(comm_pagin.num_pages)
 
-    # testing - when we actually make it, we'll parameterise the app id
-
     app_id = post.game_tag.steamAppId
 
     if app_id != 0:

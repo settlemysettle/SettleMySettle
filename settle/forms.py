@@ -51,6 +51,7 @@ class UploadForm(forms.ModelForm):
     description = forms.CharField(
         max_length=300, required=False, widget=forms.Textarea)
     picture = forms.ImageField(required=True)
+    game_tag = forms.ModelChoiceField(queryset=Tag.objects.filter(is_game_tag=True).filter(is_pending=False).order_by("text"))
 
     class Meta:
         # Make it inherit fields from Post model
