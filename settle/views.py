@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.db.models import Count
 from settle.steam_news import get_news
 from settle.models import Post, Comment, Tag, User
-from settle.forms import SignupForm
+from settle.forms import SignupForm, CommentForm, UploadForm
 from django import forms
 from django.utils import timezone
 from settle.validators import CPasswordValidator
 from django.core.exceptions import ValidationError
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse
 from django.contrib.auth.hashers import make_password
 
@@ -24,18 +24,21 @@ def redirectHome(request):
     return response
 
 
-def index(request, template="settle/index.html"):
+def index(request, template="settle/index.html", valid=0):
     context_dict = {}
+    context_dict['valid'] = valid
+
     post_list = Post.objects.all().order_by("-date_submitted")
     page = request.GET.get('page', 1)
-    paginator = Paginator(post_list, 3)
+    paginator = Paginator(post_list, 6)
     try:
         posts = paginator.page(page)
     except PageNotAnInteger:
         posts = paginator.page(1)
     except EmptyPage:
         posts = paginator.page(paginator.num_pages)
-    return render(request, 'settle/index.html', {'posts': posts})
+    context_dict['posts'] = posts
+    return render(request, 'settle/index.html', context_dict)
 
 
 def feed(request):
@@ -61,8 +64,28 @@ def upload(request):
         is_pending=False).order_by("text")
     info_tags = Tag.objects.filter(is_game_tag=False).filter(
         is_pending=False).order_by("text")
+
+    if request.method == "POST":
+        upload_form = UploadForm(request.POST, request.FILES)
+
+        if upload_form.is_valid():
+            user_post = upload_form.save(commit=False)
+            user_post.author = request.user
+
+            if 'picture' in request.FILES:
+                user_post.picture = request.FILES['picture']
+
+            user_post.save()
+            upload_form.save_m2m()
+
+        else:
+            print(upload_form.errors)
+    else:
+        upload_form = UploadForm()
+
     context_dict["game_tags"] = game_tags
     context_dict["info_tags"] = info_tags
+    context_dict["upload_form"] = upload_form
 
     return render(request, 'settle/upload.html', context=context_dict)
 
@@ -77,6 +100,47 @@ def post(request, post_id):
     result_list = []
 
     post = Post.objects.filter(id=post_id)[0]
+    context_dict['form'] = CommentForm()
+
+    if request.method == 'POST':
+        # Check the type of post request
+        if request.POST.get('type') == "com":
+            # Use the CommentForm
+            comment_form = CommentForm(data=request.POST)
+            context_dict['form'] = comment_form
+
+            # Check the data given is valid
+            if comment_form.is_valid():
+                # Get the user from the request data
+                newComment = comment_form.save(commit=False)
+                # Get the user that submitted the comment
+                un = request.POST.get('author')
+                # Set the author and the parent post
+                newComment.author = User.objects.get(username=un)
+                newComment.parent_post = Post.objects.filter(id=post_id)[0]
+
+                # Save the comment
+                comment_form.save()
+            else:
+                # Print the errors from the form
+                print(comment_form.errors)
+        # If a like request, update the comment
+        elif request.POST.get('type') == "like":
+            # Get the id of the comment and get the comment object
+            c = request.POST.get('comment')
+            comment = Comment.objects.get(id=c)
+            # Get the user id and find the user object
+            un = request.POST.get('liker')
+            liker = User.objects.get(username=un)
+
+            # If the user hasn't liked the comment, like it, else unlike it
+            if liker not in comment.liking_users.all():
+                comment.liking_users.add(liker)
+            else:
+                comment.liking_users.remove(liker)
+    else:
+        # Give it back an empty form
+        context_dict['form'] = CommentForm()
 
     all_comments = Comment.objects.filter(parent_post=post_id).annotate(
         num_likes=Count('liking_users')).order_by('-num_likes')
@@ -153,6 +217,7 @@ def signup(request):
 
 def user_login(request):
     # If request is post, pull out relevent data
+    valid = False
     if request.method == 'POST':
         # Get username and password from the post data
         username = request.POST.get('username')
@@ -164,8 +229,14 @@ def user_login(request):
         # If a valid user
         if user:
             login(request, user)
-            return redirectHome(request)
+            valid = True
+            return index(request, valid=valid)
         else:
-            return HttpResponse("Invalid login details supplied")
+            return index(request, valid=valid)
     else:
-        return render(request, 'settle/index.html', {})
+        return index(request, valid=valid)
+
+
+def user_logout(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('index'))

@@ -2,80 +2,140 @@
 {% load staticfiles %}
 
 {% block style_block %}
-    <!-- Import custom CSS here! -->
+<!-- Import custom CSS here! -->
 {% endblock %}
 
 {% block title_block %}View Post{% endblock %}
 
 {% block body_block %}
-    <!-- Code here! -->
-
-<div>
-    <p>{{ post.author }}</p>
-    <img src="{{ MEDIA_URL }}{{ post.picture }}" data-toggle="modal" data-target="#pic-modal" class="modalImg" style="max-height:100px">
-    <p>Number of comments: {{ comment_count }}</p>
-    <p>Description: {{ post.description }}</p>
-    <p>Game Tag: | {{ post.game_tag }} |</p>
-    <p>Info Tags:
-    {% for tag in post.info_tags.all %}
-        | {{ tag }}
-    {% endfor %}
-    |
-    </p>
-</div>
-
-<div>
-    <p>Comments:</p>
-    {% for comment in comments %}
-        {{ comment.text }}
-        ( {{ comment.liking_users.count }} likes)
-        <br/>
-        <br/>
-    {% endfor %}
-</div>
-
-<div class="pagination">
-    <span class="step-links">
-        {% if comments.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ comments.previous_page_number }}">previous</a>
-        {% endif %}
-
-        <span class="current">
-            Page {{ comments.number }} of {{ comments.paginator.num_pages }}.
-        </span>
-
-        {% if comments.has_next %}
-            <a href="?page={{ comments.next_page_number }}">next</a>
-            <a href="?page={{ comments.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
-    </span>
-</div>
-
-
-
-    <div>
-        {% if result_list %}
-            <h3>Steam News</h3>
-            <!-- Display search results in an ordered list -->
-            <div class="list-group">
-                {% for result in result_list %}
-                <div class="list-group-item" >
-                    <h4 class="list-group-item-heading">
-                        <a href="{{ result.link }}">{{ result.title }}</a>
-                    </h4>
-                    <strong>{{ result.feedlabel }}</strong>
-                    {% if result.author %}
-                        - {{ result.author }}
-                    {% endif %}
-                    <p>{{ result.summary }}</p>
-                </div>
-            {% endfor %}
+<div class="row" style="margin-top:6px">
+    <div class="col-lg" style="margin-left:25px">
+        <div class="row" style="background-color: #56c9ff;border-style:solid;border-width: 1px;">
+            <div class="col-10">
+                <p style="font-weight: bold">{{ post.author }}</p>
             </div>
+            <div class="col-2">
+                <p style="text-align: right">Comments: {{ comment_count }}</p>
+            </div>
+        </div>
+
+        <div class="row" style="border-style:solid;border-width: 1px;">
+            <div class="row-8" style="margin: auto;">
+                <img src="{{ MEDIA_URL }}{{ post.picture }}" data-toggle="modal" data-target="#pic-modal"
+                    class="modalImg" style="max-height:550px;padding-top: 15px">
+            </div>
+            <div class="w-100"></div>
+            <div class="row-2" style="padding: 20px;margin: auto;">
+                <span class="btn tag mb-1"
+                    style="background-color:{{ post.game_tag.colour }}">{{ post.game_tag }}</span>
+                <span class="btn tag mb-1"
+                    style="background-color:{{ post.info_tags.all.0.colour }}">{{ post.info_tags.all.0 }}</span>
+                {% if post.info_tags.all.1 %}
+                <span class="btn tag"
+                    style="background-color:{{ post.info_tags.all.1.colour }}">{{ post.info_tags.all.1 }}</span>
+                {% endif %}
+                {% if post.info_tags.all.2 %}
+                <span class="btn tag"
+                    style="background-color:{{ post.info_tags.all.2.colour }}">{{ post.info_tags.all.2 }}</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="row" style="border-style:solid;border-width: 1px;">
+            <span>
+                <p style="background-color:#56c9ff;">Description:</p>
+                <p>{{ post.description }}</p>
+            </span>
+        </div>
+
+        <div class="row" style="border-style:solid;border-width: 1px;">
+            <p>Post a comment: </p>
+            <form id="comment_form" method="post" action="" enctype="multipart.form-data">
+
+                {% csrf_token %}
+                {% for field in form %}
+                <p>
+                    {{ field }}
+                    {% if field.help_text %}
+                    <small style="color: grey">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                    <p style="color: red">{{ error }}</p>
+                    {% endfor %}
+                </p>
+                {% endfor %}
+                <input type="hidden" value="com" name="type">
+                <input type="hidden" value={{ user }} name="author">
+                <input type="submit" name="submit" value="Submit" />
+            </form>
+        </div>
+
+        <div class="row">
+            <div>
+                <p>Comments:</p>
+                {% for comment in comments %}
+                {{ comment.text }}
+                ( {{ comment.liking_users.count }} likes)
+                <form id="like_button" method="post" action="" enctype="multipart.form-data">
+                    {% csrf_token %}
+                    <input type="hidden" value="like" name="type">
+                    <input type="hidden" value="{{ comment.id }}" name="comment">
+                    <input type="hidden" value="{{ user }}" name="liker">
+                    {% if user in comment.liking_users.all %}
+                    <input type="submit" name="like" value="Unlike" />
+                    {% else %}
+                    <input type="submit" name="unlike" value="Like" />
+                    {% endif %}
+                </form>
+                <br />
+                <br />
+                {% endfor %}
+            </div>
+
+            <div class="pagination">
+                <span class="step-links">
+                    {% if comments.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ comments.previous_page_number }}">previous</a>
+                    {% endif %}
+
+                    <span class="current">
+                        Page {{ comments.number }} of {{ comments.paginator.num_pages }}.
+                    </span>
+
+                    {% if comments.has_next %}
+                    <a href="?page={{ comments.next_page_number }}">next</a>
+                    <a href="?page={{ comments.paginator.num_pages }}">last &raquo;</a>
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg">
+        {% if result_list %}
+        <h3>Steam News</h3>
+        <!-- Display search results in an ordered list -->
+        <div class="list-group">
+            {% for result in result_list %}
+            <div class="list-group-item">
+                <h4 class="list-group-item-heading">
+                    <a href="{{ result.link }}">{{ result.title }}</a>
+                </h4>
+                <strong>{{ result.feedlabel }}</strong>
+                {% if result.author %}
+                - {{ result.author }}
+                {% endif %}
+                <p>{{ result.summary }}</p>
+            </div>
+            {% endfor %}
+        </div>
         {% endif %}
     </div>
+</div>
+
 {% endblock %}
 
 {% block script_block %}
-    <!-- Import custom JS here! -->
+<!-- Import custom JS here! -->
 {% endblock %}

@@ -9,17 +9,11 @@
 
 {% block body_block %}
     <!-- Code here! -->
-    <p> Game Tags: |
-    {% for tag in game_tags %}
-        {{ tag }} |
-    {% endfor %}
-    </p>
-
-    <p> Info Tags: |
-        {% for tag in info_tags %}
-            {{ tag }} |
-        {% endfor %}
-    </p>
+    <form id="upload_post" method="post" action="{% url 'upload' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ upload_form.as_p }}
+        <input type="submit" name="submit" value="Upload!"/>
+    </form>
     
 {% endblock %}
 
