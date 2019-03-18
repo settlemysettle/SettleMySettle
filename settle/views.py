@@ -8,7 +8,7 @@ from django.db.models import Count
 from settle.steam_news import get_news
 <<<<<<< HEAD
 from settle.models import Post, Comment, Tag, User
-from settle.forms import SignupForm
+from settle.forms import SignupForm, CommentForm
 from django import forms
 from django.utils import timezone
 from settle.validators import CPasswordValidator
@@ -132,7 +132,6 @@ def post(request, post_id):
         comment_form = CommentForm()
         context_dict['form'] = comment_form
 
-
     return render(request, 'settle/post.html', context=context_dict)
 
 
@@ -175,7 +174,6 @@ def signup(request):
         signup_form = SignupForm()
 
     return render(request, 'settle/register.html', {'form': signup_form, 'registered': registered})
-
 
 def user_login(request):
     # If request is post, pull out relevent data
