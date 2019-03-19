@@ -249,7 +249,7 @@ def suggest_tag(request):
 
         if suggest_tags_form.is_valid():
             new_tag = suggest_tags_form.save(commit=False)
-            new_tag.is_pending= False
+            new_tag.is_pending= True
             u = request.POST.get('user')
             user = User.objects.get(username=u)
             # Check if admin etc
