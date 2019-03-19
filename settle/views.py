@@ -24,7 +24,7 @@ def redirectHome(request):
     return response
 
 
-def index(request, template="settle/index.html", valid=0):
+def index(request, template="settle/index.html", valid=None):
     context_dict = {}
     context_dict['valid'] = valid
 
@@ -204,7 +204,10 @@ def signup(request):
             newUser.save()
 
             registered = True
+            user = authenticate(username=username, password=password)
+            login(request, user)
 
+            return redirectHome(request)
         else:
             # Print the errors from the form
             print(signup_form.errors)
@@ -229,12 +232,11 @@ def user_login(request):
         # If a valid user
         if user:
             login(request, user)
-            valid = True
-            return index(request, valid=valid)
+            return redirectHome(request)
         else:
             return index(request, valid=valid)
     else:
-        return index(request, valid=valid)
+        return index(request)
 
 
 def user_logout(request):
