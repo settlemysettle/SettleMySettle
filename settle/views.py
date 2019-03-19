@@ -46,7 +46,6 @@ def feed(request):
 
     # need to filter this for feed
     fav_games = list(request.user.favourite_games.all())
-    print(fav_games)
     post_list = Post.objects.all().filter(game_tag__in=fav_games)
     page = request.GET.get('page', 1)
     paginator = Paginator(post_list, 3)
