@@ -78,7 +78,8 @@
             <form class="form-inline my-2 my-lg-0">
                 {% if user.is_authenticated %}
                 <!-- Login button for when not collapsed -->
-                <button type="button" class="btn btn-primary d-none d-md-block">Account</button>
+                <a href="{% url 'account' %}"><button type="button"
+                        class="btn btn-primary d-none d-md-block">Account</button></a>
                 <!-- Login button for when collapsed -->
                 <button type="submit" class="btn btn-primary ml-3 d-md-none">Account</button>
                 <a href="{% url 'logout' %}"><button type="button"
