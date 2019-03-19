@@ -45,7 +45,8 @@ def feed(request):
     context_dict = {}
 
     # need to filter this for feed
-    post_list = Post.objects.all()
+    fav_games = list(request.user.favourite_games.all())
+    post_list = Post.objects.all().filter(game_tag__in=fav_games)
     page = request.GET.get('page', 1)
     paginator = Paginator(post_list, 3)
     try:
