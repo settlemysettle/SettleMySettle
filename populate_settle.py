@@ -10,7 +10,7 @@ from settle.models import Tag, User, Post, Comment
 
 
 import django
-
+from django.contrib.auth.models import Group
 from django.contrib.auth.hashers import make_password
 from PIL import Image
 import datetime
@@ -23,6 +23,8 @@ django.setup()
 
 
 def populate():
+
+    new_group, created = Group.objects.get_or_create(name='admin') # make an admin group if it doesn't exist already
 
     # TAGS
 
@@ -332,9 +334,6 @@ def add_comment(author, text, liking_users, parent_post):
 
     comment = Comment.objects.get_or_create(
         author=auth, text=text, parent_post=par_post)[0]
-    # this is a bit dodgy - could you have the same person write the same comment on the same post?
-    # might be worth enforcing some other restriction (no duplicate comments with the same
-    # parent post?)
     comment.save()
 
     for l_user in liking_users:
