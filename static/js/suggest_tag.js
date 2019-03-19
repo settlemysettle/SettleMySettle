@@ -4,10 +4,12 @@ $(document).ready(function () {
 
         var tagText = $('#id_text').val();
         var tagCol = $('#id_colour').val();
+        var steamAppId = $('#id_steamAppId').val();
 
         console.log(tagText + ", " + tagCol);
 
         $('#preview-tag').css('background-color', tagCol);
         $('#preview-tag').text(tagText);
+        $('#preview-steam').attr('href', "https://store.steampowered.com/app/" + steamAppId);
     });
 });
