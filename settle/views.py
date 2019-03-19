@@ -15,6 +15,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -41,6 +42,7 @@ def index(request, template="settle/index.html", valid=None):
     return render(request, 'settle/index.html', context_dict)
 
 
+@login_required
 def feed(request):
     context_dict = {}
 
@@ -58,6 +60,7 @@ def feed(request):
     return render(request, 'settle/feed.html', {'posts': posts})
 
 
+@login_required
 def upload(request):
     context_dict = {}
 
@@ -91,11 +94,7 @@ def upload(request):
     return render(request, 'settle/upload.html', context=context_dict)
 
 
-def suggest_tag(request):
-    context_dict = {}
-    return render(request, 'settle/suggest-tag.html', context=context_dict)
-
-
+@login_required
 def post(request, post_id):
     context_dict = {}
     result_list = []
@@ -238,11 +237,13 @@ def user_login(request):
         return index(request)
 
 
+@login_required
 def user_logout(request):
     logout(request)
     return HttpResponseRedirect(reverse('index'))
 
 
+@login_required
 def suggest_tag(request):
     context_dict = {}
 
@@ -254,6 +255,10 @@ def suggest_tag(request):
             new_tag.is_pending = True
             u = request.POST.get('user')
             user = User.objects.get(username=u)
+
+            if user.groups.filter(name='admin').exists():
+                new_tag.is_pending = False
+
             # Check if admin etc
             new_tag.save()
         else:
@@ -269,6 +274,7 @@ def suggest_tag(request):
     return render(request, 'settle/suggest-tag.html', context=context_dict)
 
 
+@login_required
 def account(request):
     context_dict = {}
     # Return the AddFavGame form
