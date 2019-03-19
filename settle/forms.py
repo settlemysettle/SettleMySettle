@@ -1,5 +1,6 @@
 from django import forms
 from settle.models import Tag, User, Post, Comment
+from django.forms.widgets import TextInput
 
 
 class CommentForm(forms.ModelForm):
@@ -79,9 +80,9 @@ class SuggestTag(forms.ModelForm):
 
     text = forms.CharField(max_length=20, required=True)
 
-    colour = forms.CharField(max_length=7, required=True)
+    colour = forms.CharField(max_length=7, required=True, widget=TextInput(attrs={"type": "color"}))
 
-    is_game_tag = forms.BooleanField()
+    is_game_tag = forms.BooleanField(required=False)
 
     steamAppId = forms.IntegerField(min_value=0, required=False)
 

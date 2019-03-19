@@ -250,7 +250,7 @@ def suggest_tag(request):
 
         if suggest_tags_form.is_valid():
             new_tag = suggest_tags_form.save(commit=False)
-            new_tag.is_pending = False
+            new_tag.is_pending = True
             u = request.POST.get('user')
             user = User.objects.get(username=u)
             # Check if admin etc
@@ -260,6 +260,10 @@ def suggest_tag(request):
     else:
         suggest_tags_form = SuggestTag()
     context_dict["suggest_form"] = suggest_tags_form
+
+    pending_tags = Tag.objects.filter(is_pending=True).order_by("text")
+
+    context_dict["pending_tags"] = pending_tags
 
     return render(request, 'settle/suggest-tag.html', context=context_dict)
 
@@ -292,7 +296,6 @@ def account(request):
             # Get the tag the user wants to remove
             t = request.POST.get('tag')
             tagToRemove = Tag.objects.get(id=t)
-            # Get the user
             u = request.POST.get('user')
             user = User.objects.get(username=u)
             # Remove the tag
