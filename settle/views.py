@@ -138,6 +138,10 @@ def post(request, post_id):
                 comment.liking_users.add(liker)
             else:
                 comment.liking_users.remove(liker)
+        elif request.POST.get('type') == "del":
+            c = request.POST.get('comment')
+            Comment.objects.filter(id=c).delete()
+
     else:
         # Give it back an empty form
         context_dict['form'] = CommentForm()
