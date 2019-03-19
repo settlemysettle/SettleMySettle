@@ -248,21 +248,27 @@ def suggest_tag(request):
     context_dict = {}
 
     if request.method == "POST":
-        suggest_tags_form = SuggestTag(request.POST)
+        if request.POST.get('type') == 'suggest':
+            suggest_tags_form = SuggestTag(request.POST)
 
-        if suggest_tags_form.is_valid():
-            new_tag = suggest_tags_form.save(commit=False)
-            new_tag.is_pending = True
-            u = request.POST.get('user')
-            user = User.objects.get(username=u)
+            if suggest_tags_form.is_valid():
+                new_tag = suggest_tags_form.save(commit=False)
+                new_tag.is_pending = True
+                u = request.POST.get('user')
+                user = User.objects.get(username=u)
 
-            if user.groups.filter(name='admin').exists():
-                new_tag.is_pending = False
+                if user.groups.filter(name='admin').exists():
+                    new_tag.is_pending = False
 
-            # Check if admin etc
-            new_tag.save()
-        else:
-            print(suggest_tags_form.errors)
+                # Check if admin etc
+                new_tag.save()
+            else:
+                print(suggest_tags_form.errors)
+        elif request.POST.get('type') == 'del':
+            t = request.POST.get('tag')
+            Tag.objects.filter(id=t).delete()
+            suggest_tags_form = SuggestTag()
+
     else:
         suggest_tags_form = SuggestTag()
     context_dict["suggest_form"] = suggest_tags_form
