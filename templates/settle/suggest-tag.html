@@ -20,6 +20,26 @@
                     style="background-color: #FFFF00">Your Text Here</span>
 
     <a id="preview-steam" href="https://store.steampowered.com/app/0" target="_blank">Test Steam Link</a>
+    <!-- Code for admin queue -->
+    {% if pending_tags %}
+    <table>
+        <th>
+            <td>Tag</td>
+            <td>Steam Link</td>
+        </th>
+    {% for tag in pending_tags %}
+        <tr>
+         <td><span class="btn tag mb-1"
+                    style="background-color:{{ tag.colour }}">{{ tag }}</span></td>
+        <td>{% if tag.steamAppId %}
+             <a href="https://store.steampowered.com/app/{{ tag.steamAppId }}" target="_blank">{{ tag }}</a>
+        {% endif %}</td>
+        </tr>
+    {% endfor %}
+    </table>
+    {% endif %}
+
+
 {% endblock %}
 
 {% block script_block %}

@@ -260,4 +260,8 @@ def suggest_tag(request):
         suggest_tags_form = SuggestTag()
     context_dict["suggest_form"] = suggest_tags_form
 
+    pending_tags = Tag.objects.filter(is_pending=True).order_by("text")
+
+    context_dict["pending_tags"] = pending_tags
+
     return render(request, 'settle/suggest-tag.html', context=context_dict)
