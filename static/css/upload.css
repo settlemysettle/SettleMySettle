@@ -1,5 +1,5 @@
-.info-tag-list {
+#id_info_tags {
     overflow: hidden;
     overflow-y: scroll;
-    height: 300px;
+    height: 200px;
 }
