@@ -11,6 +11,4 @@ urlpatterns = [
     url(r'^login/$', views.user_login, name='login'),
     url(r'^logout/$', views.user_logout, name='logout'),
     url(r'^account/$', views.account, name="account"),
-    url(r'^404/$', views.handler404, name="404"),
-    url(r'^500/$', views.handler500, name="500")
 ]

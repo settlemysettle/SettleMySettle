@@ -3,6 +3,11 @@
 
 {% block body_block %}
     <div>
-        <h1>Whoops! Looks like you have found your way to a page that doesn't exist. What can you do eh?</h1>
+        <div class="col-4">
+            <a href="{% url "index" %}"><img class="img-fluid" src="{% static "images/404error.jpg" %}" alt=meme" id="meme"></a> 
+        </div>
+        <div class="col-4">
+            <p>Whoops! Looks like you have found your way to a page that doesn't exist. What can you do eh?</p>
+        </div>
     </div>
 {% endblock %}

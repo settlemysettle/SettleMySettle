@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
 from django.shortcuts import redirect
+from django.shortcuts import render_to_response
 from django.db.models import Count
 from settle.steam_news import get_news
 from settle.models import Post, Comment, Tag, User
@@ -16,6 +17,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required
+from django.template import RequestContext
 
 # Create your views here.
 
@@ -41,11 +43,13 @@ def index(request, template="settle/index.html", valid=None):
     context_dict['posts'] = posts
     return render(request, 'settle/index.html', context_dict)
 
-def handler404(request):
-    return render(request, 'settle/404.html', status=404)
+# HTTP 404 Error (Page not found)
+def error404(request, exception):
+    return render(request, 'settle/404.html')
 
-def handler500(request):
-    return render(request, 'settle/500.html', status=500)
+# HTTP 500 Error (Server error)
+def error500(request, exception):
+    return render(request, 'settle/500.html')
 
 @login_required
 def feed(request):
