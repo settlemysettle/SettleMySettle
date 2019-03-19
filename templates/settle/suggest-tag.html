@@ -26,14 +26,16 @@
         <th>
             <td>Tag</td>
             <td>Steam Link</td>
+            <td>Actions</td>
         </th>
     {% for tag in pending_tags %}
-        <tr>
+        <tr id="{{ tag.colour }}{{ tag }}">
          <td><span class="btn tag mb-1"
                     style="background-color:{{ tag.colour }}">{{ tag }}</span></td>
         <td>{% if tag.steamAppId %}
              <a href="https://store.steampowered.com/app/{{ tag.steamAppId }}" target="_blank">{{ tag }}</a>
         {% endif %}</td>
+        <td><button type="button" class="edit-tag" id="{{ tag }}">Edit</button></td>
         </tr>
     {% endfor %}
     </table>
