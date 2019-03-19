@@ -65,7 +65,13 @@ class UploadForm(forms.ModelForm):
 class SuggestTag(forms.ModelForm):
     """A form used to upload a tag suggestion."""
 
-    text = forms.CharField(max_length=20, required=True)    
+    text = forms.CharField(max_length=20, required=True)
+
+    colour = forms.CharField(max_length=7, required=True)
+
+    is_game_tag = forms.BooleanField()
+
+    steamAppId = forms.IntegerField(min_value=0, required=False)    
 
 
     # Will inherit the fields from the model
