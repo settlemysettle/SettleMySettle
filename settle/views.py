@@ -94,7 +94,6 @@ def upload(request):
     return render(request, 'settle/upload.html', context=context_dict)
 
 
-@login_required
 def post(request, post_id):
     context_dict = {}
     result_list = []
