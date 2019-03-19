@@ -6,7 +6,8 @@ class CommentForm(forms.ModelForm):
     """The form for posting a new comment."""
 
     # Will inherit the fields from the comment model
-    text = forms.CharField(max_length=300, widget=forms.Textarea, required=True)
+    text = forms.CharField(
+        max_length=300, widget=forms.Textarea, required=True)
 
     class Meta:
         # Choose the Comment model
@@ -51,15 +52,26 @@ class UploadForm(forms.ModelForm):
     description = forms.CharField(
         max_length=300, required=False, widget=forms.Textarea)
     picture = forms.ImageField(required=True)
-    game_tag = forms.ModelChoiceField(queryset=Tag.objects.filter(is_game_tag=True).filter(is_pending=False).order_by("text"))
+    game_tag = forms.ModelChoiceField(queryset=Tag.objects.filter(
+        is_game_tag=True).filter(is_pending=False).order_by("text"))
 
+    info_tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.filter(is_game_tag=False).filter(
+        is_pending=False).order_by("text"), widget=forms.CheckboxSelectMultiple(attrs={'class': 'info-tag-list'}))
 
-    info_tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.filter(is_game_tag=False).filter(is_pending=False).order_by("text"), widget=forms.CheckboxSelectMultiple(attrs = {'class':'info-tag-list'}))
     class Meta:
         # Make it inherit fields from Post model
         model = Post
         # These values will be generated automatically
         exclude = ['author', 'date_submitted']
+
+
+class AddFavGame(forms.Form):
+    # Select the game tags as a multiple choice field
+    game_tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.filter(
+        is_game_tag=True).filter(is_pending=False).order_by("text"), widget=forms.CheckboxSelectMultiple(attrs={'class': 'game-tag-list'}))
+
+    class Meta:
+        fields = ['game_tags']
 
 
 class SuggestTag(forms.ModelForm):
@@ -71,10 +83,10 @@ class SuggestTag(forms.ModelForm):
 
     is_game_tag = forms.BooleanField()
 
-    steamAppId = forms.IntegerField(min_value=0, required=False)    
-
+    steamAppId = forms.IntegerField(min_value=0, required=False)
 
     # Will inherit the fields from the model
+
     class Meta:
         model = Tag
         # Don't show is_pending field

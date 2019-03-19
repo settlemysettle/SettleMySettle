@@ -7,7 +7,7 @@ from django.shortcuts import redirect
 from django.db.models import Count
 from settle.steam_news import get_news
 from settle.models import Post, Comment, Tag, User
-from settle.forms import SignupForm, CommentForm, UploadForm, SuggestTag
+from settle.forms import SignupForm, CommentForm, UploadForm, SuggestTag, AddFavGame
 from django import forms
 from django.utils import timezone
 from settle.validators import CPasswordValidator
@@ -241,6 +241,7 @@ def user_logout(request):
     logout(request)
     return HttpResponseRedirect(reverse('index'))
 
+
 def suggest_tag(request):
     context_dict = {}
 
@@ -249,7 +250,7 @@ def suggest_tag(request):
 
         if suggest_tags_form.is_valid():
             new_tag = suggest_tags_form.save(commit=False)
-            new_tag.is_pending= False
+            new_tag.is_pending = False
             u = request.POST.get('user')
             user = User.objects.get(username=u)
             # Check if admin etc
@@ -261,3 +262,41 @@ def suggest_tag(request):
     context_dict["suggest_form"] = suggest_tags_form
 
     return render(request, 'settle/suggest-tag.html', context=context_dict)
+
+
+def account(request):
+    context_dict = {}
+    # Return the AddFavGame form
+    context_dict['form'] = AddFavGame()
+    # If a post request
+    if request.method == "POST":
+        # Get the type of post request
+        code = request.POST.get('type')
+        if code == "append":
+            # Get the form with the data
+            form = AddFavGame(request.POST)
+            # Get the selected tags
+            tagsSelected = request.POST.getlist('game_tags')
+            # Get the user object
+            u = request.POST.get('user')
+            user = User.objects.get(username=u)
+
+            # For each tag, add it to the fab games list for the user
+            for tag in tagsSelected:
+                tag = Tag.objects.get(id=tag)
+                user.favourite_games.add(tag)
+                user.save()
+            # Return the filled form
+            context_dict['form'] = form
+        elif code == "delete":
+            # Get the tag the user wants to remove
+            t = request.POST.get('tag')
+            tagToRemove = Tag.objects.get(id=t)
+            # Get the user
+            u = request.POST.get('user')
+            user = User.objects.get(username=u)
+            # Remove the tag
+            user.favourite_games.remove(t)
+            user.save()
+
+    return render(request, 'settle/account.html', context=context_dict)
