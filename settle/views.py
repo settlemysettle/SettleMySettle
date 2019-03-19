@@ -7,7 +7,7 @@ from django.shortcuts import redirect
 from django.db.models import Count
 from settle.steam_news import get_news
 from settle.models import Post, Comment, Tag, User
-from settle.forms import SignupForm, CommentForm, UploadForm
+from settle.forms import SignupForm, CommentForm, UploadForm, SuggestTag
 from django import forms
 from django.utils import timezone
 from settle.validators import CPasswordValidator
@@ -159,8 +159,6 @@ def post(request, post_id):
         # default to last page if too big
         comments = comm_pagin.page(comm_pagin.num_pages)
 
-    # testing - when we actually make it, we'll parameterise the app id
-
     app_id = post.game_tag.steamAppId
 
     if app_id != 0:
@@ -242,3 +240,24 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return HttpResponseRedirect(reverse('index'))
+
+def suggest_tag(request):
+    context_dict = {}
+
+    if request.method == "POST":
+        suggest_tags_form = SuggestTag(request.POST)
+
+        if suggest_tags_form.is_valid():
+            new_tag = suggest_tags_form.save(commit=False)
+            new_tag.is_pending= False
+            u = request.POST.get('user')
+            user = User.objects.get(username=u)
+            # Check if admin etc
+            new_tag.save()
+        else:
+            print(suggest_tags_form.errors)
+    else:
+        suggest_tags_form = SuggestTag()
+    context_dict["suggest_form"] = suggest_tags_form
+
+    return render(request, 'settle/suggest-tag.html', context=context_dict)

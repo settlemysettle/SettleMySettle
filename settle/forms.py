@@ -51,7 +51,10 @@ class UploadForm(forms.ModelForm):
     description = forms.CharField(
         max_length=300, required=False, widget=forms.Textarea)
     picture = forms.ImageField(required=True)
+    game_tag = forms.ModelChoiceField(queryset=Tag.objects.filter(is_game_tag=True).filter(is_pending=False).order_by("text"))
 
+
+    info_tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.filter(is_game_tag=False).filter(is_pending=False).order_by("text"), widget=forms.CheckboxSelectMultiple(attrs = {'class':'info-tag-list'}))
     class Meta:
         # Make it inherit fields from Post model
         model = Post
@@ -61,6 +64,15 @@ class UploadForm(forms.ModelForm):
 
 class SuggestTag(forms.ModelForm):
     """A form used to upload a tag suggestion."""
+
+    text = forms.CharField(max_length=20, required=True)
+
+    colour = forms.CharField(max_length=7, required=True)
+
+    is_game_tag = forms.BooleanField()
+
+    steamAppId = forms.IntegerField(min_value=0, required=False)    
+
 
     # Will inherit the fields from the model
     class Meta:

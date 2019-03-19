@@ -9,9 +9,15 @@
 
 {% block body_block %}
     <!-- Code here! -->
-    
+    <form id="suggest-form" method="post" action="{% url 'tags' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ suggest_form.as_p }}
+        <input type="hidden" name="user" value="{{ user }}"/>
+        <input type="submit" name="submit" value="Suggest"/>
+    </form>
 {% endblock %}
 
 {% block script_block %}
     <!-- Import custom JS here! -->
+    <script src="{% static "js/suggest_tag.js" %}"></script>
 {% endblock %}
