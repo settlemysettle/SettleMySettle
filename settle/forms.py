@@ -65,6 +65,9 @@ class UploadForm(forms.ModelForm):
 class SuggestTag(forms.ModelForm):
     """A form used to upload a tag suggestion."""
 
+    text = forms.CharField(max_length=20, required=True)    
+
+
     # Will inherit the fields from the model
     class Meta:
         model = Tag
