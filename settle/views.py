@@ -41,6 +41,11 @@ def index(request, template="settle/index.html", valid=None):
     context_dict['posts'] = posts
     return render(request, 'settle/index.html', context_dict)
 
+def handler404(request):
+    return render(request, 'settle/404.html', status=404)
+
+def handler500(request):
+    return render(request, 'settle/500.html', status=500)
 
 @login_required
 def feed(request):
