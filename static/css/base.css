@@ -19,7 +19,7 @@ body {
     background-color:#305475;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 992px) {
     #navBar {
         position: absolute;
         width: 100%;
