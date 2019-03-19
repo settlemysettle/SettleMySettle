@@ -8,8 +8,8 @@ Register
 {% block body_block %}
 <h1>Your username is how other settlers will see you. It will be used to identify you when you post, comment or like
     things.</h1>
-{% if registered %}
-<strong>*Should redirect*</strong>
+{% if user.is_authenticated %}
+<strong><br /> have already signed up</strong> <br></strong>
 <a href="{% url 'index' %}">Return to the homepage.</a><br />
 {% else %}
 <form id="signup_form" method="post" action="{% url 'register' %}" enctype="multipart.form-data">

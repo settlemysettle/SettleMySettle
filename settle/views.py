@@ -7,7 +7,7 @@ from django.shortcuts import redirect
 from django.db.models import Count
 from settle.steam_news import get_news
 from settle.models import Post, Comment, Tag, User
-from settle.forms import SignupForm, CommentForm, UploadForm
+from settle.forms import SignupForm, CommentForm, UploadForm, SuggestTag, AddFavGame
 from django import forms
 from django.utils import timezone
 from settle.validators import CPasswordValidator
@@ -24,7 +24,7 @@ def redirectHome(request):
     return response
 
 
-def index(request, template="settle/index.html", valid=0):
+def index(request, template="settle/index.html", valid=None):
     context_dict = {}
     context_dict['valid'] = valid
 
@@ -159,8 +159,6 @@ def post(request, post_id):
         # default to last page if too big
         comments = comm_pagin.page(comm_pagin.num_pages)
 
-    # testing - when we actually make it, we'll parameterise the app id
-
     app_id = post.game_tag.steamAppId
 
     if app_id != 0:
@@ -204,7 +202,10 @@ def signup(request):
             newUser.save()
 
             registered = True
+            user = authenticate(username=username, password=password)
+            login(request, user)
 
+            return redirectHome(request)
         else:
             # Print the errors from the form
             print(signup_form.errors)
@@ -229,14 +230,76 @@ def user_login(request):
         # If a valid user
         if user:
             login(request, user)
-            valid = True
-            return index(request, valid=valid)
+            return redirectHome(request)
         else:
             return index(request, valid=valid)
     else:
-        return index(request, valid=valid)
+        return index(request)
 
 
 def user_logout(request):
     logout(request)
     return HttpResponseRedirect(reverse('index'))
+
+
+def suggest_tag(request):
+    context_dict = {}
+
+    if request.method == "POST":
+        suggest_tags_form = SuggestTag(request.POST)
+
+        if suggest_tags_form.is_valid():
+            new_tag = suggest_tags_form.save(commit=False)
+            new_tag.is_pending = True
+            u = request.POST.get('user')
+            user = User.objects.get(username=u)
+            # Check if admin etc
+            new_tag.save()
+        else:
+            print(suggest_tags_form.errors)
+    else:
+        suggest_tags_form = SuggestTag()
+    context_dict["suggest_form"] = suggest_tags_form
+
+    pending_tags = Tag.objects.filter(is_pending=True).order_by("text")
+
+    context_dict["pending_tags"] = pending_tags
+
+    return render(request, 'settle/suggest-tag.html', context=context_dict)
+
+
+def account(request):
+    context_dict = {}
+    # Return the AddFavGame form
+    context_dict['form'] = AddFavGame()
+    # If a post request
+    if request.method == "POST":
+        # Get the type of post request
+        code = request.POST.get('type')
+        if code == "append":
+            # Get the form with the data
+            form = AddFavGame(request.POST)
+            # Get the selected tags
+            tagsSelected = request.POST.getlist('game_tags')
+            # Get the user object
+            u = request.POST.get('user')
+            user = User.objects.get(username=u)
+
+            # For each tag, add it to the fab games list for the user
+            for tag in tagsSelected:
+                tag = Tag.objects.get(id=tag)
+                user.favourite_games.add(tag)
+                user.save()
+            # Return the filled form
+            context_dict['form'] = form
+        elif code == "delete":
+            # Get the tag the user wants to remove
+            t = request.POST.get('tag')
+            tagToRemove = Tag.objects.get(id=t)
+            u = request.POST.get('user')
+            user = User.objects.get(username=u)
+            # Remove the tag
+            user.favourite_games.remove(t)
+            user.save()
+
+    return render(request, 'settle/account.html', context=context_dict)
