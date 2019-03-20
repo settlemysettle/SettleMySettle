@@ -8,7 +8,7 @@ class CPasswordValidator(object):
 
     def __init__(self):
         self.min_length = 8
-        self.max_lenth = 30
+        self.max_length = 30
 
     def validate(self, password, user=None):
         # Check it contains at least one lowercase char
