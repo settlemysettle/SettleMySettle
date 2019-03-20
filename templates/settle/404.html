@@ -1,0 +1,19 @@
+{% extends 'settle/base.html' %}
+{% load staticfiles %}
+
+{% block style_block %}
+
+{% endblock %}
+
+{% block body_block %}
+    <div class = "row" style="padding: 20px">
+        <div class="col-4">
+            <a href="{% url "index" %}"><img src="{% static "images/404error.jpg" %}" alt="meme"></a> 
+        </div>
+        <div class="col-4" style = "font-size: 30px">
+            <p>Whoops! Looks like you have found your way to a page that doesn't exist.</p>
+            <p align = "center">What can you do eh?</p>
+            <p>Just click the picture and you will be taken back to the Home Page.</p>
+        </div>
+    </div>
+{% endblock %}

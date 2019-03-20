@@ -10,22 +10,32 @@
 
 {% block body_block %}
 <!-- Code here! -->
-<form id="suggest-form" method="post" action="{% url 'tags' %}" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ suggest_form.as_p }}
-    <input type="hidden" name="user" value="{{ user }}" />
-    {% if request.user|has_group:"admin" %}
-    <input type="hidden" name="type" value="approve" />
-    <input class="btn btn-outline-success btn-sm" type="submit" name="submit" value="Approve" />
-    {% else %}
-    <input type="hidden" name="type" value="suggest" />
-    <input class="btn btn-outline-success btn-sm" type="submit" name="submit" value="Suggest" />
-    {% endif %}
-</form>
+<h1 align="center">Suggest a Tag.</h1>
+<div style="padding-top: 50px">
+    <div style="border-style: solid;border-width: 1px;background-color: lightgray;padding: 20px;display: inline-block;"
+        align="left">
+        <form id="suggest-form" method="post" action="{% url 'tags' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ suggest_form.as_p }}
+            <input type="hidden" name="user" value="{{ user }}" />
+            {% if request.user|has_group:"admin" %}
+            <input type="hidden" name="type" value="approve" />
+            <input type="submit" name="submit" value="Approve" />
+            {% else %}
+            <input type="hidden" name="type" value="suggest" />
+            <input type="submit" name="submit" value="Suggest" />
+            {% endif %}
+        </form>
+        <br />
 
-<span id="preview-tag" class="btn tag mb-1" style="background-color: #FFFF00">Your Text Here</span>
+        <p>Preview of your tag.</p>
+        <span id="preview-tag" class="btn tag mb-1" style="background-color: #FFFF00">Your Text Here</span>
+        <a id="preview-steam" href="https://store.steampowered.com/app/0" target="_blank"
+            style="padding-left: 20px">Test Steam Link</a>
+    </div>
+</div>
 
-<a id="preview-steam" href="https://store.steampowered.com/app/0" target="_blank">Test Steam Link</a>
+
 <!-- Code for admin queue -->
 {% if request.user|has_group:"admin" %}
 

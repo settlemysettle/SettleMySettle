@@ -32,7 +32,7 @@
         {% if request.user|has_group:"admin"  %}
         <h1>hello</h1>
         {% endif %}
-        
+
         <!-- Logo and App Name -->
         <a class="navbar-brand py-3 px-3" href="{% url 'index' %}">
             Settle My Settle
@@ -77,7 +77,8 @@
             {% endif %}
             <!-- Very temp valid check -->
             {% if valid == False %}
-            <h1>Login failed, incorrect details</h1>
+            <p class="pt-3 pr-3 d-none d-lg-block" style="color:red;font-size:12px">Login details invalid.</p>
+            <p class="pt-2 pl-3 d-lg-none" style="color:red;">Login details invalid.</p>
             {% endif %}
 
             {% if user.is_authenticated %}
