@@ -50,7 +50,7 @@ def feed(request):
     fav_games = list(request.user.favourite_games.all())
     post_list = Post.objects.all().filter(game_tag__in=fav_games)
     page = request.GET.get('page', 1)
-    paginator = Paginator(post_list, 3)
+    paginator = Paginator(post_list, 6)
     try:
         posts = paginator.page(page)
     except PageNotAnInteger:

@@ -9,35 +9,31 @@
 
 {% block body_block %}
     <!-- Code here! -->
-    <div class="row infinite-container">
-        {% for post in posts %}
-            <div class="col-md-6 col-lg-4 infinite-item pb-4" align="center" style="padding-top:50px">
-                <div class="row justify-content-center">
-                    <p class="col-sm-10" style="background-color:#56c9ff;padding:2px;padding-left:15px;text-align: left;border-style:solid;border-width: 1px;width:90%">{{ post.author }}</p>
+    {% if user.is_anonymous %}
+        <div style="height:10%;width:70%;margin:0 auto;text-align: center;padding-top:10px;">
+            <p style="margin-bottom:0px;font-weight:330">Settle My Settle is a place for enthusiasts of strategy games to share their cities and experiences in game.</p>
+            First time user? Register by clicking Sign Up!
+        </div>
+        <hr class="pb-1" style="width:70%"/>
+    {% endif %}
+    <div style="margin:auto;width:70%;">
+        {% if user.is_authenticated %}
+        <div class="row infinite-container pt-4 pb-2">
+        {% else %}
+        <div class="row infinite-container pt-1 pb-2">
+        {% endif %}
+            {% for post in posts %}
+                <div class="col-md-6 col-lg-4 infinite-item pb-4" align="center">
+                    <div class="row justify-content-center">
+                        <div id="pic" style="margin-right:10px;margin-left:10px">
+                            <p style="background-color:#fff;margin-bottom:-2px;text-align: left;padding:3px;padding-left:8px;color:#305475;border-radius: 3px;border-color:#D8D8D8;border-style:solid;border-width: 1px">{{ post.author }}</p>
+                            <a href="{% url "post" post.id %}"><img class="img-fluid" src="{{ MEDIA_URL }}{{ post.picture }}" style="height:200px;width:300px"></a>
+                        </div>
+                    </div>
+
                 </div>
-                <div class="row justify-content-center">
-                    <a href="{% url "post" post.id %}"><img class="img-fluid" src="{{ MEDIA_URL }}{{ post.picture }}" style="height:200px;width:300px"></a>
-                </div>
-                <div class = "row justify-content-center" style= "padding-top:20px">
-                    <div class = "col-3 col-lg-4 col-xl-3">
-                        <span class= "btn tag mb-1" style="background-color:{{ post.game_tag.colour }};width:80%">{{ post.game_tag }}</span>
-                    </div>
-                    <div class = "col-2 col-lg-3 col-xl-2">
-                        <span class= "btn tag mb-1" style="background-color:{{ post.info_tags.all.0.colour }};width:80%">{{ post.info_tags.all.0 }}</span>
-                    </div>
-                    {% if post.info_tags.all.1 %}
-                    <div class = "col-2 col-lg-3 col-xl-2">
-                        <span class= "btn tag" style="background-color:{{ post.info_tags.all.1.colour }};width:80%">{{ post.info_tags.all.1 }}</span>
-                    </div>
-                    {% endif %}
-                    {% if post.info_tags.all.2 %}
-                    <div class = "col-2 col-lg-3 col-xl-2">
-                        <span class= "btn tag" style="background-color:{{ post.info_tags.all.2.colour }};width:80%">{{ post.info_tags.all.2 }}</span>
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
     
       {% if posts.has_next %}

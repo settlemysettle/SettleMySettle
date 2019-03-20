@@ -16,10 +16,9 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!-- Custom CSS -->
-    <link rel="stylesheet" type="text/css" href="{% static "css/base.css" %}">
-
     {% block style_block %}
     {% endblock %}
+    <link rel="stylesheet" type="text/css" href="{% static "css/base.css" %}">
 
     <title>
         Settle My Settle - {% block title_block %}{% endblock %}
@@ -29,10 +28,11 @@
 
 <body>
     <!-- Navigation Bar -->
-    <nav class="nav navbar-expand-md navbar-dark pr-2" id="navBar">
+    <nav class="nav navbar-expand-lg navbar-dark pr-2" id="navBar">
         {% if request.user|has_group:"admin"  %}
         <h1>hello</h1>
         {% endif %}
+        
         <!-- Logo and App Name -->
         <a class="navbar-brand py-3 px-3" href="{% url 'index' %}">
             Settle My Settle
@@ -69,29 +69,36 @@
             </ul>
 
             <!-- Form for the username and password -->
-            <form class="form-row my-2 my-md-0">
-                <input class="form-control ml-3 mb-2 d-md-none smallMenuForm" type="text" placeholder="Username">
-                <input class="form-control ml-3 d-md-none smallMenuForm" type="password" placeholder="Password">
+            {% if user.is_anonymous %}
+            <form class="form-row my-2 my-lg-0">
+                <input class="form-control ml-3 mb-2 d-lg-none smallMenuForm" type="text" placeholder="Username">
+                <input class="form-control ml-3 d-lg-none smallMenuForm" type="password" placeholder="Password">
             </form>
+            {% endif %}
             <!-- Very temp valid check -->
             {% if valid == False %}
             <h1>Login failed, incorrect details</h1>
+            {% endif %}
+
+            {% if user.is_authenticated %}
+            <p class="pt-3 pr-3 d-none d-lg-block" style="color:white;font-size:12px">User logged in: {{ user }}</p>
+            <p class="pt-2 pl-3 d-lg-none" style="color:white;">User logged in: {{ user }}</p>
             {% endif %}
             <!-- Putting the buttons in a line -->
             <form class="form-inline my-2 my-lg-0">
                 {% if user.is_authenticated %}
                 <!-- Login button for when not collapsed -->
                 <a href="{% url 'account' %}"><button type="button"
-                        class="btn btn-primary d-none d-md-block">Account</button></a>
+                        class="btn btn-primary d-none d-lg-block">Account</button></a>
                 <!-- Login button for when collapsed -->
-                <button type="submit" class="btn btn-primary ml-3 d-md-none">Account</button>
+                <button type="submit" class="btn btn-primary ml-3 d-lg-none">Account</button>
                 <a href="{% url 'logout' %}"><button type="button"
-                        class="btn btn-primary ml-1 mr-2 my-2 my-md-0">Logout</button></a>
+                        class="btn btn-primary ml-1 mr-2 my-2 my-lg-0">Logout</button></a>
                 {% else %}
                 <!-- Login button for when not collapsed -->
-                <button type="button" class="btn btn-primary d-none d-md-block" id="loginButton">Login</button>
+                <button type="button" class="btn btn-primary d-none d-lg-block" id="loginButton">Login</button>
                 <!-- Login button for when collapsed -->
-                <button type="submit" class="btn btn-primary ml-3 d-md-none">Login</button>
+                <button type="submit" class="btn btn-primary ml-3 d-lg-none">Login</button>
                 <a href="{% url 'register' %}"><button type="button" class="btn btn-primary ml-1 mr-2 my-2 my-md-0"
                         id="signupButton">Sign up</button></a>
                 {% endif %}
@@ -102,6 +109,7 @@
     </nav>
 
     <!-- drop down menu for the login form -->
+    {% if user.is_anonymous %}
     <div class="collapse" id="collapseMenu">
         <div class="card card-body d-none d-md-block" id="loginDropdownBox">
             <form class="form-row my-2 my-md-0" d="login_form" method="post" action="{% url 'login' %}">
@@ -114,6 +122,7 @@
             </form>
         </div>
     </div>
+    {% endif %}
 
     <!-- Modal (click on a picture to fade background and show picture center) -->
     <div class="modal fade bs-example-modal-lg" id="pic-modal" tabindex="-1" role="dialog"
@@ -132,9 +141,6 @@
     </div>
 
     <div id="bodyContent">
-        {% if user.is_authenticated %}
-        <p>User logged in: {{ user }}</p>
-        {% endif %}
         {% block body_block %}
         {% endblock %}
     </div>
@@ -151,9 +157,7 @@
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js"></script>
     {% block script_block %}
     {% endblock %}
     <script src="{% static "js/base.js" %}"></script>
