@@ -28,6 +28,4 @@ urlpatterns = [
     url(r'^$', views.redirectHome),
     url(r'^settle/', include('settle.urls')),
     url(r'^admin/', admin.site.urls),
-    # Include the urls for registration redux
-    url(r'^user/', include('registration.backends.simple.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
