@@ -1,5 +1,6 @@
 $(document).ready(function () {
-    $('#suggest-form').on('keyup change paste', ':input', function () {
+
+    $.fn.updatePreview = function() {
         var tagText = $('#id_text').val();
         var tagCol = $('#id_colour').val();
         var steamAppId = $('#id_steamAppId').val();
@@ -7,6 +8,9 @@ $(document).ready(function () {
         $('#preview-tag').css('background-color', tagCol);
         $('#preview-tag').text(tagText);
         $('#preview-steam').attr('href', "https://store.steampowered.com/app/" + steamAppId);
+    }
+    $('#suggest-form').on('keyup change paste', ':input', function () {
+        $.fn.updatePreview();
     });
 
     $('.edit-tag').click( function() {
@@ -23,7 +27,7 @@ $(document).ready(function () {
         $('#id_text').val(tagText);
         $('#id_colour').val(tagCol);
 
-
+        $.fn.updatePreview();
     });
 
     
