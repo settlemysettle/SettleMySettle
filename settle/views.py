@@ -59,7 +59,7 @@ def feed(request):
     fav_games = list(request.user.favourite_games.all())
     post_list = Post.objects.all().filter(game_tag__in=fav_games)
     page = request.GET.get('page', 1)
-    paginator = Paginator(post_list, 3)
+    paginator = Paginator(post_list, 6)
     try:
         posts = paginator.page(page)
     except PageNotAnInteger:
@@ -80,10 +80,22 @@ def upload(request):
 
     if request.method == "POST":
         upload_form = UploadForm(request.POST, request.FILES)
+        game_tag = Tag.objects.filter(is_game_tag=True).filter(text=request.POST.get("game_tags"))
+
+        user_info_tags = []
+        for tag in request.POST.getlist("info_tag_list"):
+            user_info_tags.append(Tag.objects.get(text=tag))
 
         if upload_form.is_valid():
             user_post = upload_form.save(commit=False)
             user_post.author = request.user
+            user_post.game_tag = game_tag[0]
+            user_post.save()
+            
+            user_post.info_tags.set(user_info_tags)
+            user_post.save()
+
+            upload_form.cleaned_data["info_tags"] = user_post.info_tags.all()
 
             if 'picture' in request.FILES:
                 user_post.picture = request.FILES['picture']

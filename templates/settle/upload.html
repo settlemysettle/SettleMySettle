@@ -4,25 +4,59 @@
 {% block style_block %}
     <!-- Import custom CSS here! -->
     <link rel="stylesheet" type="text/css" href="{% static "css/upload.css" %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
 {% endblock %}
 
 {% block title_block %}Upload{% endblock %}
 
 {% block body_block %}
-    <div class = "row-2" align = "center">
-        <h1>Upload a photo</h1><br />
-        <p>Select an image from your computer, enter a description, select a game tag, and then select info tags to describe your photo!</p>
-        <p>You can remove a tag by clicking on it.</p>
+    <div style="height:10%;width:70%;margin:0 auto;text-align: center;padding-top:10px;font-weight:330">
+        <p style="margin-bottom:0px;font-weight:400">Upload a post</p>
+        Select an image, game tag, up to five info tags and write something to describe your post!
     </div>
-    <div class = "row-10">
+    <hr class="pb-1" style="width:70%"/>
+
+    <!-- Code here! -->
+    <div style="margin:auto;width:70%;">
         <form id="upload_post" method="post" action="{% url 'upload' %}" enctype="multipart/form-data">
             {% csrf_token %}
-            {{ upload_form.as_p }}
-            <input type="submit" name="submit" value="Upload!"/>
+            <div class="form-group">
+                <label for="exampleFormControlFile1">Upload a Picture</label>
+                <input type="file" class="btn form-control-file" id="exampleFormControlFile1" name="picture">
+            </div>
+
+            <p>Pick a game tag</p>
+            <div class="form-group">
+            <select class="selectpicker" data-live-search="true" name="game_tags">
+                    {% for tag in game_tags %}
+                        <option>{{ tag }}</option>
+                    {% endfor %}
+            </select>
+            </div>
+
+            <p><br>Pick up to 5 info tags</p>
+            <div class="form-group">
+            <select class="selectpicker" multiple data-live-search="true" name="info_tag_list">
+                {% for tag in info_tags %}
+                    <option>{{ tag }}</option>
+                {% endfor %}
+            </select>
+            </div>
+            <br><br>
+
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Enter a Comment</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" name="description" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Upload!</button>
         </form>
-    </div>  
+    </div>
+        
+    <br><br>
 {% endblock %}
 
 {% block script_block %}
     <!-- Import custom JS here! -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+    <script>$('selectpicker').selectpicker();</script>
 {% endblock %}

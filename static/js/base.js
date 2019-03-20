@@ -21,7 +21,7 @@ $(document).ready(function () {
 
   // hide collapse menu when anything but it is clicked
   $(document).click(function (e) {
-    if ($("#navbarToggle").has(e.target).length == 0 && !$("#navbarToggle").is(e.target) && $(window).width() < 768) {
+    if ($("#navbarToggle").has(e.target).length == 0 && !$("#navbarToggle").is(e.target) && $(window).width() < 992) {
       $("#navbarToggle").collapse("hide");
     }
   });
