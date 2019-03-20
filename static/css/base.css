@@ -60,8 +60,9 @@ a.nav-link:focus {
 }
 
 /* Currently selected page (active page) - text appears in Blue */
-.active {
+.activeTitle {
     color: #56C9FF !important;
+    /* color: #56C9FF !important; */
 }
 
 /* ---------------------- DROPDOWN MENU FOR LOGIN */
@@ -118,8 +119,8 @@ a.nav-link:focus {
 /* ---------------------- MODAL CSS */
 
 .img-responsive {
-    max-height: 30rem;
-    max-width: 35rem;
+    height: 120%;
+    width: 120%;
 }
   
 .image-bg {
