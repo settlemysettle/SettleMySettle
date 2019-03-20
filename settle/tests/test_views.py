@@ -40,7 +40,7 @@ class feedViewTestCase(TestCase):
             text="Civ 5", colour="#FF8FFF", is_game_tag=True, is_pending=False, steamAppId=222)
         # Make a new user
         self.user = User.objects.create(
-            username="test", password="testPassword", email="testemail@email.com")
+            username="test", password="testPassword1", email="testemail@email.com")
         self.user.save()
         # Add a new tag to it's fav games
         self.user.favourite_games.add(self.tag)
@@ -58,10 +58,12 @@ class feedViewTestCase(TestCase):
         self.post2.save()
 
     def test_context_dict(self):
+        # Login with the made user
+        self.client.force_login(self.user)
         # Get the response when you are logged in as a specfic user
-        response = self.client.get(reverse('feed'), {'user': self.user})
+        response = self.client.get(reverse('feed'))
         # Get the post objects from the context dictionary
-        posts = response.context[-1]['posts']
+        posts = response.context['posts']
 
         # Check every post contains the Civ 6 tag
         for post in posts:
@@ -71,6 +73,8 @@ class feedViewTestCase(TestCase):
         user = User.objects.create(
             username="newUser", password="newPassword", email="test@email.com")
         user.save()
+        # Login
+        self.client.force_login(user)
         # Get the response with the new user
         response = self.client.get(reverse('feed'), {'user': user})
         # Post list sould be empty as we have no fav games
@@ -88,12 +92,16 @@ class sugTagViewTestCase(TestCase):
         self.steamAppId = 222
 
     def test_new_post(self):
+        user = User.objects.create(
+            username="newUser", password="newPassword", email="test@email.com")
+        user.save()
+        self.client.force_login(user)
         # Send the data as a post request
         response = self.client.post(reverse('tags'),
                                     {'text': self.text, 'colour': self.colour, 'is_game_tag': self.is_game_tag,
-                                     'steamAppId': self.steamAppId})
+                                     'steamAppId': self.steamAppId, 'type': 'suggest', 'user': user.username})
         # CHeck the data we sent is valid
-        form = response.context[-1]['form']
+        form = response.context['suggest_form']
         self.assertTrue(form.is_valid())
 
 
@@ -108,9 +116,8 @@ class SignupView(TestCase):
 
     def test_new_user(self):
         response = self.client.post(reverse('register'), self.newUser)
-        # Check if the form we submit is valid
-        form = response.context['form']
-        self.assertTrue(form.is_valid())
+        # Should redirect to home if valid
+        self.assertEqual(response.status_code, 302)
 
     def test_lowercase_password(self):
         response = self.client.post(reverse('register'), {'email': "testemail@test.com",
