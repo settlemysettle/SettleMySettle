@@ -105,6 +105,25 @@ class sugTagViewTestCase(TestCase):
         self.assertTrue(form.is_valid())
 
 
+class loginViewTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+        # Make a user that we can sign in with
+        user = User.objects.create(
+            username="newUser", password="newPassword", email="test@email.com")
+
+    def signin_Test(self):
+        # Should redirect if logged in corretly
+        response = self.client.post(
+            reverse('login'), {'username': "newUser", 'password': "newPassword"})
+        self.assertEqual(response.status_code, 302)
+
+    def sign_InInvalid_Test(self):
+        response = self.client.post(
+            reverse('login'), {'username': 'wrong', 'password': "notRight1"})
+        self.assertFalse(response.context['valid'])
+
+
 class SignupView(TestCase):
     def setUp(self):
         # Get the client we will use
