@@ -30,7 +30,7 @@
             </div>
             <div class="form-group">
                 <label for="gTag">Steam app id</label>
-                <input class="form-control" type="number" name="steamAppId" value="" id="gTag" />
+                <input class="form-control" type="number" name="steamAppId" value="" id="sAppID" />
             </div>
 
             <input type="hidden" name="user" value="{{ user }}" />
@@ -71,9 +71,8 @@
         <td id="{{ tag.steamAppId }}">{% if tag.steamAppId %}
             <a href="https://store.steampowered.com/app/{{ tag.steamAppId }}" target="_blank">{{ tag }}</a>
             {% endif %}</td>
-        <td id={{ tag.is_game_tag }}><button class="btn btn-outline-secondary btn-sm" type="button" class="edit-tag"
-                id="{{ tag }}">Edit</button></td>
-        <td>
+        <td class="edit-tag"><button class="btn btn-outline-secondary btn-sm" type="button">Edit</button></td>
+        <td id={{ tag.is_game_tag }}>
             <form id="del_form" method="post" action="{% url 'tags' %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 <input type="hidden" name="type" value="del" />
