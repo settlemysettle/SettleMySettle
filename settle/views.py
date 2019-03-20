@@ -71,10 +71,32 @@ def upload(request):
 
     if request.method == "POST":
         upload_form = UploadForm(request.POST, request.FILES)
+        print("----------")
+        print(request.POST)
+        print("----------.POST")
+        game_tag = Tag.objects.filter(is_game_tag=True).filter(text=request.POST.get("game_tags"))
+        print(game_tag)
+        user_info_tags = []
+        for tag in request.POST.getlist("info_tag_list"):
+            user_info_tags.append(Tag.objects.get(text=tag))
+        print(user_info_tags)
+        # info_tags = Tag.objects.filter(is_game_tag=False).filter(info_tags__in=request.POST.get("info_tags"))
 
         if upload_form.is_valid():
+            print("//////////////////////////////////////////////here")
             user_post = upload_form.save(commit=False)
             user_post.author = request.user
+            user_post.game_tag = game_tag[0]
+            user_post.save()
+            
+            user_post.info_tags.set(user_info_tags)
+            user_post.save()
+
+            print("//////")
+            print(user_post.info_tags.all())
+
+            upload_form.cleaned_data["info_tags"] = user_post.info_tags.all()
+            print(upload_form.cleaned_data)
 
             if 'picture' in request.FILES:
                 user_post.picture = request.FILES['picture']

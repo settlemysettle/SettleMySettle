@@ -51,19 +51,19 @@ class UploadForm(forms.ModelForm):
 
     # Give the description a box to write in
     description = forms.CharField(
-        max_length=300, required=False, widget=forms.Textarea)
+        max_length=300, required=False)
     picture = forms.ImageField(required=True)
-    game_tag = forms.ModelChoiceField(queryset=Tag.objects.filter(
-        is_game_tag=True).filter(is_pending=False).order_by("text"))
+    # game_tag = forms.ModelChoiceField(queryset=Tag.objects.filter(
+    #     is_game_tag=True).filter(is_pending=False).order_by("text"))
 
-    info_tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.filter(is_game_tag=False).filter(
-        is_pending=False).order_by("text"), widget=forms.CheckboxSelectMultiple(attrs={'class': 'info-tag-list'}))
+    # info_tags = forms.ModelChoiceField(queryset=Tag.objects.filter(is_game_tag=False).filter(
+    #     is_pending=False).order_by("text"))
 
     class Meta:
         # Make it inherit fields from Post model
         model = Post
         # These values will be generated automatically
-        exclude = ['author', 'date_submitted']
+        exclude = ['author', 'date_submitted', 'game_tag']
 
 
 class AddFavGame(forms.Form):
