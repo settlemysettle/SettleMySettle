@@ -103,7 +103,6 @@ def upload(request):
     return render(request, 'settle/upload.html', context=context_dict)
 
 
-@login_required
 def post(request, post_id):
     context_dict = {}
     result_list = []
@@ -261,9 +260,16 @@ def suggest_tag(request):
     context_dict = {}
 
     if request.method == "POST":
-        if request.POST.get('type') == 'suggest':
-            suggest_tags_form = SuggestTag(request.POST)
+        if request.POST.get('type') in ['suggest', 'approve']:
+         
+            if request.POST.get('type') == 'approve':
+                text = request.POST.get('text')
 
+                if Tag.objects.filter(text=text).exists():
+                    t = Tag.objects.filter(text=text).delete()
+
+            suggest_tags_form = SuggestTag(request.POST)
+            
             if suggest_tags_form.is_valid():
                 new_tag = suggest_tags_form.save(commit=False)
                 new_tag.is_pending = True
