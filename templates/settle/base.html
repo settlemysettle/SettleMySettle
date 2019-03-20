@@ -30,9 +30,9 @@
     <!-- Navigation Bar -->
     <nav class="nav navbar-expand-lg navbar-dark pr-2" id="navBar">
         {% if request.user|has_group:"admin"  %}
-        <h1>hello</h1>
+        <h1>hello Apex boy, plz remember to remove me</h1>
         {% endif %}
-        
+
         <!-- Logo and App Name -->
         <a class="navbar-brand py-3 px-3" href="{% url 'index' %}">
             Settle My Settle
@@ -54,6 +54,20 @@
                 <li class="nav-item ml-3">
                     <a class="nav-link navText" href="{% url 'index' %}">Home</a>
                 </li>
+                <!-- If a guest -->
+                {% if user.is_anonymous %}
+                <li class="nav-item ml-3">
+                    <a class="nav-link disabled" href="{% url 'feed' %}">My Feed</a>
+                </li>
+                <!-- Item 3: Upload -->
+                <li class=" nav-item ml-3">
+                    <a class="nav-link disabled" href="{% url 'upload' %}">Upload</a>
+                </li>
+                <!-- Item 4: Suggest Tag -->
+                <li class="nav-item ml-3">
+                    <a class="nav-link disabled" href="{% url 'tags' %}">Suggest Tag</a>
+                </li>
+                {% else %}
                 <!-- Item 2: My Feed -->
                 <li class="nav-item ml-3">
                     <a class="nav-link navText" href="{% url 'feed' %}">My Feed</a>
@@ -66,6 +80,7 @@
                 <li class="nav-item ml-3">
                     <a class="nav-link navText" href="{% url 'tags' %}">Suggest Tag</a>
                 </li>
+                {% endif %}
             </ul>
 
             <!-- Form for the username and password -->
@@ -77,7 +92,8 @@
             {% endif %}
             <!-- Very temp valid check -->
             {% if valid == False %}
-            <h1>Login failed, incorrect details</h1>
+            <p class="pt-3 pr-3 d-none d-lg-block" style="color:red;font-size:12px">Login details invalid.</p>
+            <p class="pt-2 pl-3 d-lg-none" style="color:red;">Login details invalid.</p>
             {% endif %}
 
             {% if user.is_authenticated %}
