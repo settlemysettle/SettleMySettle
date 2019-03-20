@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import render
 from django.shortcuts import redirect
+from django.shortcuts import render_to_response
 from django.db.models import Count
 from settle.steam_news import get_news
 from settle.models import Post, Comment, Tag, User
@@ -16,6 +17,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.decorators import login_required
+from django.template import RequestContext
 
 # Create your views here.
 
@@ -41,6 +43,13 @@ def index(request, template="settle/index.html", valid=None):
     context_dict['posts'] = posts
     return render(request, 'settle/index.html', context_dict)
 
+# HTTP 404 Error (Page not found)
+def error404(request, exception):
+    return render(request, 'settle/404.html')
+
+# HTTP 500 Error (Server error)
+def error500(request, exception):
+    return render(request, 'settle/500.html')
 
 @login_required
 def feed(request):
@@ -71,10 +80,22 @@ def upload(request):
 
     if request.method == "POST":
         upload_form = UploadForm(request.POST, request.FILES)
+        game_tag = Tag.objects.filter(is_game_tag=True).filter(text=request.POST.get("game_tags"))
+
+        user_info_tags = []
+        for tag in request.POST.getlist("info_tag_list"):
+            user_info_tags.append(Tag.objects.get(text=tag))
 
         if upload_form.is_valid():
             user_post = upload_form.save(commit=False)
             user_post.author = request.user
+            user_post.game_tag = game_tag[0]
+            user_post.save()
+            
+            user_post.info_tags.set(user_info_tags)
+            user_post.save()
+
+            upload_form.cleaned_data["info_tags"] = user_post.info_tags.all()
 
             if 'picture' in request.FILES:
                 user_post.picture = request.FILES['picture']
