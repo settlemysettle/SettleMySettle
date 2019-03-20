@@ -252,7 +252,7 @@ def suggest_tag(request):
 
     if request.method == "POST":
         if request.POST.get('type') in ['suggest', 'approve']:
-         
+
             if request.POST.get('type') == 'approve':
                 text = request.POST.get('text')
 
@@ -260,7 +260,7 @@ def suggest_tag(request):
                     t = Tag.objects.filter(text=text).delete()
 
             suggest_tags_form = SuggestTag(request.POST)
-            
+
             if suggest_tags_form.is_valid():
                 new_tag = suggest_tags_form.save(commit=False)
                 new_tag.is_pending = True
