@@ -1,5 +1,6 @@
 {% extends 'settle/base.html' %}
 {% load staticfiles %}
+{% load admintag %}
 
 {% block style_block %}
 <!-- Import custom CSS here! -->
@@ -12,17 +13,17 @@
     <div class="col-lg" style="margin-left:25px">
         <div class="row" style="background-color: #56c9ff;border-style:solid;border-width: 1px;">
             <div class="col-10">
-                <p style="font-weight: bold">{{ post.author }}</p>
+                <p style="font-weight:bold;padding-top:10px;">{{ post.author }}</p>
             </div>
             <div class="col-2">
-                <p style="text-align: right">Comments: {{ comment_count }}</p>
+                <p style="font-weight:bold;text-align:right;padding-top:10px;">Comments: {{ comment_count }}</p>
             </div>
         </div>
 
         <div class="row" style="border-style:solid;border-width: 1px;">
             <div class="row-8" style="margin: auto;">
                 <img src="{{ MEDIA_URL }}{{ post.picture }}" data-toggle="modal" data-target="#pic-modal"
-                    class="modalImg" style="max-height:550px;padding-top: 15px">
+                    class="modalImg" style="max-height:550px;padding: 15px">
             </div>
             <div class="w-100"></div>
             <div class="row-2" style="padding: 20px;margin: auto;">
@@ -31,26 +32,34 @@
                 <span class="btn tag mb-1"
                     style="background-color:{{ post.info_tags.all.0.colour }}">{{ post.info_tags.all.0 }}</span>
                 {% if post.info_tags.all.1 %}
-                <span class="btn tag"
+                <span class="btn tag mb-1"
                     style="background-color:{{ post.info_tags.all.1.colour }}">{{ post.info_tags.all.1 }}</span>
                 {% endif %}
                 {% if post.info_tags.all.2 %}
-                <span class="btn tag"
+                <span class="btn tag mb-1"
                     style="background-color:{{ post.info_tags.all.2.colour }}">{{ post.info_tags.all.2 }}</span>
+                {% endif %}
+                {% if post.info_tags.all.3 %}
+                <span class="btn tag mb-1"
+                    style="background-color:{{ post.info_tags.all.3.colour }}">{{ post.info_tags.all.3 }}</span>
+                {% endif %}
+                {% if post.info_tags.all.4 %}
+                <span class="btn tag mb-1"
+                    style="background-color:{{ post.info_tags.all.4.colour }}">{{ post.info_tags.all.4 }}</span>
                 {% endif %}
             </div>
         </div>
 
         <div class="row" style="border-style:solid;border-width: 1px;">
             <span>
-                <p style="background-color:#56c9ff;">Description:</p>
+                <p style="background-color:#56c9ff;font-weight:bold;">Description:</p>
                 <p>{{ post.description }}</p>
             </span>
         </div>
 
         <div class="row" style="border-style:solid;border-width: 1px;">
             <p>Post a comment: </p>
-            <form id="comment_form" method="post" action="" enctype="multipart.form-data">
+            <form id="comment_form" method="post" action="" enctype="multipart.form-data" style="text-align:right">
 
                 {% csrf_token %}
                 {% for field in form %}
@@ -79,10 +88,23 @@
                 <form id="like_button" method="post" action="" enctype="multipart.form-data">
                     {% csrf_token %}
                     <input type="hidden" value="like" name="type">
-                    <input type="hidden" value="{{ comment }}" name="comment">
+                    <input type="hidden" value="{{ comment.id }}" name="comment">
                     <input type="hidden" value="{{ user }}" name="liker">
-                    <input type="submit" name="like" value="Like" />
+                    {% if user in comment.liking_users.all %}
+                    <input type="submit" name="like" value="Unlike" />
+                    {% else %}
+                    <input type="submit" name="unlike" value="Like" />
+                    {% endif %}
                 </form>
+                {% if request.user|has_group:"admin"  %}
+                <form id="del_form" method="post" action="" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="type" value="del" />
+                    <input type="hidden" name="comment" value="{{ comment.id }}" />
+                    <input type="submit" name="submit" value="X" />
+                </form>
+                {% endif %}
+                <form></form>
                 <br />
                 <br />
                 {% endfor %}

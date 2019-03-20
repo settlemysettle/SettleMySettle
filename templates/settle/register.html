@@ -6,29 +6,36 @@ Register
 {% endblock %}
 
 {% block body_block %}
-<h1>Your username is how other settlers will see you. It will be used to identify you when you post, comment or like
-    things.</h1>
-{% if registered %}
-<strong>*Should redirect*</strong>
-<a href="{% url 'index' %}">Return to the homepage.</a><br />
-{% else %}
-<form id="signup_form" method="post" action="{% url 'register' %}" enctype="multipart.form-data">
-
-    {% csrf_token %}
-    {% for field in form %}
-    <p>
-        {{ field.label_tag }}<br>
-        {{ field }}
-        {% if field.help_text %}
-        <small style="color: grey">{{ field.help_text }}</small>
-        {% endif %}
-        {% for error in field.errors %}
-        <p style="color: red">{{ error }}</p>
-        {% endfor %}
-    </p>
-    {% endfor %}
-
-    <input type="submit" name="submit" value="Register" />
-</form>
-{% endif %}
+<div style = "padding-top: 100px" align = "center">
+    <div style="background-color: lightgray;border-style: solid;border-width: 1px;display: inline-block;" align = "left">
+        <div class = "row-2" style = "border-bottom: 1px solid black;padding: 20px">
+            <p>Your username is how other settlers will see you. It will be used to identify you when you post, comment or like things.</p>
+        </div>
+        <div class = "row-10" style = "padding: 20px">
+            {% if user.is_authenticated %}
+            <strong><br /> have already signed up</strong> <br></strong>
+            <a href="{% url 'index' %}">Click here to return to the homepage.</a><br />
+            {% else %}
+            <form id="signup_form" method="post" action="{% url 'register' %}" enctype="multipart.form-data">
+            
+                {% csrf_token %}
+                {% for field in form %}
+                <p>
+                    {{ field.label_tag }}<br>
+                    {{ field }}
+                    {% if field.help_text %}
+                    <small style="color: grey">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                    <p style="color: red">{{ error }}</p>
+                    {% endfor %}
+                </p>
+                {% endfor %}
+            
+                <input type="submit" name="submit" value="Register"/>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
 {% endblock %}

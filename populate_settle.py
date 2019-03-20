@@ -1,6 +1,13 @@
 
-from settle.models import Tag, User, Post, Comment
+import django
 import os
+os.environ.setdefault('DJANGO_SETTINGS_MODULE',
+                      'settle_my_settle.settings')
+
+django.setup()
+
+from settle.models import Tag, User, Post, Comment
+
 
 import django
 
