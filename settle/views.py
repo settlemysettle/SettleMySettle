@@ -15,6 +15,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse
 from django.contrib.auth.hashers import make_password
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -41,6 +42,7 @@ def index(request, template="settle/index.html", valid=None):
     return render(request, 'settle/index.html', context_dict)
 
 
+@login_required
 def feed(request):
     context_dict = {}
 
@@ -58,6 +60,7 @@ def feed(request):
     return render(request, 'settle/feed.html', {'posts': posts})
 
 
+@login_required
 def upload(request):
     context_dict = {}
 
@@ -91,11 +94,7 @@ def upload(request):
     return render(request, 'settle/upload.html', context=context_dict)
 
 
-def suggest_tag(request):
-    context_dict = {}
-    return render(request, 'settle/suggest-tag.html', context=context_dict)
-
-
+@login_required
 def post(request, post_id):
     context_dict = {}
     result_list = []
@@ -139,6 +138,10 @@ def post(request, post_id):
                 comment.liking_users.add(liker)
             else:
                 comment.liking_users.remove(liker)
+        elif request.POST.get('type') == "del":
+            c = request.POST.get('comment')
+            Comment.objects.filter(id=c).delete()
+
     else:
         # Give it back an empty form
         context_dict['form'] = CommentForm()
@@ -238,26 +241,38 @@ def user_login(request):
         return index(request)
 
 
+@login_required
 def user_logout(request):
     logout(request)
     return HttpResponseRedirect(reverse('index'))
 
 
+@login_required
 def suggest_tag(request):
     context_dict = {}
 
     if request.method == "POST":
-        suggest_tags_form = SuggestTag(request.POST)
+        if request.POST.get('type') == 'suggest':
+            suggest_tags_form = SuggestTag(request.POST)
 
-        if suggest_tags_form.is_valid():
-            new_tag = suggest_tags_form.save(commit=False)
-            new_tag.is_pending = True
-            u = request.POST.get('user')
-            user = User.objects.get(username=u)
-            # Check if admin etc
-            new_tag.save()
-        else:
-            print(suggest_tags_form.errors)
+            if suggest_tags_form.is_valid():
+                new_tag = suggest_tags_form.save(commit=False)
+                new_tag.is_pending = True
+                u = request.POST.get('user')
+                user = User.objects.get(username=u)
+
+                if user.groups.filter(name='admin').exists():
+                    new_tag.is_pending = False
+
+                # Check if admin etc
+                new_tag.save()
+            else:
+                print(suggest_tags_form.errors)
+        elif request.POST.get('type') == 'del':
+            t = request.POST.get('tag')
+            Tag.objects.filter(id=t).delete()
+            suggest_tags_form = SuggestTag()
+
     else:
         suggest_tags_form = SuggestTag()
     context_dict["suggest_form"] = suggest_tags_form
@@ -269,6 +284,7 @@ def suggest_tag(request):
     return render(request, 'settle/suggest-tag.html', context=context_dict)
 
 
+@login_required
 def account(request):
     context_dict = {}
     # Return the AddFavGame form

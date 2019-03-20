@@ -2,47 +2,56 @@
 {% load staticfiles %}
 
 {% block style_block %}
-    <!-- Import custom CSS here! -->
+<!-- Import custom CSS here! -->
 {% endblock %}
 
 {% block title_block %}Suggest Tag{% endblock %}
 
 {% block body_block %}
-    <!-- Code here! -->
-    <form id="suggest-form" method="post" action="{% url 'tags' %}" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ suggest_form.as_p }}
-        <input type="hidden" name="user" value="{{ user }}"/>
-        <input type="submit" name="submit" value="Suggest"/>
-    </form>
+<!-- Code here! -->
+<form id="suggest-form" method="post" action="{% url 'tags' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ suggest_form.as_p }}
+    <input type="hidden" name="type" value="suggest" />
+    <input type="hidden" name="user" value="{{ user }}" />
+    <input type="submit" name="submit" value="Suggest" />
+</form>
 
-    <span id="preview-tag" class="btn tag mb-1"
-                    style="background-color: #FFFF00">Your Text Here</span>
+<span id="preview-tag" class="btn tag mb-1" style="background-color: #FFFF00">Your Text Here</span>
 
-    <a id="preview-steam" href="https://store.steampowered.com/app/0" target="_blank">Test Steam Link</a>
-    <!-- Code for admin queue -->
-    {% if pending_tags %}
-    <table>
-        <th>
-            <td>Tag</td>
-            <td>Steam Link</td>
-        </th>
+<a id="preview-steam" href="https://store.steampowered.com/app/0" target="_blank">Test Steam Link</a>
+<!-- Code for admin queue -->
+{% if pending_tags %}
+<table>
+    <th>
+    <td>Tag</td>
+    <td>Steam Link</td>
+    <td>Actions</td>
+    </th>
     {% for tag in pending_tags %}
-        <tr>
-         <td><span class="btn tag mb-1"
-                    style="background-color:{{ tag.colour }}">{{ tag }}</span></td>
+    <tr id="{{ tag.colour }}{{ tag }}">
+        <td><span class="btn tag mb-1" style="background-color:{{ tag.colour }}">{{ tag }}</span></td>
         <td>{% if tag.steamAppId %}
-             <a href="https://store.steampowered.com/app/{{ tag.steamAppId }}" target="_blank">{{ tag }}</a>
-        {% endif %}</td>
-        </tr>
+            <a href="https://store.steampowered.com/app/{{ tag.steamAppId }}" target="_blank">{{ tag }}</a>
+            {% endif %}</td>
+        <td><button type="button" class="edit-tag" id="{{ tag }}">Edit</button></td>
+        <td>
+            <form id="del_form" method="post" action="{% url 'tags' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="type" value="del" />
+                <input type="hidden" name="tag" value="{{ tag.id }}" />
+                <input type="submit" name="submit" value="X" />
+            </form>
+        </td>
+    </tr>
     {% endfor %}
-    </table>
-    {% endif %}
+</table>
+{% endif %}
 
 
 {% endblock %}
 
 {% block script_block %}
-    <!-- Import custom JS here! -->
-    <script src="{% static "js/suggest_tag.js" %}"></script>
+<!-- Import custom JS here! -->
+<script src="{% static "js/suggest_tag.js" %}"></script>
 {% endblock %}
