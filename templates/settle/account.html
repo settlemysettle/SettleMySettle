@@ -15,21 +15,21 @@
 <hr class="pb-1" style="width:70%"/>
 
 <div style="margin:auto;width:70%;">
-    <div id="user details">
+    <div id="user details" align="center">
         <strong>Username</strong> - {{ user }}<br />
         <strong>Email</strong> - {{ user.email }}<br />
-        <br /><br />
+        <br /><br /><br />
     </div>
 
     <div class="row" id="favourite games">
-        <div class="col-4" align="left">
+        <div class="col-6" style="padding-right: 50px" align="right">
             <p style="font-weight:400;">Your current favourite games</p>
-            <hr class="pb-1" style="width:35%" align="left"/>
+            <hr class="pb-1" style="width:37%" align="right"/>
 
             {% for tag in user.favourite_games.all %}
                 <form id="remove tag" method="post" action="{% url 'account' %}" enctype="multipart/form-data">
                     {% csrf_token %}
-                    {{ tag }} 
+                    <span style="padding-right:10px">{{ tag }}</span>   
                     <input type="hidden" name="type" value="delete" />
                     <input type="hidden" name="tag" value="{{ tag.id }}" />
                     <input type="hidden" name="user" value="{{ user }}" />
@@ -39,9 +39,9 @@
             {% endfor %}
         </div>
 
-        <div class="col-4" align="left">
+        <div class="col-6" style="padding-left:50px" align="left">
             <p style="font-weight:400;">Add more favourite games!</p>
-            <hr class="pb-1" style="width:35%" align="left"/>
+            <hr class="pb-1" style="width:35%" align="left" />
             <form id="game_tag_form" method="post" action="{% url 'account' %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 {{ form }}
