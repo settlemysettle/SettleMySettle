@@ -9,13 +9,18 @@
 {% block title_block %}Upload{% endblock %}
 
 {% block body_block %}
-    <!-- Code here! -->
-    <form id="upload_post" method="post" action="{% url 'upload' %}" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ upload_form.as_p }}
-        <input type="submit" name="submit" value="Upload!"/>
-    </form>
-    
+    <div class = "row-2" align = "center">
+        <h1>Upload a photo</h1><br />
+        <p>Select an image from your computer, enter a description, select a game tag, and then select info tags to describe your photo!</p>
+        <p>You can remove a tag by clicking on it.</p>
+    </div>
+    <div class = "row-10">
+        <form id="upload_post" method="post" action="{% url 'upload' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ upload_form.as_p }}
+            <input type="submit" name="submit" value="Upload!"/>
+        </form>
+    </div>  
 {% endblock %}
 
 {% block script_block %}
