@@ -10,14 +10,17 @@
 {% block body_block %}
 <!-- Code here! -->
 {% if user.is_anonymous %}
-<div style="height:10%;width:70%;margin:0 auto;text-align: center;padding-top:10px;">
-  <p style="margin-bottom:0px;font-weight:330">Settle My Settle is a place for enthusiasts of strategy games to share
-    their cities and experiences in game.</p>
+<div class="page-title-div">
+  <p class="page-title">Settle My Settle is a place for enthusiasts of strategy games to share their cities and experiences in game.</p>
+
   First time user? Register by clicking Sign Up!
+  
 </div>
 <hr class="pb-1" style="width:70%" />
 {% endif %}
-{% block message_block %}{% endblock %}
+{% block message_block %}
+{% endblock %}
+
 <div style="margin:auto;width:70%;">
   {% if user.is_authenticated %}
   <div class="row infinite-container pt-4 pb-2">
