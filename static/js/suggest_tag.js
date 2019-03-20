@@ -14,18 +14,23 @@ $(document).ready(function () {
     });
 
     $('.edit-tag').click( function() {
+        
         console.log("editing required?");
-        var tagInfo = $(this).closest('tr').attr('id');
+        var tagInfo = $(this).closest('tr').children('td') // get list of items in this row
         console.log(tagInfo);
+        var tagColText = tagInfo.get(0).id;
 
-        var tagCol = tagInfo.substring(0, 7);
-        var tagText = tagInfo.substring(7, );
+        var tagCol = tagColText.substring(0, 7);
+        var tagText = tagColText.substring(7, );
 
-        console.log(tagCol);
-        console.log(tagText);
+        var tagSteamAppId = tagInfo.get(1).id;
+
+        var tagIsGame = tagInfo.get(2).id;
 
         $('#id_text').val(tagText);
         $('#id_colour').val(tagCol);
+        $('#id_steamAppId').val(tagSteamAppId);
+        $('#id_is_game_tag').prop('checked', tagIsGame === "True");
 
         $.fn.updatePreview();
     });

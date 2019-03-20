@@ -10,26 +10,28 @@
 
 {% block body_block %}
 <!-- Code here! -->
-<h1 align = "center">Suggest a Tag.</h1>
+<h1 align="center">Suggest a Tag.</h1>
 <div style="padding-top: 50px">
-    <div style ="border-style: solid;border-width: 1px;background-color: lightgray;padding: 20px;display: inline-block;" align="left">
+    <div style="border-style: solid;border-width: 1px;background-color: lightgray;padding: 20px;display: inline-block;"
+        align="left">
         <form id="suggest-form" method="post" action="{% url 'tags' %}" enctype="multipart/form-data">
             {% csrf_token %}
             {{ suggest_form.as_p }}
             <input type="hidden" name="user" value="{{ user }}" />
             {% if request.user|has_group:"admin" %}
-                <input type="hidden" name="type" value="approve" />
-                <input type="submit" name="submit" value="Approve" />
+            <input type="hidden" name="type" value="approve" />
+            <input type="submit" name="submit" value="Approve" />
             {% else %}
-                <input type="hidden" name="type" value="suggest" />
-                <input type="submit" name="submit" value="Suggest" />
+            <input type="hidden" name="type" value="suggest" />
+            <input type="submit" name="submit" value="Suggest" />
             {% endif %}
         </form>
         <br />
 
         <p>Preview of your tag.</p>
         <span id="preview-tag" class="btn tag mb-1" style="background-color: #FFFF00">Your Text Here</span>
-        <a id="preview-steam" href="https://store.steampowered.com/app/0" target="_blank" style = "padding-left: 20px">Test Steam Link</a>
+        <a id="preview-steam" href="https://store.steampowered.com/app/0" target="_blank"
+            style="padding-left: 20px">Test Steam Link</a>
     </div>
 </div>
 
@@ -37,32 +39,34 @@
 <!-- Code for admin queue -->
 {% if request.user|has_group:"admin" %}
 
-    {% if pending_tags %}
-    <table>
-        <th>
-        <td>Tag</td>
-        <td>Steam Link</td>
-        <td>Actions</td>
-        </th>
-        {% for tag in pending_tags %}
-        <tr id="{{ tag.colour }}{{ tag }}">
-            <td><span class="btn tag mb-1" style="background-color:{{ tag.colour }}">{{ tag }}</span></td>
-            <td>{% if tag.steamAppId %}
-                <a href="https://store.steampowered.com/app/{{ tag.steamAppId }}" target="_blank">{{ tag }}</a>
-                {% endif %}</td>
-            <td><button type="button" class="edit-tag" id="{{ tag }}">Edit</button></td>
-            <td>
-                <form id="del_form" method="post" action="{% url 'tags' %}" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <input type="hidden" name="type" value="del" />
-                    <input type="hidden" name="tag" value="{{ tag.id }}" />
-                    <input type="submit" name="submit" value="X" />
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
-    {% endif %}
+{% if pending_tags %}
+<table>
+    <th>
+    <td>Tag</td>
+    <td>Steam Link</td>
+    <td>Actions</td>
+    </th>
+    {% for tag in pending_tags %}
+    <tr>
+        <td id="{{ tag.colour }}{{ tag }}"><span class="btn tag mb-1"
+                style="background-color:{{ tag.colour }}">{{ tag }}</span></td>
+        <td id="{{ tag.steamAppId }}">{% if tag.steamAppId %}
+            <a href="https://store.steampowered.com/app/{{ tag.steamAppId }}" target="_blank">{{ tag }}</a>
+            {% endif %}</td>
+        <td id={{ tag.is_game_tag }}><button class="btn btn-outline-secondary btn-sm" type="button" class="edit-tag"
+                id="{{ tag }}">Edit</button></td>
+        <td>
+            <form id="del_form" method="post" action="{% url 'tags' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="type" value="del" />
+                <input type="hidden" name="tag" value="{{ tag.id }}" />
+                <input class="btn btn-outline-danger btn-sm" type="submit" name="submit" value="Delete" />
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
 {% endif %}
 
 

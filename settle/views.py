@@ -23,16 +23,21 @@ from django.template import RequestContext
 
 
 def redirectHome(request):
+    ''' Redirect to the index page.'''
     response = redirect('/settle')
     return response
 
 
 def index(request, template="settle/index.html", valid=None):
+    ''' Index view. '''
     context_dict = {}
+    # Used to display any issues when trying to login
     context_dict['valid'] = valid
 
+    # List of post we will display
     post_list = Post.objects.all().order_by("-date_submitted")
     page = request.GET.get('page', 1)
+    # This is used for infinite scrolling
     paginator = Paginator(post_list, 6)
     try:
         posts = paginator.page(page)
@@ -40,24 +45,33 @@ def index(request, template="settle/index.html", valid=None):
         posts = paginator.page(1)
     except EmptyPage:
         posts = paginator.page(paginator.num_pages)
+
+    # Store the posts in the cd
     context_dict['posts'] = posts
+
     return render(request, 'settle/index.html', context_dict)
 
-# HTTP 404 Error (Page not found)
+
 def error404(request, exception):
+    ''' HTTP 404 Error (Page not found)'''
     return render(request, 'settle/404.html')
 
-# HTTP 500 Error (Server error)
+
 def error500(request, exception):
+    ''' HTTP 500 Error (Server error) '''
     return render(request, 'settle/500.html')
+
 
 @login_required
 def feed(request):
+    ''' Feed view function.'''
     context_dict = {}
 
-    # need to filter this for feed
+    # Get the game tags that users wish to see
     fav_games = list(request.user.favourite_games.all())
+    # Get the posts we will display but only if they match the fav games tag
     post_list = Post.objects.all().filter(game_tag__in=fav_games)
+    # Used for infinte scrolling
     page = request.GET.get('page', 1)
     paginator = Paginator(post_list, 6)
     try:
@@ -66,46 +80,66 @@ def feed(request):
         posts = paginator.page(1)
     except EmptyPage:
         posts = paginator.page(paginator.num_pages)
+
     return render(request, 'settle/feed.html', {'posts': posts})
 
 
 @login_required
 def upload(request):
+    ''' View used to upload an image to the page. '''
     context_dict = {}
 
+    # Get all the info and game tags to send back to page
     game_tags = Tag.objects.filter(is_game_tag=True).filter(
         is_pending=False).order_by("text")
     info_tags = Tag.objects.filter(is_game_tag=False).filter(
         is_pending=False).order_by("text")
 
+    # Check if the user has submitted an upload
     if request.method == "POST":
+        # Use the upload form to store most of the data
         upload_form = UploadForm(request.POST, request.FILES)
-        game_tag = Tag.objects.filter(is_game_tag=True).filter(text=request.POST.get("game_tags"))
+        # Get the game tag from the request.POST
+        game_tag = Tag.objects.filter(is_game_tag=True).filter(
+            text=request.POST.get("game_tags"))
 
         user_info_tags = []
+        # Find all the info tags the user has selected
         for tag in request.POST.getlist("info_tag_list"):
             user_info_tags.append(Tag.objects.get(text=tag))
 
-        if upload_form.is_valid():
-            user_post = upload_form.save(commit=False)
-            user_post.author = request.user
-            user_post.game_tag = game_tag[0]
-            user_post.save()
-            
-            user_post.info_tags.set(user_info_tags)
-            user_post.save()
-
-            upload_form.cleaned_data["info_tags"] = user_post.info_tags.all()
-
-            if 'picture' in request.FILES:
-                user_post.picture = request.FILES['picture']
-
-            user_post.save()
-            upload_form.save_m2m()
-
+        # If they have selected more than 5 inof tags, add a new error
+        if len(user_info_tags) > 5:
+            upload_form.add_error(
+                'info_tags', 'Please select only up to 5 info tags.')
         else:
-            print(upload_form.errors)
+            if upload_form.is_valid():
+                # Save the form and add the author and game tag
+                user_post = upload_form.save(commit=False)
+                user_post.author = request.user
+                user_post.game_tag = game_tag[0]
+                user_post.save()
+
+                # Add the info tags to the post
+                user_post.info_tags.set(user_info_tags)
+                user_post.save()
+
+                upload_form.cleaned_data["info_tags"] = user_post.info_tags.all(
+                )
+
+                # Put the picture in the post
+                if 'picture' in request.FILES:
+                    user_post.picture = request.FILES['picture']
+
+                # Save the post and it's m2m relationship
+                user_post.save()
+                upload_form.save_m2m()
+                context_dict["message"] = "Success"
+            else:
+                print(upload_form.errors)
+
     else:
+        # Give it an empty form to render
         upload_form = UploadForm()
 
     context_dict["game_tags"] = game_tags
@@ -166,6 +200,7 @@ def post(request, post_id):
         # Give it back an empty form
         context_dict['form'] = CommentForm()
 
+    # Get all the comments for the post
     all_comments = Comment.objects.filter(parent_post=post_id).annotate(
         num_likes=Count('liking_users')).order_by('-num_likes')
     comment_count = len(all_comments)
@@ -273,22 +308,27 @@ def suggest_tag(request):
     suggest_tags_form = SuggestTag()
 
     if request.method == "POST":
+        # Check the type of post
         if request.POST.get('type') in ['suggest', 'approve']:
 
             if request.POST.get('type') == 'approve':
+                # Delete the old tag as we will add the approved one
                 text = request.POST.get('text')
 
                 if Tag.objects.filter(text=text).exists():
                     t = Tag.objects.filter(text=text).delete()
 
+            # Use suggest tag form
             suggest_tags_form = SuggestTag(request.POST)
 
             if suggest_tags_form.is_valid():
+                # Make new tag, get the author
                 new_tag = suggest_tags_form.save(commit=False)
                 new_tag.is_pending = True
                 u = request.POST.get('user')
                 user = User.objects.get(username=u)
 
+                # If admin, don't make it pending
                 if user.groups.filter(name='admin').exists():
                     new_tag.is_pending = False
 
@@ -296,6 +336,7 @@ def suggest_tag(request):
                 new_tag.save()
             else:
                 print(suggest_tags_form.errors)
+        # Delete the tag suggestion
         elif request.POST.get('type') == 'del':
             t = request.POST.get('tag')
             Tag.objects.filter(id=t).delete()
