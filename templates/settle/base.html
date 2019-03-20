@@ -30,7 +30,7 @@
     <!-- Navigation Bar -->
     <nav class="nav navbar-expand-lg navbar-dark pr-2" id="navBar">
         {% if request.user|has_group:"admin"  %}
-        <h1>hello</h1>
+        <h1>hello Apex boy, plz remember to remove me</h1>
         {% endif %}
 
         <!-- Logo and App Name -->
@@ -54,6 +54,20 @@
                 <li class="nav-item ml-3">
                     <a class="nav-link navText" href="{% url 'index' %}">Home</a>
                 </li>
+                <!-- If a guest -->
+                {% if user.is_anonymous %}
+                <li class="nav-item ml-3">
+                    <a class="nav-link disabled" href="{% url 'feed' %}">My Feed</a>
+                </li>
+                <!-- Item 3: Upload -->
+                <li class=" nav-item ml-3">
+                    <a class="nav-link disabled" href="{% url 'upload' %}">Upload</a>
+                </li>
+                <!-- Item 4: Suggest Tag -->
+                <li class="nav-item ml-3">
+                    <a class="nav-link disabled" href="{% url 'tags' %}">Suggest Tag</a>
+                </li>
+                {% else %}
                 <!-- Item 2: My Feed -->
                 <li class="nav-item ml-3">
                     <a class="nav-link navText" href="{% url 'feed' %}">My Feed</a>
@@ -66,6 +80,7 @@
                 <li class="nav-item ml-3">
                     <a class="nav-link navText" href="{% url 'tags' %}">Suggest Tag</a>
                 </li>
+                {% endif %}
             </ul>
 
             <!-- Form for the username and password -->
