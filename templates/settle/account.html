@@ -8,32 +8,41 @@
 {% block title_block %}Account Page{% endblock %}
 
 {% block body_block %}
-<div id="user details">
-    <h1>User details</h1>
-    <strong>Username</strong> - {{ user }}<br />
-    <strong>Email</strong> - {{ user.email }}<br />
+<div style = "padding-top: 100px" align = "center">
+    <div style="background-color: lightgray;border-style: solid;border-width: 1px;display: inline-block;padding: 20px" align = "left">
+        <div id="user details" style = "border-bottom: 1px solid black;padding: 20px">
+            <h1>Account details</h1>
+            <br />
+            <strong>Username</strong> - {{ user }}<br />
+            <strong>Email</strong> - {{ user.email }}<br />
+        </div>
+        <div id="favourite games" style = "padding: 20px">
+            <h2>Current favourite games</h2>
+            {% for tag in user.favourite_games.all %}
+            {{ tag }}
+            <form id="remove tag" method="post" action="{% url 'account' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="type" value="delete" />
+                <input type="hidden" name="tag" value="{{ tag.id }}" />
+                <input type="hidden" name="user" value="{{ user }}" />
+                <input type="submit" name="submit" value="X" />
+            </form>
+            <br />
+            {% endfor %}
+            <h2>Choose your favourite games</h2>
+            <form id="game_tag_form" method="post" action="{% url 'account' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form }}
+                <input type="hidden" name="type" value="append" />
+                <input type="hidden" name="user" value="{{ user }}" />
+                <input type="submit" name="submit" value="Submit" />
+            </form>
+        </div> 
+
+    </div>
 </div>
-<div id="favourite games">
-    <h2>Current favourite games</h2>
-    {% for tag in user.favourite_games.all %}
-    {{ tag }}
-    <form id="remove tag" method="post" action="{% url 'account' %}" enctype="multipart/form-data">
-        {% csrf_token %}
-        <input type="hidden" name="type" value="delete" />
-        <input type="hidden" name="tag" value="{{ tag.id }}" />
-        <input type="hidden" name="user" value="{{ user }}" />
-        <input type="submit" name="submit" value="X" />
-    </form>
-    <br />
-    {% endfor %}
-    <h2>Choose your favourite games</h2>
-    <form id="game_tag_form" method="post" action="{% url 'account' %}" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form }}
-        <input type="hidden" name="type" value="append" />
-        <input type="hidden" name="user" value="{{ user }}" />
-        <input type="submit" name="submit" value="Submit" />
-    </form>
-</div> {% endblock %} {% block script_block %}
+{% endblock %}
+
+{% block script_block %}
 <!-- Import custom JS here! -->
 {% endblock %}
