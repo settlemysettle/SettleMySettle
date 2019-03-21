@@ -11,7 +11,7 @@
     <p class="page-title">Create an Account</p>
     To set up an Account on Settle My Settle please choose a Username, enter an email address and choose a password.
 </div>
-<hr class="pb-1" style="width:70%" />
+<hr style="width:70%" />
 <br />
 
 <div style="margin:auto;width:50%;" align="center">
@@ -32,7 +32,7 @@
         {% endif %}
 
         {% if user.is_authenticated %}
-        <strong><br />You have already signed up</strong> <br></strong>
+        <strong>You have already signed up<br></strong>
         <a href="{% url 'index' %}">Click here to return to the homepage.</a><br />
         {% else %}
         <form id="signup_form" method="post" action="{% url 'register' %}" enctype="multipart.form-data">
@@ -78,7 +78,9 @@
                     </small>
                 </div>
             </div>
-            <button class="btn btn-primary" type="submit" name="submit">Register</button>
+            <div class="text-right pr-3">
+                <button class="btn btn-outline-secondary" type="submit" name="submit">Register</button>
+            </div>
         </form>
         {% endif %}
     </div>

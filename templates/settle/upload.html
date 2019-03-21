@@ -17,7 +17,7 @@
 <hr class="pb-1" style="width:70%" />
 
 <!-- Code here! -->
-<div style="margin:auto;width:70%;">
+<div style="margin:auto;width:50%;">
     <!-- Used to dispaly any form errors -->
     {% if upload_form.errors %}
     {% for field in upload_form %}
@@ -70,7 +70,9 @@
             <textarea class="form-control" id="exampleFormControlTextarea1" maxlength="300" name="description"
                 rows="3"></textarea>
         </div>
-        <button type="submit" class="btn btn-outline-secondary">Upload!</button>
+        <div class="text-right pr-3">
+            <button type="submit" class="btn btn-outline-secondary">Upload!</button>
+        </div>
     </form>
 </div>
 
