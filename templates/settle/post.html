@@ -51,6 +51,7 @@
               </div>
 
               <div class="tab-pane fade p-3 text-center" id="two" role="tabpanel" aria-labelledby="two-tab">
+              {% if user.is_authenticated %}
                 <form id="comment_form" method="post" action="" enctype="multipart.form-data">
                   {% csrf_token %}
                   <div class="form-group form-inline justify-content-center">
@@ -61,7 +62,7 @@
                   <input type="hidden" value={{ user }} name="author">
                   <button type="submit" class="btn btn-outline-secondary mb-3">Submit!</button>
                 </form>
-
+              {% endif %}
                 <hr class="pb-3" style="width:70%;margin:0 auto" />
                 {% if comments %}
                   <div>
