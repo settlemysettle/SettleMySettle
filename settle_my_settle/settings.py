@@ -140,3 +140,5 @@ MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
 
 AUTH_USER_MODEL = 'settle.user'
+
+LOGIN_URL = '/settle/'

@@ -27,11 +27,18 @@
             <li class="nav-item">
               <a class="nav-link cardTab" id="three-tab" data-toggle="tab" href="#three" role="tab" aria-controls="Three" aria-selected="false">Steam News</a>
             </li>
+            {% if request.user|has_group:"admin"  %}
+            <form id="post_del_form" method="post" action="" enctype="multipart.form-data" class="ml-auto">
+              {% csrf_token %}
+              <li class="nav-item">
+                <button type="submit" class="btn btn-outline-danger ml-auto pb-1 btn-sm" name="submit">Delete</button>
+              </li>
+              <input type="hidden" name="type" value="post_del" />
+              <input type="hidden" name="post" value="{{ post.id }}" />
+            </form>
+            {% endif %}
           </ul>
         </div>
-
-
-          <div class="card" style="border:none;border-right:solid;border-width: 1px;border-color:#D8D8D8"></div>
             <div class="tab-content mb-4" id="myTabContent">
 
               <div class="tab-pane fade show active p-3 text-center" id="one" role="tabpanel" aria-labelledby="one-tab">
@@ -44,6 +51,7 @@
               </div>
 
               <div class="tab-pane fade p-3 text-center" id="two" role="tabpanel" aria-labelledby="two-tab">
+              {% if user.is_authenticated %}
                 <form id="comment_form" method="post" action="" enctype="multipart.form-data">
                   {% csrf_token %}
                   <div class="form-group form-inline justify-content-center">
@@ -54,8 +62,8 @@
                   <input type="hidden" value={{ user }} name="author">
                   <button type="submit" class="btn btn-outline-secondary mb-3">Submit!</button>
                 </form>
-
-                <hr class="pb-3" style="width:70%;margin:0 auto"/>
+              {% endif %}
+                <hr class="pb-3" style="width:70%;margin:0 auto" />
                 {% if comments %}
                   <div>
                       {% for comment in comments %}
@@ -97,22 +105,15 @@
                       </div>
                       {% endfor %}
                   </div>
-    
                 <div class="pagination">
-                    <span class="step-links">
-                        {% if comments.has_previous %}
-                        <a href="?page=1">&laquo; first</a>
-                        <a href="?page={{ comments.previous_page_number }}">previous</a>
-                        {% endif %}
-    
-                        <span class="current">
-                            Page {{ comments.number }} of {{ comments.paginator.num_pages }}.
-                        </span>
-    
-                        {% if comments.has_next %}
-                        <a href="?page={{ comments.next_page_number }}">next</a>
-                        <a href="?page={{ comments.paginator.num_pages }}">last &raquo;</a>
-                        {% endif %}
+                  <span class="step-links">
+                    {% if comments.has_previous %}
+                    <a href="?page=1">&laquo; first</a>
+                    <a href="?page={{ comments.previous_page_number }}">previous</a>
+                    {% endif %}
+
+                    <span class="current">
+                      Page {{ comments.number }} of {{ comments.paginator.num_pages }}.
                     </span>
                 </div>     
                 {% else %}
