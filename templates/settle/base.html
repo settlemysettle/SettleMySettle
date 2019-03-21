@@ -128,7 +128,7 @@
     <!-- drop down menu for the login form -->
     {% if user.is_anonymous %}
     <div class="collapse" id="collapseMenu">
-        <div class="card card-body d-none d-md-block" id="loginDropdownBox">
+        <div class="card card-body d-none d-lg-block" id="loginDropdownBox">
             <form class="form-row my-2 my-md-0" d="login_form" method="post" action="{% url 'login' %}">
                 {% csrf_token %}
                 <input class="form-control form-control-sm my-1 bigMenuForm" type="text" name="username" value=""
