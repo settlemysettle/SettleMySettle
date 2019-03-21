@@ -20,6 +20,9 @@
                   <li class="nav-item">
                       <a class="nav-link active cardTab" id="one-tab" data-toggle="tab" href="#one" role="tab" aria-controls="One" aria-selected="true">Post</a>
                   </li>
+                  <li class="nav-item d-sm-none">
+                      <a class="nav-link cardTab" id="two-tab" data-toggle="tab" href="#two" role="tab" aria-controls="Two" aria-selected="false">Comments</a>
+                  </li>
                   <li class="nav-item">
                       <a class="nav-link cardTab" id="three-tab" data-toggle="tab" href="#three" role="tab" aria-controls="Three" aria-selected="false">Steam News</a>
                   </li>
@@ -27,8 +30,9 @@
               </div>
             <div class="card-group">
 
-            <div class="card col-8" style="border:none;border-right:solid;border-width: 1px;border-color:#D8D8D8">
+            <div class="card col-12 col-sm-8" style="border:none;border-right:solid;border-width: 1px;border-color:#D8D8D8">
               <div class="tab-content mb-4" id="myTabContent">
+
                 <div class="tab-pane fade show active p-3 text-center" id="one" role="tabpanel" aria-labelledby="one-tab">
                   <h5 class="card-title" style="color:black">{{ post.author }}</h5>
                   <hr style="width:70%"/>
@@ -37,6 +41,66 @@
                   <h5 class="card-title" style="color:black">Description</h5>
                   <p class="card-text" style="color:black">{{ post.description }}</p>      
                 </div>
+
+                <div class="tab-pane fade p-3 text-center d-sm-none" id="two" role="tabpanel" aria-labelledby="two-tab">
+                    <div>
+                        {% for comment in comments %}
+                        <div class="card mb-2">
+                          <div class="card-header">
+                            <div class="form-inline">
+                              <h5 class="mr-auto">{{ comment.author }}</h5>
+                              <h5 class="ml-auto">{{ comment.liking_users.count }} like{% if comment.liking_users.count != 1 %}s
+                                {% endif %}
+                              </h5>
+                            </div>
+                          </div>
+                          <div class="card-body">
+                            <p class="card-text">{{ comment.text }}</p>
+                            <form id="like_button" method="post" action="" enctype="multipart.form-data">
+                                {% csrf_token %}
+                                <input type="hidden" value="like" name="type">
+                                <input type="hidden" value="{{ comment.id }}" name="comment">
+                                <input type="hidden" value="{{ user }}" name="liker">
+                                {% if user.is_authenticated %}
+                                  {% if user in comment.liking_users.all %}
+                                  <input class="btn btn-outline-success" type="submit" name="like" value="Unlike" />
+                                  {% else %}
+                                  <input class="btn btn-outline-success" type="submit" name="unlike" value="Like" />
+                                  {% endif %}
+                                {% endif %}
+                            </form>
+                          </div>
+                        </div>
+                        {% if request.user|has_group:"admin"  %}
+                        <form id="del_form" method="post" action="" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="hidden" name="type" value="del" />
+                            <input type="hidden" name="comment" value="{{ comment.id }}" />
+                            <input type="submit" name="submit" value="X" />
+                        </form>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+        
+                    <div class="pagination">
+                        <span class="step-links">
+                            {% if comments.has_previous %}
+                            <a href="?page=1">&laquo; first</a>
+                            <a href="?page={{ comments.previous_page_number }}">previous</a>
+                            {% endif %}
+        
+                            <span class="current">
+                                Page {{ comments.number }} of {{ comments.paginator.num_pages }}.
+                            </span>
+        
+                            {% if comments.has_next %}
+                            <a href="?page={{ comments.next_page_number }}">next</a>
+                            <a href="?page={{ comments.paginator.num_pages }}">last &raquo;</a>
+                            {% endif %}
+                        </span>
+                    </div>           
+                </div>
+
                 <div class="tab-pane fade p-3" id="three" role="tabpanel" aria-labelledby="three-tab">
                   <h5 class="card-title" style="color:black">Steam News</h5>
                   <p class="card-text" style="color:black">Some quick example text to build on the card title and make up the bulk of the card's content.</p>           
@@ -45,7 +109,68 @@
               </div>
             </div>
 
-            <div class="card col-4" style="border:none;">Comments</div>
+            <div class="card col-6 mt-3 pb-3 d-none d-sm-block text-center" style="border:none;">
+                <h5 class="card-title mb-3" style="color:black">Comments</h5>
+                <hr class="pb-3" style="width:70%;margin:0 auto"/>
+                <div>
+                    {% for comment in comments %}
+                    <div class="card mb-2">
+                      <div class="card-header">
+                        <div class="form-inline">
+                          <h5 class="mr-auto">{{ comment.author }}</h5>
+                          <h5 class="ml-auto">{{ comment.liking_users.count }} like{% if comment.liking_users.count != 1 %}s
+                            {% endif %}
+                          </h5>
+                        </div>
+                      </div>
+                      <div class="card-body">
+                        <p class="card-text">{{ comment.text }}</p>
+                        <form id="like_button" method="post" action="" enctype="multipart.form-data">
+                            {% csrf_token %}
+                            <input type="hidden" value="like" name="type">
+                            <input type="hidden" value="{{ comment.id }}" name="comment">
+                            <input type="hidden" value="{{ user }}" name="liker">
+                            {% if user.is_authenticated %}
+                              {% if user in comment.liking_users.all %}
+                              <input class="btn btn-outline-success" type="submit" name="like" value="Unlike" />
+                              {% else %}
+                              <input class="btn btn-outline-success" type="submit" name="unlike" value="Like" />
+                              {% endif %}
+                            {% endif %}
+                        </form>
+                      </div>
+                    </div>
+                    {% if request.user|has_group:"admin"  %}
+                    <form id="del_form" method="post" action="" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="hidden" name="type" value="del" />
+                        <input type="hidden" name="comment" value="{{ comment.id }}" />
+                        <input type="submit" name="submit" value="X" />
+                    </form>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+    
+                <div class="pagination">
+                    <span class="step-links">
+                        {% if comments.has_previous %}
+                        <a href="?page=1">&laquo; first</a>
+                        <a href="?page={{ comments.previous_page_number }}">previous</a>
+                        {% endif %}
+    
+                        <span class="current">
+                            Page {{ comments.number }} of {{ comments.paginator.num_pages }}.
+                        </span>
+    
+                        {% if comments.has_next %}
+                        <a href="?page={{ comments.next_page_number }}">next</a>
+                        <a href="?page={{ comments.paginator.num_pages }}">last &raquo;</a>
+                        {% endif %}
+                    </span>
+                </div>           
+            </div>
+            </div>
+            </div>
             
             </div>
             </div>
