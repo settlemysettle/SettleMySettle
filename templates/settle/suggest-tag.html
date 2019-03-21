@@ -9,35 +9,6 @@
 {% block title_block %}Suggest Tag{% endblock %}
 
 {% block body_block %}
-<<<<<<< HEAD
-<div class="page-title-div">
-    <p class="page-title">Suggest a Tag.</p>
-    Suggest a new info tag that could be used to describe a post.
-</div>
-<hr class="pb-1" style="width:70%" />
-
-<div style="padding-top: 50px">
-    <div style="border-style: solid;border-width: 1px;background-color: lightgray;padding: 20px;display: inline-block;"
-        align="left">
-        <form id="suggest-form" method="post" action="{% url 'tags' %}" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="exampleFormControlTextarea1">Tag name</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" name="text" rows="1"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="cPicker">Pick a colour</label>
-                <input type="color" class="form-control" name="colour" value="" id="cPicker" />
-            </div>
-            <div class="form-group">
-                <label for="gTag">Game tag</label>
-                <input class="form-control" type="checkbox" name="is_game_tag" value="" id="gTag" />
-            </div>
-            <div class="form-group">
-                <label for="gTag">Steam app id</label>
-                <input class="form-control" type="number" name="steamAppId" value="" id="sAppID" />
-            </div>
-=======
 <!-- Code here! -->
 <div style="height:10%;width:70%;margin:0 auto;text-align: center;padding-top:10px;font-weight:330">
     <p style="margin-bottom:0px;font-weight:400">Suggest a new info/game tag!</p>
@@ -64,7 +35,6 @@
                     <label for="gTag">Steam app id</label>
                     <input class="form-control" type="number" name="steamAppId" value="" id="sAppID" />
                 </div>
->>>>>>> 8abf13fd6b9e85e0fc3b0fe811f758a92aaee42f
 
                 <input type="hidden" name="user" value="{{ user }}" />
 
