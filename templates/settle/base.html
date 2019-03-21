@@ -29,9 +29,6 @@
 <body>
     <!-- Navigation Bar -->
     <nav class="nav navbar-expand-lg navbar-dark pr-2" id="navBar">
-        {% if request.user|has_group:"admin"  %}
-        <h1>hello Apex boy, plz remember to remove me</h1>
-        {% endif %}
 
         <!-- Logo and App Name -->
         <a class="navbar-brand py-3 px-3" href="{% url 'index' %}">
