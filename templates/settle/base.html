@@ -85,9 +85,14 @@
 
             <!-- Form for the username and password -->
             {% if user.is_anonymous %}
-            <form class="form-row my-2 my-lg-0">
-                <input class="form-control ml-3 mb-2 d-lg-none smallMenuForm" type="text" placeholder="Username">
-                <input class="form-control ml-3 d-lg-none smallMenuForm" type="password" placeholder="Password">
+            <form class="form-row my-2 my-lg-0" d="login_form" method="post" action="{% url 'login' %}">
+                {% csrf_token %}
+                <input class="form-control ml-3 mb-2 d-lg-none smallMenuForm" type="text" placeholder="Username" name="username">
+                <input class="form-control ml-3 d-lg-none smallMenuForm" type="password" placeholder="Password" name="password">
+                <!-- Login button for when collapsed -->
+                <button type="submit" class="btn row btn-primary mt-3 ml-3 d-lg-none">Login</button>
+                <a href="{% url 'register' %}"><button type="button" class="btn row btn-primary mt-3 ml-4 d-lg-none"
+                    id="signupButton">Sign up</button></a>
             </form>
             {% endif %}
             <!-- Very temp valid check -->
@@ -106,16 +111,15 @@
                 <!-- Login button for when not collapsed -->
                 <a href="{% url 'account' %}"><button type="button"
                         class="btn btn-primary d-none d-lg-block">Account</button></a>
-                <!-- Login button for when collapsed -->
-                <button type="submit" class="btn btn-primary ml-3 d-lg-none">Account</button>
+                <!-- Account button for when collapsed -->
+                <a href="{% url 'account' %}"><button type="button"
+                        class="btn btn-primary ml-3 d-lg-none">Account</button>
                 <a href="{% url 'logout' %}"><button type="button"
                         class="btn btn-primary ml-1 mr-2 my-2 my-lg-0">Logout</button></a>
                 {% else %}
                 <!-- Login button for when not collapsed -->
                 <button type="button" class="btn btn-primary d-none d-lg-block" id="loginButton">Login</button>
-                <!-- Login button for when collapsed -->
-                <button type="submit" class="btn btn-primary ml-3 d-lg-none">Login</button>
-                <a href="{% url 'register' %}"><button type="button" class="btn btn-primary ml-1 mr-2 my-2 my-md-0"
+                <a href="{% url 'register' %}"><button type="button" class="btn btn-primary d-none d-lg-block ml-1 mr-2 my-2 my-md-0"
                         id="signupButton">Sign up</button></a>
                 {% endif %}
             </form>
@@ -134,7 +138,7 @@
                     placeholder="Username" aria-label="Username">
                 <input class="form-control form-control-sm bigMenuForm" type="password" name="password" value=""
                     placeholder="Password" aria-label="Password">
-                <button class="btn btn-primary btn-sm my-1" type="submit" id="finishLoginButton">Submit</button>
+                <button class="btn btn-primary btn-sm" type="submit" id="finishLoginButton">Submit</button>
             </form>
         </div>
     </div>
