@@ -60,7 +60,7 @@ def feed(request):
     # Get the game tags that users wish to see
     fav_games = list(request.user.favourite_games.all())
     # Get the posts we will display but only if they match the fav games tag
-    post_list = Post.objects.all().filter(game_tag__in=fav_games)
+    post_list = Post.objects.all().filter(game_tag__in=fav_games).order_by("-date_submitted")
     # Used for infinte scrolling
     page = request.GET.get('page', 1)
     paginator = Paginator(post_list, 6)
@@ -320,7 +320,6 @@ def suggest_tag(request):
                 # Make new tag, get the author
                 new_tag = suggest_tags_form.save(commit=False)
                 new_tag.is_pending = True
-
 
                 if "is_game_tag" in request.POST:
                     new_tag.is_game_tag = True
