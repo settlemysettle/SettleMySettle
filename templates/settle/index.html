@@ -2,67 +2,80 @@
 {% load staticfiles %}
 
 {% block style_block %}
-    <!-- Import custom CSS here! -->
+<link rel="stylesheet" type="text/css" href="{% static "css/index.css" %}">
 {% endblock %}
 
 {% block title_block %}Home{% endblock %}
 
 {% block body_block %}
-    <!-- Code here! -->
-    <div class="row infinite-container">
-        {% for post in posts %}
-            <div class="col-md-6 col-lg-4 infinite-item pb-4" align="center" style="padding-top:50px">
-                <div class="row justify-content-center">
-                    <p class="col-sm-10" style="background-color:#56c9ff;padding:2px;padding-left:15px;text-align: left;border-style:solid;border-width: 1px;width:90%">{{ post.author }}</p>
-                </div>
-                <div class="row justify-content-center">
-                    <a href="{% url "post" post.id %}"><img class="img-fluid" src="{{ MEDIA_URL }}{{ post.picture }}" style="height:200px;width:300px"></a>
-                </div>
-                <div class = "row justify-content-center" style= "padding-top:20px">
-                    <div class = "col-3 col-lg-4 col-xl-3">
-                        <span class= "btn tag mb-1" style="background-color:{{ post.game_tag.colour }};width:80%">{{ post.game_tag }}</span>
-                    </div>
-                    <div class = "col-2 col-lg-3 col-xl-2">
-                        <span class= "btn tag mb-1" style="background-color:{{ post.info_tags.all.0.colour }};width:80%">{{ post.info_tags.all.0 }}</span>
-                    </div>
-                    {% if post.info_tags.all.1 %}
-                    <div class = "col-2 col-lg-3 col-xl-2">
-                        <span class= "btn tag" style="background-color:{{ post.info_tags.all.1.colour }};width:80%">{{ post.info_tags.all.1 }}</span>
-                    </div>
-                    {% endif %}
-                    {% if post.info_tags.all.2 %}
-                    <div class = "col-2 col-lg-3 col-xl-2">
-                        <span class= "btn tag" style="background-color:{{ post.info_tags.all.2.colour }};width:80%">{{ post.info_tags.all.2 }}</span>
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-    
-      {% if posts.has_next %}
-        <a class="infinite-more-link" href="?page={{ posts.next_page_number }}"></a>
+
+<!-- Page Header -->
+{% if user.is_anonymous %} 
+<div class = "page-title-div">
+  <p class = "page-title">Settle My Settle is a place for enthusiasts of strategy games to share
+    their cities and experiences in game.</p>
+  First time user? Register by clicking <a href="{% url 'register' %}">Sign Up</a>!
+</div>
+<hr class="page-title-break" />
+{% endif %}
+
+{% block message_block %}
+{% endblock %}
+
+<!-- Page Body -->
+<div class="main-div">
+  {% if user.is_authenticated %}
+  <div class="row infinite-container pt-4 pb-2">
+    {% else %}
+    <div class="row infinite-container pt-1 pb-2">
       {% endif %}
-    
-      <div class="loading" style="display: none;">
-        Loading...
+
+      <!-- Construct and Display Post -->
+      {% for post in posts %}
+      <div class="col-md-6 col-lg-4 infinite-item pb-4" align="center">
+        <div class="row justify-content-center">
+          <div class="post-div" id="pic">
+            <div class="form-inline post-sub-div">
+                {{ post.author }}
+                <span class="badge badge-secondary ml-auto mr-1 post-gametag" 
+                      style="background-color:{{ post.game_tag.colour }}">{{ post.game_tag }}</span>
+            </div>
+            <a href="{% url "post" post.id %}"><img class="img-fluid post-picture" src="{{ MEDIA_URL }}{{ post.picture }}"></a>
+          </div>
+        </div>
       </div>
-    
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<!-- Infinite page Length -->
+{% if posts.has_next %}
+  <a class="infinite-more-link" href="?page={{ posts.next_page_number }}"></a>
+{% endif %}
+
+<!-- Display loading Message -->
+<div class="loading loading-message">
+  Loading...
+</div>
+
 {% endblock %}
 
 {% block script_block %}
-    <!-- Import custom JS here! -->
-    <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
-    <script src="{% static 'js/infinite.min.js' %}"></script>
-    <script>
-        var infinite = new Waypoint.Infinite({
-          element: $('.infinite-container')[0],
-          onBeforePageLoad: function () {
-            $('.loading').show();
-          },
-          onAfterPageLoad: function ($items) {
-            $('.loading').hide();
-          }
-        });
-      </script>
+
+<!-- JavaScript for Infinite Page -->
+<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'js/infinite.min.js' %}"></script>
+<script>
+  var infinite = new Waypoint.Infinite({
+    element: $('.infinite-container')[0],
+    onBeforePageLoad: function () {
+      $('.loading').show();
+    },
+    onAfterPageLoad: function ($items) {
+      $('.loading').hide();
+    }
+  });
+</script>
+
 {% endblock %}

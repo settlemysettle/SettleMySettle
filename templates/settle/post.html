@@ -4,146 +4,180 @@
 
 {% block style_block %}
 <!-- Import custom CSS here! -->
+<link rel="stylesheet" type="text/css" href="{% static "css/post.css" %}">
 {% endblock %}
 
 {% block title_block %}View Post{% endblock %}
 
 {% block body_block %}
-<div class="row" style="margin-top:6px">
-    <div class="col-lg" style="margin-left:25px">
-        <div class="row" style="background-color: #56c9ff;border-style:solid;border-width: 1px;">
-            <div class="col-10">
-                <p style="font-weight: bold">{{ post.author }}</p>
-            </div>
-            <div class="col-2">
-                <p style="text-align: right">Comments: {{ comment_count }}</p>
-            </div>
-        </div>
 
-        <div class="row" style="border-style:solid;border-width: 1px;">
-            <div class="row-8" style="margin: auto;">
-                <img src="{{ MEDIA_URL }}{{ post.picture }}" data-toggle="modal" data-target="#pic-modal"
-                    class="modalImg" style="max-height:550px;padding-top: 15px">
-            </div>
-            <div class="w-100"></div>
-            <div class="row-2" style="padding: 20px;margin: auto;">
-                <span class="btn tag mb-1"
-                    style="background-color:{{ post.game_tag.colour }}">{{ post.game_tag }}</span>
-                <span class="btn tag mb-1"
-                    style="background-color:{{ post.info_tags.all.0.colour }}">{{ post.info_tags.all.0 }}</span>
-                {% if post.info_tags.all.1 %}
-                <span class="btn tag"
-                    style="background-color:{{ post.info_tags.all.1.colour }}">{{ post.info_tags.all.1 }}</span>
-                {% endif %}
-                {% if post.info_tags.all.2 %}
-                <span class="btn tag"
-                    style="background-color:{{ post.info_tags.all.2.colour }}">{{ post.info_tags.all.2 }}</span>
-                {% endif %}
-            </div>
-        </div>
+<div style="margin:0 auto;width:100%">
+  <div class="row justify-content-center">
+    <div class="col-11 col-md-8">
+      <div class="card my-3 tab-card">   
 
-        <div class="row" style="border-style:solid;border-width: 1px;">
-            <span>
-                <p style="background-color:#56c9ff;">Description:</p>
-                <p>{{ post.description }}</p>
-            </span>
-        </div>
-
-        {% if user.is_authenticated %}
-        <div class="row" style="border-style:solid;border-width: 1px;">
-            <p>Post a comment: </p>
-            <form id="comment_form" method="post" action="" enctype="multipart.form-data">
-
-                {% csrf_token %}
-                {% for field in form %}
-                <p>
-                    {{ field }}
-                    {% if field.help_text %}
-                    <small style="color: grey">{{ field.help_text }}</small>
-                    {% endif %}
-                    {% for error in field.errors %}
-                    <p style="color: red">{{ error }}</p>
-                    {% endfor %}
-                </p>
-                {% endfor %}
-                <input type="hidden" value="com" name="type">
-                <input type="hidden" value={{ user }} name="author">
-                <input type="submit" name="submit" value="Submit" />
+        <div class="card-header tab-card-header">
+          <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active cardTab" id="one-tab" data-toggle="tab" href="#one" role="tab" aria-controls="One" aria-selected="true">Post</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link cardTab" id="two-tab" data-toggle="tab" href="#two" role="tab" aria-controls="Two" aria-selected="true">Comments ({{ comment_count }})</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link cardTab" id="three-tab" data-toggle="tab" href="#three" role="tab" aria-controls="Three" aria-selected="true">Steam News</a>
+            </li>
+            {% if request.user|has_group:"admin"  %}
+            <form id="post_del_form" method="post" action="" enctype="multipart.form-data" class="ml-auto">
+              {% csrf_token %}
+              <li class="nav-item">
+                <button type="submit" class="btn btn-outline-danger ml-auto pb-1 btn-sm" name="submit">Delete</button>
+              </li>
+              <input type="hidden" name="type" value="post_del" />
+              <input type="hidden" name="post" value="{{ post.id }}" />
             </form>
+            {% endif %}
+          </ul>
         </div>
-        {% endif %}
+            <div class="tab-content mb-4" id="myTabContent">
 
-        <div class="row">
-            <div>
-                <p>Comments:</p>
-                {% for comment in comments %}
-                {{ comment.text }}
-                ( {{ comment.liking_users.count }} likes)
-                <form id="like_button" method="post" action="" enctype="multipart.form-data">
-                    {% csrf_token %}
-                    <input type="hidden" value="like" name="type">
-                    <input type="hidden" value="{{ comment.id }}" name="comment">
-                    <input type="hidden" value="{{ user }}" name="liker">
-                    {% if user in comment.liking_users.all %}
-                    <input type="submit" name="like" value="Unlike" />
-                    {% else %}
-                    <input type="submit" name="unlike" value="Like" />
-                    {% endif %}
+              <div class="tab-pane fade show active p-3 text-center" id="one" role="tabpanel" aria-labelledby="one-tab">
+                <h5 class="card-title" style="color:black">{{ post.author }}</h5>
+                <hr style="width:70%"/>
+                <img class="card-img img-fluid modalImg" src="{{ MEDIA_URL }}{{ post.picture }}" alt="post img" id="postImg" data-toggle="modal" data-target="#pic-modal">
+                <hr style="width:70%"/>
+                <div class="form-inline justify-content-center">
+                  <h2><span class="badge badge-secondary mr-1 tagText" style="background-color:{{ post.game_tag.colour }};
+                  border-style:solid;border-width:1px;border-color:#D8D8D8;">{{ post.game_tag.text }}</span></h2>
+                  {% if post.info_tags.all.0 %}
+                    <h2><span class="badge badge-secondary tagText" style="background-color:{{ post.info_tags.all.0.colour }};
+                    border-style:solid;border-width:1px;border-color:#D8D8D8;">{{ post.info_tags.all.0.text }}</span></h2>
+                  {% endif %}
+                  {% if post.info_tags.all.1 %}
+                    <h2><span class="badge badge-secondary ml-1 tagText" style="background-color:{{ post.info_tags.all.1.colour }};
+                    border-style:solid;border-width:1px;border-color:#D8D8D8;">{{ post.info_tags.all.1.text }}</span></h2>
+                  {% endif %}
+                  {% if post.info_tags.all.2 %}
+                    <h2><span class="badge badge-secondary ml-1 tagText" style="background-color:{{ post.info_tags.all.2.colour }};
+                    border-style:solid;border-width:1px;border-color:#D8D8D8;">{{ post.info_tags.all.2.text }}</span></h2>
+                  {% endif %}
+                  {% if post.info_tags.all.3 %}
+                    <h2><span class="badge badge-secondary ml-1 tagText" style="background-color:{{ post.info_tags.all.3.colour }};
+                    border-style:solid;border-width:1px;border-color:#D8D8D8;">{{ post.info_tags.all.3.text }}</span></h2>
+                  {% endif %}
+                  {% if post.info_tags.all.4 %}
+                    <h2><span class="badge badge-secondary ml-1 tagText" style="background-color:{{ post.info_tags.all.4.colour }};
+                    border-style:solid;border-width:1px;border-color:#D8D8D8;">{{ post.info_tags.all.4.text }}</span></h2>
+                  {% endif %}
+                </div>
+                <hr style="width:70%"/>
+                <h5 class="card-title" style="color:black">Description</h5>
+                <p class="card-text" style="color:black">{{ post.description }}</p>      
+              </div>
+
+              <div class="tab-pane fade p-3 text-center" id="two" role="tabpanel" aria-labelledby="two-tab">
+              {% if user.is_authenticated %}
+                <form id="comment_form" method="post" action="" enctype="multipart.form-data">
+                  {% csrf_token %}
+                  <div class="form-group form-inline justify-content-center">
+                    <label class="mr-2 mb-1" for="exampleFormControlTextarea1">Want to say something?</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" name="text" rows="3"></textarea>
+                  </div>
+                  <input type="hidden" value="com" name="type">
+                  <input type="hidden" value={{ user }} name="author">
+                  <button type="submit" class="btn btn-outline-secondary mb-3">Submit!</button>
                 </form>
-                {% if request.user|has_group:"admin"  %}
-                <form id="del_form" method="post" action="" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <input type="hidden" name="type" value="del" />
-                    <input type="hidden" name="comment" value="{{ comment.id }}" />
-                    <input type="submit" name="submit" value="X" />
-                </form>
-                {% endif %}
-                <form></form>
-                <br />
-                <br />
-                {% endfor %}
-            </div>
-
-            <div class="pagination">
-                <span class="step-links">
-                    {% if comments.has_previous %}
-                    <a href="?page=1">&laquo; first</a>
-                    <a href="?page={{ comments.previous_page_number }}">previous</a>
-                    {% endif %}
-
-                    <span class="current">
+              {% endif %}
+                <hr class="pb-3" style="width:70%;margin:0 auto" />
+                {% if comments %}
+                  {% for comment in comments %}
+                  <div class="card mb-2">
+                    <div class="card-header">
+                      <div class="form-inline">
+                        <h5 class="mr-auto">{{ comment.author }}</h5>
+                        <h5 class="ml-auto">{{ comment.liking_users.count }} like{% if comment.liking_users.count != 1 %}s
+                        {% endif %}
+                        </h5>
+                      </div>
+                    </div>
+                    <div class="card-body">
+                      <p class="card-text">{{ comment.text }}</p>
+                      <div class="form-inline justify-content-center">
+                      <form id="like_button" method="post" action="" enctype="multipart.form-data">
+                          {% csrf_token %}
+                          <input type="hidden" value="like" name="type">
+                          <input type="hidden" value="{{ comment.id }}" name="comment">
+                          <input type="hidden" value="{{ user }}" name="liker">
+                          {% if user.is_authenticated %}
+                            {% if user in comment.liking_users.all %}
+                            <input class="btn btn-outline-success" type="submit" name="like" value="Unlike" />
+                            {% else %}
+                            <input class="btn btn-outline-success" type="submit" name="unlike" value="Like" />
+                            {% endif %}
+                          {% endif %}
+                      </form>
+                      {% if request.user|has_group:"admin"  %}
+                      <form id="del_form" method="post" action="" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          <input type="hidden" name="type" value="del" />
+                          <input type="hidden" name="comment" value="{{ comment.id }}" />
+                          <input class="btn btn-outline-danger ml-1" type="submit" name="submit" value="Delete" />
+                      </form>
+                      {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                  {% endfor %}
+                      
+                  <div class="pagination justify-content-center pt-3">
+                    <span class="step-links">
+                      {% if comments.has_previous %}
+                      <a href="?page=1">&laquo; first</a>
+                      <a href="?page={{ comments.previous_page_number }}">previous</a>
+                      {% endif %}
+      
+                      <span class="current">
                         Page {{ comments.number }} of {{ comments.paginator.num_pages }}.
+                      </span>
+      
+                      {% if comments.has_next %}
+                      <a href="?page={{ comments.next_page_number }}">next</a>
+                      <a href="?page={{ comments.paginator.num_pages }}">last &raquo;</a>
+                      {% endif %}
                     </span>
-
-                    {% if comments.has_next %}
-                    <a href="?page={{ comments.next_page_number }}">next</a>
-                    <a href="?page={{ comments.paginator.num_pages }}">last &raquo;</a>
-                    {% endif %}
-                </span>
+                  </div> 
+                {% else %}
+                  <h6 class="card-title pt-3" style="color:black">There's no comments for this post - post one!</h6>
+                {% endif %}      
             </div>
+
+            <div class="tab-pane fade p-3" id="three" role="tabpanel" aria-labelledby="three-tab">
+              {% if result_list %}
+              <!-- Display search results in an ordered list -->
+              <div class="list-group">
+                  {% for result in result_list %}
+                  <div class="list-group-item">
+                      <h4 class="list-group-item-heading">
+                          <a href="{{ result.link }}" target=_blank>{{ result.title }}</a>
+                      </h4>
+                      <strong>{{ result.feedlabel }}</strong>
+                      {% if result.author %}
+                      - {{ result.author }}
+                      {% endif %}
+                      <p>{{ result.summary }}</p>
+                  </div>
+                  {% endfor %}
+              </div>
+              {% else %}
+                <h5 class="card-title text-center" style="color:black">There's no news from Steam for this game!</h5>
+              {% endif %}       
+            </div>
+  
+          </div>
+
         </div>
     </div>
-
-    <div class="col-lg">
-        {% if result_list %}
-        <h3>Steam News</h3>
-        <!-- Display search results in an ordered list -->
-        <div class="list-group">
-            {% for result in result_list %}
-            <div class="list-group-item">
-                <h4 class="list-group-item-heading">
-                    <a href="{{ result.link }}">{{ result.title }}</a>
-                </h4>
-                <strong>{{ result.feedlabel }}</strong>
-                {% if result.author %}
-                - {{ result.author }}
-                {% endif %}
-                <p>{{ result.summary }}</p>
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-    </div>
+  </div>
 </div>
 
 {% endblock %}

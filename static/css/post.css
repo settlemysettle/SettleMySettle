@@ -1,0 +1,21 @@
+#postImg {
+    max-width:30em;
+    height:auto;
+}
+
+.cardTab.nav-link:hover {
+    color: black !important;
+}
+
+.cardTab.nav-link:focus {
+    color: black !important;
+}
+
+.active {
+    color: black !important;
+}
+
+.tagText {
+    font-weight: 350;
+    color:#00000F;
+}

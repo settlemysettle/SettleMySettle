@@ -321,8 +321,11 @@ def suggest_tag(request):
                 new_tag = suggest_tags_form.save(commit=False)
                 new_tag.is_pending = True
 
-                if not new_tag.is_game_tag:
+                if "is_game_tag" in request.POST:
+                    new_tag.is_game_tag = True
+                else:
                     # info tags shouldn't have a steam app id
+                    new_tag.is_game_tag = False
                     new_tag.steamAppId = 0
                 u = request.POST.get('user')
                 user = User.objects.get(username=u)

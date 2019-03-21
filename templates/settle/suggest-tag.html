@@ -3,64 +3,147 @@
 {% load admintag %}
 
 {% block style_block %}
-<!-- Import custom CSS here! -->
+<link rel="stylesheet" type="text/css" href="{% static "css/suggest-tag.css" %}">
 {% endblock %}
 
 {% block title_block %}Suggest Tag{% endblock %}
 
 {% block body_block %}
-<!-- Code here! -->
-<form id="suggest-form" method="post" action="{% url 'tags' %}" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ suggest_form.as_p }}
-    <input type="hidden" name="user" value="{{ user }}" />
-    {% if request.user|has_group:"admin" %}
-        <input type="hidden" name="type" value="approve" />
-        <input type="submit" name="submit" value="Approve" />
-    {% else %}
-        <input type="hidden" name="type" value="suggest" />
-        <input type="submit" name="submit" value="Suggest" />
+
+<!-- Page Header -->
+<div class="page-title-div">
+    <p class="page-title">Suggest a Tag</p>
+    A tag you want to describe your post doesn't exist? Submit it to be approved by admins!
+</div>
+
+<!-- <div style="margin:auto;width:45%;"> -->
+<hr class="pb-1 page-title-break" />
+<!-- Page Body -->
+<div class="main-div">
+    <!-- Used to dispaly any form errors -->
+
+
+    {% if suggest_form.errors %}
+    {% for field in suggest_form %}
+    {% for error in field.errors %}
+    <div class="alert alert-danger">
+        <strong>{{ field.name }} - {{ error|escape }}</strong>
+    </div>
+    {% endfor %}
+    {% endfor %}
+    {% for error in suggest_form.non_field_errors %}
+    <div class="alert alert-danger">
+        <strong>{{ error|escape }}</strong>
+    </div>
+    {% endfor %}
     {% endif %}
-</form>
+    <div class="row" id="tag_form">
+        {% if request.user|has_group:"admin" %}
+        <div class="col-6 main-div">
+            {% else %}
+            <div class="col-12">
+                {% endif %}
 
-<span id="preview-tag" class="btn tag mb-1" style="background-color: #FFFF00">Your Text Here</span>
-
-<a id="preview-steam" href="https://store.steampowered.com/app/0" target="_blank">Test Steam Link</a>
-<!-- Code for admin queue -->
-{% if request.user|has_group:"admin" %}
-
-    {% if pending_tags %}
-    <table>
-        <th>
-        <td>Tag</td>
-        <td>Steam Link</td>
-        <td>Actions</td>
-        </th>
-        {% for tag in pending_tags %}
-        <tr>
-            <td id="{{ tag.colour }}{{ tag }}"><span class="btn tag mb-1" style="background-color:{{ tag.colour }}">{{ tag }}</span></td>
-            <td id="{{ tag.steamAppId }}">{% if tag.steamAppId %}
-                <a href="https://store.steampowered.com/app/{{ tag.steamAppId }}" target="_blank">{{ tag }}</a>
-                {% endif %}</td>
-            <td id={{ tag.is_game_tag }}><button type="button" class="edit-tag" id="{{ tag }}">Edit</button></td>
-            <td>    
-                <form id="del_form" method="post" action="{% url 'tags' %}" enctype="multipart/form-data">
+                <!-- Suggest Tag Form -->
+                <form id="suggest-form" method="post" action="{% url 'tags' %}" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <input type="hidden" name="type" value="del" />
-                    <input type="hidden" name="tag" value="{{ tag.id }}" />
-                    <input type="submit" name="submit" value="X" />
+
+                    <!-- Enter tag name -->
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Tag name</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" name="text" rows="1"
+                            maxlength="20"></textarea>
+                    </div>
+
+                    <!-- Choose the colour -->
+                    <div class="form-group">
+                        <label for="cPicker">Pick a colour</label>
+                        <input type="color" class="form-control" name="colour" value="" id="cPicker" />
+                    </div>
+
+                    <!-- Set as Game Tag -->
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="is_game_tag" value="" id="gTag" />
+                        <label for="gTag">Game tag</label>
+                    </div>
+
+                    <!-- Add Steam AppID -->
+                    <div class="form-group">
+                        <label for="sAppID">Steam app id</label>
+                        <input class="form-control" type="number" name="steamAppId" value="" id="sAppID" />
+                    </div>
+
+                    <input type="hidden" name="user" value="{{ user }}" />
+
+
+                    {% if request.user|has_group:"admin" %}
+                    <input type="hidden" name="type" value="approve" />
+                    <input type="submit" class="btn btn-outline-secondary" name="submit" value="Approve" />
+                    {% else %}
+                    <input type="hidden" name="type" value="suggest" />
+                    <input type="submit" class="btn btn-outline-secondary" name="submit" value="Suggest" />
+                    {% endif %}
                 </form>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
-    {% endif %}
-{% endif %}
+                <br />
 
+                <!-- Preview of Tag -->
+                <p>Preview of your tag.</p>
+                <span id="preview-tag" class="btn tag mb-1 tag-preview">Your Text Here</span>
+                <a id="preview-steam" class="steam-link" href="https://store.steampowered.com/app/0"
+                    target="_blank">Test Steam Link</a>
+            </div>
 
-{% endblock %}
+            <!-- Display Tag queue for Admins -->
+            {% if request.user|has_group:"admin" %}
+            <div class="col-6 tag-queue-div">
+                <h4 class="lead">Approve tags</h4>
+                {% if pending_tags %}
+                <table class="table">
+                    <tr>
+                        <td>Tag</td>
+                        <td>Steam Link</td>
+                        <td>Actions</td>
+                    </tr>
 
-{% block script_block %}
-<!-- Import custom JS here! -->
-<script src="{% static "js/suggest_tag.js" %}"></script>
-{% endblock %}
+                    <!-- Display Pending Tags -->
+                    {% for tag in pending_tags %}
+                    <tr>
+                        <td id="{{ tag.colour }}{{ tag }}"><span class="btn tag mb-1"
+                                style="background-color:{{ tag.colour }}">{{ tag }}</span></td>
+                        <td id="{{ tag.steamAppId }}">{% if tag.steamAppId %}
+                            <a href="https://store.steampowered.com/app/{{ tag.steamAppId }}"
+                                target="_blank">{{ tag }}</a>
+                            {% endif %}</td>
+                        <td class="edit-tag"><button class="btn btn-outline-secondary btn-sm"
+                                type="button">Edit</button>
+                        </td>
+                        <td id={{ tag.is_game_tag }}>
+
+                            <!-- Delete a pending Tag -->
+                            <form id="del_form" method="post" action="{% url 'tags' %}" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <input type="hidden" name="type" value="del" />
+                                <input type="hidden" name="tag" value="{{ tag.id }}" />
+                                <input class="btn btn-outline-danger btn-sm" type="submit" name="submit"
+                                    value="Delete" />
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% else %}
+                <br />
+                <h2 class="lead">No tags in queue</h2>
+                {% endif %}
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+    {% endblock %}
+
+    {% block script_block %}
+
+    <!-- JavaScript for Suggest Tag -->
+    <script src="{% static "js/suggest_tag.js" %}"></script>
+    {% endblock %}

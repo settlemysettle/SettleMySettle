@@ -2,22 +2,94 @@
 {% load staticfiles %}
 
 {% block style_block %}
-    <!-- Import custom CSS here! -->
-    <link rel="stylesheet" type="text/css" href="{% static "css/upload.css" %}">
+<link rel="stylesheet" type="text/css" href="{% static "css/upload.css" %}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
 {% endblock %}
 
 {% block title_block %}Upload{% endblock %}
 
 {% block body_block %}
-    <!-- Code here! -->
+
+<!-- Page Header -->
+<div class="page-title-div">
+    <p class="page-title">Upload a post</p>
+    Select an image, game tag, up to five info tags and write something to describe your post!
+</div>
+<hr class="pb-1 page-title-break" />
+
+<!-- Page Body -->
+<div class="main-div">
+
+    <!-- Display any form errors -->
+    {% if upload_form.errors %}
+    {% for field in upload_form %}
+    {% for error in field.errors %}
+    <div class="alert alert-danger">
+        <strong>{{ field.name }} - {{ error|escape }}</strong>
+    </div>
+    {% endfor %}
+    {% endfor %}
+    {% for error in upload_form.non_field_errors %}
+    <div class="alert alert-danger">
+        <strong>{{ error|escape }}</strong>
+    </div>
+    {% endfor %}
+    {% endif %}
+
+    <!-- Display success message -->
+    {% if message %}
+    <div class="alert alert-success">
+        <strong>Success!</strong>
+    </div>
+    {% endif %}
+
+    <!-- Upload Form -->
     <form id="upload_post" method="post" action="{% url 'upload' %}" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ upload_form.as_p }}
-        <input type="submit" name="submit" value="Upload!"/>
+
+        <!-- Upload a Photo -->
+        <div class="form-group">
+            <label for="exampleFormControlFile1">Upload a Picture</label>
+            <input type="file" class="btn form-control-file" id="exampleFormControlFile1" name="picture">
+        </div>
+
+        <!-- Choose Game tag -->
+        <p>Pick a game tag</p>
+        <div class="form-group">
+            <select class="selectpicker" data-live-search="true" name="game_tags">
+                {% for tag in game_tags %}
+                <option>{{ tag }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Choose Info tags -->
+        <p>Pick up to 5 info tags</p>
+        <div class="form-group">
+            <select class="selectpicker" multiple data-live-search="true" name="info_tag_list">
+                {% for tag in info_tags %}
+                <option>{{ tag }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Enter a Description -->
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1">Enter a Comment</label>
+            <textarea class="form-control" id="exampleFormControlTextarea1" maxlength="300" name="description"
+                rows="3"></textarea>
+        </div>
+        <div class="text-right pr-3">
+            <button type="submit" class="btn btn-outline-secondary">Upload!</button>
+        </div>
     </form>
-    
+</div>
+
+<br><br>
 {% endblock %}
 
 {% block script_block %}
-    <!-- Import custom JS here! -->
+<!-- Import custom JS here! -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
+<script>$('selectpicker').selectpicker();</script>
 {% endblock %}
