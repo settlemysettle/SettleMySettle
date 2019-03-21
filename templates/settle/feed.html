@@ -2,8 +2,11 @@
 {% load staticfiles %}
 {% block message_block %}
 <div class="page-title-div">
-    <p class="page-title">My feed is a personalised page where you will only see posts from your favourite games.</p>
-    Feed empty? Choose some of your favourite games on your account page!
+    <p class="page-title">Your feed is a personalised page where you can see posts 
+        from your favourite games chosen in <a href="{% url 'account' %}">Account</a>.</p>
+    {% if not posts %}
+        Feed empty? Choose some of your favourite games on your account page!
+    {% endif %}
 </div>
-<hr class="pb-1" style="width:70%" />
+<hr style="width:70%" />
 {% endblock %}

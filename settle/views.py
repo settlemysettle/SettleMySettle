@@ -8,7 +8,7 @@ from django.shortcuts import render_to_response
 from django.db.models import Count
 from settle.steam_news import get_news
 from settle.models import Post, Comment, Tag, User
-from settle.forms import SignupForm, CommentForm, UploadForm, SuggestTag, AddFavGame
+from settle.forms import SignupForm, CommentForm, UploadForm, SuggestTag
 from django import forms
 from django.utils import timezone
 from settle.validators import CPasswordValidator
@@ -159,6 +159,7 @@ def post(request, post_id):
     if request.method == 'POST':
         # Check the type of post request
         if request.POST.get('type') == "com":
+            print("here")
             # Use the CommentForm
             comment_form = CommentForm(data=request.POST)
             context_dict['form'] = comment_form
@@ -221,7 +222,7 @@ def post(request, post_id):
     app_id = post.game_tag.steamAppId
 
     if app_id != 0:
-        result_list = get_news(app_id, 10)
+        result_list = get_news(app_id, 5)
     # result_list = get_news(440, 5)
     context_dict["result_list"] = result_list
     context_dict["post"] = post
@@ -324,6 +325,10 @@ def suggest_tag(request):
                 # Make new tag, get the author
                 new_tag = suggest_tags_form.save(commit=False)
                 new_tag.is_pending = True
+
+                if not new_tag.is_game_tag:
+                    # info tags shouldn't have a steam app id
+                    new_tag.steamAppId = 0
                 u = request.POST.get('user')
                 user = User.objects.get(username=u)
 
@@ -355,28 +360,25 @@ def suggest_tag(request):
 @login_required
 def account(request):
     context_dict = {}
-    # Return the AddFavGame form
-    context_dict['form'] = AddFavGame()
     # If a post request
     if request.method == "POST":
         # Get the type of post request
         code = request.POST.get('type')
         if code == "append":
-            # Get the form with the data
-            form = AddFavGame(request.POST)
-            # Get the selected tags
-            tagsSelected = request.POST.getlist('game_tags')
+            # Get the list of tags the user wants to agg
+            new_tags = []
+            for tag in request.POST.getlist("fav_games"):
+                new_tags.append(Tag.objects.get(text=tag))
+
             # Get the user object
             u = request.POST.get('user')
             user = User.objects.get(username=u)
 
             # For each tag, add it to the fab games list for the user
-            for tag in tagsSelected:
-                tag = Tag.objects.get(id=tag)
+            for tag in new_tags:
                 user.favourite_games.add(tag)
                 user.save()
-            # Return the filled form
-            context_dict['form'] = form
+
         elif code == "delete":
             # Get the tag the user wants to remove
             t = request.POST.get('tag')
@@ -386,5 +388,14 @@ def account(request):
             # Remove the tag
             user.favourite_games.remove(t)
             user.save()
+    
+    # Get the games already selected as their fav games and get a list of ids
+    fGames = request.user.favourite_games.all()
+    ids = []
+    for tag in fGames:
+        ids.append(tag.id)
 
+    # Get a list of game tags excluding tags with the ids already in the users fav game
+    non_fav_games = Tag.objects.filter(is_game_tag = True).filter(is_pending = False).exclude(id__in=ids).order_by("text")
+    context_dict['game_tags'] = non_fav_games
     return render(request, 'settle/account.html', context=context_dict)
