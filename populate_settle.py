@@ -70,6 +70,13 @@ def populate():
         "is_game_tag": True,
     }
 
+    fortnite = {
+        "text": "Fortnite",
+        "colour": '#4c51f7',
+        "is_pending": True,
+        "is_game_tag": True,
+    }
+
     petra = {
         "text": "Petra",
         "colour": "#F3AF50",
@@ -77,8 +84,8 @@ def populate():
         "is_game_tag": False,
     }
 
-    canada = {
-        "text": "Canada",
+    england = {
+        "text": "England",
         "colour": "#FF1000",
         "is_pending": False,
         "is_game_tag": False,
@@ -92,7 +99,7 @@ def populate():
     }
 
     tags = [civ_6, civ_5, civ_3, rimworld,
-            factorio, alpha, petra, canada, beginner]
+            factorio, alpha, fortnite, petra, england, beginner]
 
     # USERS
     secure_user = {
@@ -150,7 +157,7 @@ def populate():
         "author": contrarian,
         "picture": "civ3Celts.png",
         "game_tag": civ_3,
-        "info_tags": [canada],
+        "info_tags": [england],
         "description": "Start of a game in civ 3"
     }
 
@@ -158,7 +165,7 @@ def populate():
         "author": mid_seier,
         "picture": "civ5-2.png",
         "game_tag": civ_5,
-        "info_tags": [canada, beginner],
+        "info_tags": [england, beginner],
         "description": "Great civ 5 game so far!!"
     }
 
@@ -166,8 +173,8 @@ def populate():
         "author": secure_user,
         "picture": "civ5London.png",
         "game_tag": civ_5,
-        "info_tags": [canada],
-        "description": "Civ 5 best civ"
+        "info_tags": [england],
+        "description": "11:05pm, March 29th 2019 (colourised)"
     }
 
     factorio1 = {
@@ -190,7 +197,7 @@ def populate():
         "author": secure_user,
         "picture": "lukeEngland.png",
         "game_tag": civ_6,
-        "info_tags": [canada, petra],
+        "info_tags": [england, petra],
         "description": "Started really good, think I might win!"
     }
 
@@ -230,7 +237,7 @@ def populate():
         "author": secure_user,
         "picture": "wad.png",
         "game_tag": civ_6,
-        "info_tags": [petra, beginner, canada],
+        "info_tags": [petra, beginner, england],
         "description": "Wad"
     }
 
