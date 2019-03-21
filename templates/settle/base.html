@@ -94,7 +94,7 @@
                 <input class="form-control ml-3 d-lg-none smallMenuForm" type="password" placeholder="Password" name="password">
                 <!-- Login button for when collapsed -->
                 <button type="submit" class="btn row btn-outline-light mt-3 ml-3 d-lg-none">Login</button>
-                <a href="{% url 'register' %}"><button type="button" class="btn row btn-outline-light mt-3 ml-4 d-lg-none"
+                <a href="{% url 'register' %}" style="text-decoration: none"><button type="button" class="btn row btn-outline-light mt-3 ml-4 d-lg-none"
                     id="signupButton">Sign up</button></a>
             </form>
             {% endif %}
@@ -122,7 +122,7 @@
                 {% else %}
                 <!-- Login button for when not collapsed -->
                 <button type="button" class="btn btn-outline-light d-none d-lg-block" id="loginButton">Login</button>
-                <a href="{% url 'register' %}"><button type="button" class="btn btn-outline-light d-none d-lg-block ml-1 mr-2 my-2 my-md-0"
+                <a href="{% url 'register' %}" style="text-decoration: none"><button type="button" class="btn btn-outline-light d-none d-lg-block ml-1 mr-2 my-2 my-md-0"
                         id="signupButton">Sign up</button></a>
                 {% endif %}
             </form>
@@ -141,9 +141,7 @@
                     placeholder="Username" aria-label="Username">
                 <input class="form-control form-control-sm bigMenuForm" type="password" name="password" value=""
                     placeholder="Password" aria-label="Password">
-                <div class="text-right">
-                    <button class="btn btn-outline-light btn-sm" type="submit" id="finishLoginButton">Submit</button>
-                </div>
+                <button class="btn btn-outline-light btn-sm" type="submit" id="finishLoginButton">Submit</button>
             </form>
         </div>
     </div>
