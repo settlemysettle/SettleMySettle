@@ -29,7 +29,7 @@ $(document).ready(function () {
   // Highlight currently selected page
   $('.nav-link').each(function() {
     if ($(this).prop('href') == window.location.href) {
-      $(this).addClass('active');
+      $(this).addClass('activeTitle');
     }
   });
 
