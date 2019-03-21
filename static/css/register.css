@@ -1,0 +1,26 @@
+.pb-1 {
+    width: 70%;
+}
+
+.main-div {
+    margin: auto;
+    width: 55%;
+    align-content: center;
+}
+
+.main-sub-div {
+    align-content: left;
+}
+
+.field-title {
+    padding-right: 20px;
+}
+
+.field-help {
+    color: grey;
+    padding-left: 10px
+}
+
+.field-error {
+    color: red;
+}
