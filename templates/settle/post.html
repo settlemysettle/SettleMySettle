@@ -43,6 +43,18 @@
                 </div>
 
                 <div class="tab-pane fade p-3 text-center d-sm-none" id="two" role="tabpanel" aria-labelledby="two-tab">
+                    <form id="comment_form" method="post" action="" enctype="multipart.form-data">
+                        {% csrf_token %}
+                        <div class="form-group form-inline justify-content-center">
+                            <label class="mr-2 mb-1" for="exampleFormControlTextarea1">Want to say something?</label>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" name="text" rows="3"></textarea>
+                        </div>
+                        <input type="hidden" value="com" name="type">
+                        <input type="hidden" value={{ user }} name="author">
+                        <button type="submit" class="btn btn-outline-secondary mb-3">Submit!</button>
+                    </form>
+    
+                    <hr class="pb-3" style="width:70%;margin:0 auto"/>
                   {% if comments %}
                     <div>
                         {% for comment in comments %}
@@ -57,6 +69,7 @@
                           </div>
                           <div class="card-body">
                             <p class="card-text">{{ comment.text }}</p>
+                            <div class="form-inline justify-content-center">
                             <form id="like_button" method="post" action="" enctype="multipart.form-data">
                                 {% csrf_token %}
                                 <input type="hidden" value="like" name="type">
@@ -70,16 +83,17 @@
                                   {% endif %}
                                 {% endif %}
                             </form>
+                            {% if request.user|has_group:"admin"  %}
+                            <form id="del_form" method="post" action="" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <input type="hidden" name="type" value="del" />
+                                <input type="hidden" name="comment" value="{{ comment.id }}" />
+                                <input class="btn btn-outline-danger ml-1" type="submit" name="submit" value="Delete" />
+                            </form>
+                            </div>
+                            {% endif %}
                           </div>
                         </div>
-                        {% if request.user|has_group:"admin"  %}
-                        <form id="del_form" method="post" action="" enctype="multipart/form-data">
-                            {% csrf_token %}
-                            <input type="hidden" name="type" value="del" />
-                            <input type="hidden" name="comment" value="{{ comment.id }}" />
-                            <input type="submit" name="submit" value="X" />
-                        </form>
-                        {% endif %}
                         {% endfor %}
                     </div>
         
@@ -133,6 +147,19 @@
             <div class="card col-6 mt-3 pb-3 d-none d-sm-block text-center" style="border:none;">
                 <h5 class="card-title mb-3" style="color:black">Comments</h5>
                 <hr class="pb-3" style="width:70%;margin:0 auto"/>
+
+                <form id="comment_form" method="post" action="" enctype="multipart.form-data">
+                    {% csrf_token %}
+                    <div class="form-group form-inline justify-content-center">
+                        <label class="mr-2 mb-1" for="exampleFormControlTextarea1">Want to say something?</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" name="text" rows="3"></textarea>
+                    </div>
+                    <input type="hidden" value="com" name="type">
+                    <input type="hidden" value={{ user }} name="author">
+                    <button type="submit" class="btn btn-outline-secondary mb-3">Submit!</button>
+                </form>
+
+                <hr class="pb-3" style="width:70%;margin:0 auto"/>
                 {% if comments %}
                 <div>
                     {% for comment in comments %}
@@ -147,6 +174,7 @@
                       </div>
                       <div class="card-body">
                         <p class="card-text">{{ comment.text }}</p>
+                        <div class="form-inline justify-content-center">
                         <form id="like_button" method="post" action="" enctype="multipart.form-data">
                             {% csrf_token %}
                             <input type="hidden" value="like" name="type">
@@ -159,15 +187,16 @@
                               <input class="btn btn-outline-success" type="submit" name="unlike" value="Like" />
                               {% endif %}
                             {% endif %}
-                            {% if request.user|has_group:"admin"  %}
-                            <form id="del_form" method="post" action="" enctype="multipart/form-data">
-                                {% csrf_token %}
-                                <input type="hidden" name="type" value="del" />
-                                <input type="hidden" name="comment" value="{{ comment.id }}" />
-                                <input class="btn btn-outline-danger" type="submit" name="submit" value="Delete" />
-                            </form>
-                            {% endif %}
                         </form>
+                        {% if request.user|has_group:"admin"  %}
+                        <form id="del_form" method="post" action="" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <input type="hidden" name="type" value="del" />
+                            <input type="hidden" name="comment" value="{{ comment.id }}" />
+                            <input class="btn btn-outline-danger ml-1" type="submit" name="submit" value="Delete" />
+                        </form>
+                        </div>
+                        {% endif %}
                       </div>
                     </div>
                     {% endfor %}

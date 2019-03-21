@@ -159,6 +159,7 @@ def post(request, post_id):
     if request.method == 'POST':
         # Check the type of post request
         if request.POST.get('type') == "com":
+            print("here")
             # Use the CommentForm
             comment_form = CommentForm(data=request.POST)
             context_dict['form'] = comment_form
