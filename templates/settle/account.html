@@ -44,7 +44,13 @@
             <hr class="pb-1" style="width:35%" align="left" />
             <form id="game_tag_form" method="post" action="{% url 'account' %}" enctype="multipart/form-data">
                 {% csrf_token %}
-                {{ form }}
+                <div class="form-group">
+                    <select class="selectpicker" multiple data-live-search="true" name="non_fav_games">
+                        {% for tag in game_tags %}
+                        <option>{{ tag }}</option>
+                        {% endfor %}
+                    </select>
+        </div>
                 <input type="hidden" name="type" value="append" />
                 <input type="hidden" name="user" value="{{ user }}" />
                 <input type="submit" name="submit" value="Add" />

@@ -361,6 +361,10 @@ def account(request):
     context_dict = {}
     # Return the AddFavGame form
     context_dict['form'] = AddFavGame()
+
+    non_fav_games = Tag.objects.filter(is_game_tag = True).filter(is_pending = False).exclude().order_by("text")
+
+    context_dict['game_tags'] = non_fav_games
     # If a post request
     if request.method == "POST":
         # Get the type of post request
