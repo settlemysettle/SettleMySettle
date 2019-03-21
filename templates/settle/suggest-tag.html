@@ -15,14 +15,12 @@
     <p class="page-title">Suggest a Tag</p>
     A tag you want to describe your post doesn't exist? Submit it to be approved by admins!
 </div>
-
-<!-- <div style="margin:auto;width:45%;"> -->
 <hr class="pb-1 page-title-break" />
+
 <!-- Page Body -->
 <div class="main-div">
-    <!-- Used to dispaly any form errors -->
 
-
+    <!-- Display form Errors -->
     {% if suggest_form.errors %}
     {% for field in suggest_form %}
     {% for error in field.errors %}
