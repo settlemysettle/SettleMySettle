@@ -52,16 +52,6 @@ def index(request, template="settle/index.html", valid=None):
     return render(request, 'settle/index.html', context_dict)
 
 
-def error404(request, exception):
-    ''' HTTP 404 Error (Page not found)'''
-    return render(request, 'settle/404.html')
-
-
-def error500(request, exception):
-    ''' HTTP 500 Error (Server error) '''
-    return render(request, 'settle/500.html')
-
-
 @login_required
 def feed(request):
     ''' Feed view function.'''
@@ -331,8 +321,12 @@ def suggest_tag(request):
                 new_tag = suggest_tags_form.save(commit=False)
                 new_tag.is_pending = True
 
-                if not new_tag.is_game_tag:
+
+                if "is_game_tag" in request.POST:
+                    new_tag.is_game_tag = True
+                else:
                     # info tags shouldn't have a steam app id
+                    new_tag.is_game_tag = False
                     new_tag.steamAppId = 0
                 u = request.POST.get('user')
                 user = User.objects.get(username=u)

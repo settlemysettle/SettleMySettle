@@ -1,0 +1,37 @@
+.main-div {
+    margin:auto;
+    width:70%;
+}
+
+.post-div {
+    margin-right:10px;margin-left:10px
+}
+
+.post-sub-div {
+    background-color:#fff;
+    margin-bottom:-2px;
+    padding:3px;
+    padding-left:8px;
+    color:#305475;
+    border-radius: 3px;
+    border-color:#D8D8D8;
+    border-style:solid;
+    border-width: 1px;
+    text-align: left
+}
+
+.post-gametag {
+    border-style:solid;
+    border-width:1px;
+    border-color:#D8D8D8;
+    color:black;
+}
+
+.post-picture {
+    height:200px;
+    width:300px
+}
+
+.loading-message {
+    display: none;
+}
