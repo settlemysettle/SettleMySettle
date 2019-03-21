@@ -1,9 +1,9 @@
 $(document).ready(function () {
 
     $.fn.updatePreview = function() {
-        var tagText = $('#id_text').val();
-        var tagCol = $('#id_colour').val();
-        var steamAppId = $('#id_steamAppId').val();
+        var tagText = $('#exampleFormControlTextarea1').val();
+        var tagCol = $('#cPicker').val();
+        var steamAppId = $('#sAppID').val();
         
         $('#preview-tag').css('background-color', tagCol);
         $('#preview-tag').text(tagText);
@@ -15,9 +15,7 @@ $(document).ready(function () {
 
     $('.edit-tag').click( function() {
         
-        console.log("editing required?");
         var tagInfo = $(this).closest('tr').children('td') // get list of items in this row
-        console.log(tagInfo);
         var tagColText = tagInfo.get(0).id;
 
         var tagCol = tagColText.substring(0, 7);
@@ -25,12 +23,17 @@ $(document).ready(function () {
 
         var tagSteamAppId = tagInfo.get(1).id;
 
-        var tagIsGame = tagInfo.get(2).id;
+        var tagIsGame = tagInfo.get(3).id;
 
-        $('#id_text').val(tagText);
-        $('#id_colour').val(tagCol);
-        $('#id_steamAppId').val(tagSteamAppId);
-        $('#id_is_game_tag').prop('checked', tagIsGame === "True");
+        console.log(tagCol);
+        console.log(tagText);
+        console.log(tagSteamAppId);
+        console.log(tagIsGame);
+
+        $('#exampleFormControlTextarea1').val(tagText);
+        $('#cPicker').val(tagCol);
+        $('#sAppID').val(tagSteamAppId);
+        $('#gTag').prop('checked', tagIsGame === "True");
 
         $.fn.updatePreview();
     });
