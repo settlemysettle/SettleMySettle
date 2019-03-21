@@ -46,6 +46,25 @@
                 <hr style="width:70%"/>
                 <img class="card-img img-fluid modalImg" src="{{ MEDIA_URL }}{{ post.picture }}" alt="post img" id="postImg" data-toggle="modal" data-target="#pic-modal">
                 <hr style="width:70%"/>
+                <div class="form-inline justify-content-center">
+                  <h2><span class="badge badge-secondary mr-1 tagText" style="background-color:{{ post.game_tag.colour }}">{{ post.game_tag.text }}</span></h2>
+                  {% if post.info_tags.all.0 %}
+                    <h2><span class="badge badge-secondary tagText" style="background-color:{{ post.info_tags.all.0.colour }}">{{ post.info_tags.all.0.text }}</span></h2>
+                  {% endif %}
+                  {% if post.info_tags.all.1 %}
+                    <h2><span class="badge badge-secondary ml-1 tagText" style="background-color:{{ post.info_tags.all.1.colour }}">{{ post.info_tags.all.1.text }}</span></h2>
+                  {% endif %}
+                  {% if post.info_tags.all.2 %}
+                    <h2><span class="badge badge-secondary ml-1 tagText" style="background-color:{{ post.info_tags.all.2.colour }}">{{ post.info_tags.all.2.text }}</span></h2>
+                  {% endif %}
+                  {% if post.info_tags.all.3 %}
+                    <h2><span class="badge badge-secondary ml-1 tagText" style="background-color:{{ post.info_tags.all.3.colour }}">{{ post.info_tags.all.3.text }}</span></h2>
+                  {% endif %}
+                  {% if post.info_tags.all.4 %}
+                    <h2><span class="badge badge-secondary ml-1 tagText" style="background-color:{{ post.info_tags.all.4.colour }}">{{ post.info_tags.all.4.text }}</span></h2>
+                  {% endif %}
+                </div>
+                <hr style="width:70%"/>
                 <h5 class="card-title" style="color:black">Description</h5>
                 <p class="card-text" style="color:black">{{ post.description }}</p>      
               </div>
