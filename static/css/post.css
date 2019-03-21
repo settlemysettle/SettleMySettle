@@ -1,6 +1,6 @@
 #postImg {
-    max-height:10em;
-    width:auto;
+    max-width:15em;
+    height:auto;
 }
 
 .cardTab.nav-link:hover {
