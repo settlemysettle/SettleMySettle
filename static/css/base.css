@@ -16,7 +16,8 @@ body {
 /* ---------------------- NAVIGATION BAR */
 
 #navBar {
-    background-color:#305475;
+    background-color: #3A4851;
+    /* background-color:#305475; */
 }
 
 @media (max-width: 992px) {
@@ -28,8 +29,9 @@ body {
 }
 
 .navbar-brand {
-    color:#3F4244 !important;
-    background-color: #56c9ff;
+    color:#D8D8D8 !important;
+    background-color: #3A4851;
+    /* background-color: #56c9ff; */
 }
 
 #navLogo {
@@ -48,7 +50,7 @@ body {
 /* ---------------------- NAVIGATION BAR TEXT */
 
 .navText {
-    color: #E8EBED !important;
+    color: #8E8E8E !important;
 }
 
 a.nav-link:hover {
@@ -61,7 +63,7 @@ a.nav-link:focus {
 
 /* Currently selected page (active page) - text appears in Blue */
 .activeTitle {
-    color: #56C9FF !important;
+    color: #D8D8D8 !important;
     /* color: #56C9FF !important; */
 }
 
@@ -75,7 +77,7 @@ a.nav-link:focus {
 }
 
 #loginDropdownBox {
-    background-color: #305475;
+    background-color: #3A4851;
     border-radius: 0px;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
