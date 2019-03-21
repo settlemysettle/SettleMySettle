@@ -2,19 +2,24 @@
 {% load staticfiles %}
 
 {% block style_block %}
+<link rel="stylesheet" type="text/css" href="{% static "css/register.css" %}">
 {% endblock %}
 
 {% block title_block %}Register{% endblock %}
 
 {% block body_block %}
+
+<!-- Page Header -->
 <div class="page-title-div">
     <p class="page-title">Create an Account</p>
     To set up an Account on Settle My Settle please choose a Username, enter an email address and choose a password.
 </div>
-<hr style="width:70%" />
+<hr class="pb-1 page-title-break" />
 
-<div style="margin:auto;width:50%;" align="center">
-    <div align="left">
+<div class="main-div">
+
+    <!-- Display form Errors -->
+    <div class="main-sub-div">
         {% if signup_form.errors %}
         {% for field in signup_form %}
         {% for error in field.errors %}
@@ -34,9 +39,12 @@
         <strong>You have already signed up<br></strong>
         <a href="{% url 'index' %}">Click here to return to the homepage.</a><br />
         {% else %}
-        <form id="signup_form" method="post" action="{% url 'register' %}" enctype="multipart.form-data">
 
+        <!-- Sign Up Form -->
+        <form id="signup_form" method="post" action="{% url 'register' %}" enctype="multipart.form-data">
             {% csrf_token %}
+
+            <!-- Enter an Email Address -->
             <label for="email_in" class="col-form-label">Email</label>
             <div class="form-group">
                 <input type="text" class="form-control" id="email_in" name="email"
@@ -45,6 +53,8 @@
                     Please enter your email address.
                 </small>
             </div>
+
+            <!-- Enter Username -->
             <label for="un_in" class="col-form-label">Username</label>
             <div class="form-group">
                 <input type="text" class="form-control" id="un_in" name="username"
@@ -53,6 +63,8 @@
                     Please enter a unique username up to 20 characters long.
                 </small>
             </div>
+
+            <!-- Enter a Password -->
             <label for="pw_in" class="col-form-label">Password</label>
             <div class="form-group">
                 <input type="password" class="form-control" id="pw_in" name="password"
@@ -61,6 +73,8 @@
                     Should be at least 8 characters long, contain one upper and lowercase character and one digit.
                 </small>
             </div>
+
+            <!-- Re-enter Password -->
             <label for="pwc_in" class="col-form-label">Confirm password</label>
             <div class="form-group">
                 <input type="password" class="form-control" id="pwc_in" name="confirm_password"

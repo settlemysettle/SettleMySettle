@@ -52,16 +52,6 @@ def index(request, template="settle/index.html", valid=None):
     return render(request, 'settle/index.html', context_dict)
 
 
-def error404(request, exception):
-    ''' HTTP 404 Error (Page not found)'''
-    return render(request, 'settle/404.html')
-
-
-def error500(request, exception):
-    ''' HTTP 500 Error (Server error) '''
-    return render(request, 'settle/500.html')
-
-
 @login_required
 def feed(request):
     ''' Feed view function.'''
