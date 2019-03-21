@@ -193,9 +193,15 @@ def post(request, post_id):
                 comment.liking_users.add(liker)
             else:
                 comment.liking_users.remove(liker)
+
         elif request.POST.get('type') == "del":
             c = request.POST.get('comment')
             Comment.objects.filter(id=c).delete()
+
+        elif request.POST.get('type') == "post_del":
+            p = request.POST.get('post')
+            Post.objects.filter(id=p).delete()
+            return redirectHome(request)
 
     else:
         # Give it back an empty form
