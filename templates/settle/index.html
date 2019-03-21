@@ -10,18 +10,10 @@
 {% block body_block %}
 <!-- Code here! -->
 {% if user.is_anonymous %}
-<<<<<<< HEAD
-<div class="page-title-div">
-  <p class="page-title">Settle My Settle is a place for enthusiasts of strategy games to share their cities and experiences in game.</p>
-
-  First time user? Register by clicking Sign Up!
-  
-=======
 <div style="height:10%;width:70%;margin:0 auto;text-align: center;padding-top:10px;">
   <p style="margin-bottom:0px;font-weight:330">Settle My Settle is a place for enthusiasts of strategy games to share
     their cities and experiences in game.</p>
   First time user? Register by clicking <a href="{% url 'register' %}">Sign Up</a>!
->>>>>>> 23137e9030bc82c2e1aa3574b45b8df1c0895d9a
 </div>
 <hr class="pb-1" style="width:70%" />
 {% endif %}
@@ -38,18 +30,20 @@
       <div class="col-md-6 col-lg-4 infinite-item pb-4" align="center">
         <div class="row justify-content-center">
           <div id="pic" style="margin-right:10px;margin-left:10px">
-            <p
-              style="background-color:#fff;margin-bottom:-2px;text-align: left;padding:3px;padding-left:8px;color:#305475;border-radius: 3px;border-color:#D8D8D8;border-style:solid;border-width: 1px">
-              {{ post.author }}</p>
+            <div class="form-inline" style="background-color:#fff;margin-bottom:-2px;padding:3px;padding-left:8px;color:#305475;border-radius: 3px;border-color:#D8D8D8;border-style:solid;border-width: 1px;text-align: left">
+                {{ post.author }}
+                <span class="badge badge-secondary ml-auto mr-1" style="border-style:solid;border-width:1px;border-color:#D8D8D8;color:black;background-color:{{ post.game_tag.colour }}">{{ post.game_tag }}</span>
+            </div>
             <a href="{% url "post" post.id %}"><img class="img-fluid" src="{{ MEDIA_URL }}{{ post.picture }}"
                 style="height:200px;width:300px"></a>
+            </div>
           </div>
-        </div>
 
       </div>
       {% endfor %}
     </div>
   </div>
+</div>
 
   {% if posts.has_next %}
   <a class="infinite-more-link" href="?page={{ posts.next_page_number }}"></a>

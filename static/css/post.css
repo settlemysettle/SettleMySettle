@@ -1,6 +1,6 @@
 #postImg {
-    max-height:10em;
-    width:auto;
+    max-width:30em;
+    height:auto;
 }
 
 .cardTab.nav-link:hover {
@@ -13,4 +13,9 @@
 
 .active {
     color: black !important;
+}
+
+.tagText {
+    font-weight: 500;
+    color:#00000F;
 }
