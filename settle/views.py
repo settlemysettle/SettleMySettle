@@ -159,6 +159,7 @@ def post(request, post_id):
     if request.method == 'POST':
         # Check the type of post request
         if request.POST.get('type') == "com":
+            print("here")
             # Use the CommentForm
             comment_form = CommentForm(data=request.POST)
             context_dict['form'] = comment_form
@@ -221,7 +222,7 @@ def post(request, post_id):
     app_id = post.game_tag.steamAppId
 
     if app_id != 0:
-        result_list = get_news(app_id, 10)
+        result_list = get_news(app_id, 5)
     # result_list = get_news(440, 5)
     context_dict["result_list"] = result_list
     context_dict["post"] = post
