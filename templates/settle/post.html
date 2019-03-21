@@ -43,6 +43,7 @@
                 </div>
 
                 <div class="tab-pane fade p-3 text-center d-sm-none" id="two" role="tabpanel" aria-labelledby="two-tab">
+                    {% if comment %}
                     <div>
                         {% for comment in comments %}
                         <div class="card mb-2">
@@ -98,12 +99,32 @@
                             <a href="?page={{ comments.paginator.num_pages }}">last &raquo;</a>
                             {% endif %}
                         </span>
-                    </div>           
+                    </div>   
+                    {% else %}  
+                      <h6 class="card-title" style="color:black">There's no comments for this post - post one!</h6>
+                    {% endif %}
                 </div>
 
                 <div class="tab-pane fade p-3" id="three" role="tabpanel" aria-labelledby="three-tab">
-                  <h5 class="card-title" style="color:black">Steam News</h5>
-                  <p class="card-text" style="color:black">Some quick example text to build on the card title and make up the bulk of the card's content.</p>           
+                  {% if result_list %}
+                  <!-- Display search results in an ordered list -->
+                  <div class="list-group">
+                      {% for result in result_list %}
+                      <div class="list-group-item">
+                          <h4 class="list-group-item-heading">
+                              <a href="{{ result.link }}">{{ result.title }}</a>
+                          </h4>
+                          <strong>{{ result.feedlabel }}</strong>
+                          {% if result.author %}
+                          - {{ result.author }}
+                          {% endif %}
+                          <p>{{ result.summary }}</p>
+                      </div>
+                      {% endfor %}
+                  </div>
+                  {% else %}
+                    <h5 class="card-title text-center" style="color:black">There's no news from Steam for this game!</h5>
+                  {% endif %}       
                 </div>
       
               </div>
@@ -112,6 +133,7 @@
             <div class="card col-6 mt-3 pb-3 d-none d-sm-block text-center" style="border:none;">
                 <h5 class="card-title mb-3" style="color:black">Comments</h5>
                 <hr class="pb-3" style="width:70%;margin:0 auto"/>
+                {% if comment %}
                 <div>
                     {% for comment in comments %}
                     <div class="card mb-2">
@@ -167,7 +189,10 @@
                         <a href="?page={{ comments.paginator.num_pages }}">last &raquo;</a>
                         {% endif %}
                     </span>
-                </div>           
+                </div>
+                {% else %}
+                  <h6 class="card-title" style="color:black">There's no comments for this post - post one!</h6>
+                {% endif %}
             </div>
             </div>
             </div>

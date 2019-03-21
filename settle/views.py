@@ -221,7 +221,7 @@ def post(request, post_id):
     app_id = post.game_tag.steamAppId
 
     if app_id != 0:
-        result_list = get_news(app_id, 10)
+        result_list = get_news(app_id, 5)
     # result_list = get_news(440, 5)
     context_dict["result_list"] = result_list
     context_dict["post"] = post
