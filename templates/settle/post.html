@@ -103,7 +103,7 @@
                     <div class="card-body">
                       <p class="card-text">{{ comment.text }}</p>
                       <div class="form-inline justify-content-center">
-                      <form id="like_button" method="post" action="" enctype="multipart.form-data">
+                      <form class="like_button" method="post" action="" enctype="multipart.form-data">
                           {% csrf_token %}
                           <input type="hidden" value="like" name="type">
                           <input type="hidden" value="{{ comment.id }}" name="comment">
@@ -112,7 +112,7 @@
                             {% if user in comment.liking_users.all %}
                             <input class="btn btn-outline-success" type="submit" name="like" value="Unlike" />
                             {% else %}
-                            <input class="btn btn-outline-success" type="submit" name="unlike" value="Like" />
+                            <input class="btn btn-outline-success" type="submit" name="like" value="Like" />
                             {% endif %}
                           {% endif %}
                       </form>
@@ -184,4 +184,5 @@
 
 {% block script_block %}
 <!-- Import custom JS here! -->
+<script src="{% static "js/post.js" %}"></script>
 {% endblock %}
