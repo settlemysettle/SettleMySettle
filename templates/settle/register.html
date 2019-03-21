@@ -1,41 +1,49 @@
 {% extends 'settle/base.html' %}
 {% load staticfiles %}
 
-{% block title_block %}
-Register
+{% block style_block %}
 {% endblock %}
 
+{% block title_block %}Register{% endblock %}
+
 {% block body_block %}
-<div style = "padding-top: 100px" align = "center">
-    <div style="background-color: lightgray;border-style: solid;border-width: 1px;display: inline-block;" align = "left">
-        <div class = "row-2" style = "border-bottom: 1px solid black;padding: 20px">
-            <p>Your username is how other settlers will see you. It will be used to identify you when you post, comment or like things.</p>
-        </div>
-        <div class = "row-10" style = "padding: 20px">
-            {% if user.is_authenticated %}
-            <strong><br /> have already signed up</strong> <br></strong>
-            <a href="{% url 'index' %}">Click here to return to the homepage.</a><br />
-            {% else %}
-            <form id="signup_form" method="post" action="{% url 'register' %}" enctype="multipart.form-data">
-            
-                {% csrf_token %}
-                {% for field in form %}
-                <p>
-                    {{ field.label_tag }}<br>
-                    {{ field }}
-                    {% if field.help_text %}
-                    <small style="color: grey">{{ field.help_text }}</small>
-                    {% endif %}
-                    {% for error in field.errors %}
-                    <p style="color: red">{{ error }}</p>
-                    {% endfor %}
-                </p>
+<div class="page-title-div">
+        <p class="page-title">Create an Account</p>
+        To set up an Account on Settle My Settle please choose a Username, enter an email address and choose a password.
+    </div>
+<hr class="pb-1" style="width:70%"/>
+<br />
+
+<div style="margin:auto;width:50%;" align="center">
+    <div align="left">
+        {% if user.is_authenticated %}
+        <strong><br /> have already signed up</strong> <br></strong>
+        <a href="{% url 'index' %}">Click here to return to the homepage.</a><br />
+        {% else %}
+        <form id="signup_form" method="post" action="{% url 'register' %}" enctype="multipart.form-data">
+        
+            {% csrf_token %}
+            {% for field in form %}
+            <p>
+                <span style="padding-right:20px">
+                    {{ field.label_tag }}
+                </span>
+                {{ field }}
+                {% if field.help_text %}
+                <small style="color: grey;padding-left: 10px">{{ field.help_text }}</small>
+                {% endif %}
+                {% for error in field.errors %}
+                <p style="color: red">{{ error }}</p>
                 {% endfor %}
-            
-                <input type="submit" name="submit" value="Register"/>
-            </form>
-            {% endif %}
-        </div>
+            </p>
+            {% endfor %}
+        
+            <input type="submit" name="submit" value="Register"/>
+        </form>
+        {% endif %}
     </div>
 </div>
+{% endblock %}
+
+{% block script_block %}
 {% endblock %}
