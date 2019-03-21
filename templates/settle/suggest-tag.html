@@ -11,7 +11,8 @@
 {% block body_block %}
 <!-- Code here! -->
 <div style="height:10%;width:70%;margin:0 auto;text-align: center;padding-top:10px;font-weight:330">
-    <p style="margin-bottom:0px;font-weight:400">Suggest a new info/game tag!</p>
+    <p style="margin-bottom:0px;font-weight:400">Suggest a Tag</p>
+    A tag you want to describe your post doesn't exist? Submit it to be approved by admins!
 </div>
 <hr class="pb-1" style="width:70%" />
 <div style="margin:auto;width:45%;">
@@ -46,10 +47,10 @@
 
                     {% if request.user|has_group:"admin" %}
                     <input type="hidden" name="type" value="approve" />
-                    <input type="submit" class="btn btn-primary" name="submit" value="Approve" />
+                    <input type="submit" class="btn btn-outline-secondary" name="submit" value="Approve" />
                     {% else %}
                     <input type="hidden" name="type" value="suggest" />
-                    <input type="submit" class="btn btn-primary" name="submit" value="Suggest" />
+                    <input type="submit" class="btn btn-outline-secondary" name="submit" value="Suggest" />
                     {% endif %}
                 </form>
                 <br />
