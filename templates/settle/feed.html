@@ -1,12 +1,15 @@
 {% extends 'settle/index.html' %}
 {% load staticfiles %}
+
 {% block message_block %}
-<div style="height:10%;width:70%;margin:0 auto;text-align: center;padding-top:10px;">
-    <p style="margin-top:10px;margin-bottom:10px;font-weight:320">Your feed is a personalised page where you can see posts 
+
+<!-- Page Header -->
+<div class="page-title-div">
+    <p class="page-title">Your feed is a personalised page where you can see posts 
         from your favourite games chosen in <a href="{% url 'account' %}">Account</a>.</p>
     {% if not posts %}
         Feed empty? Choose some of your favourite games on your account page!
     {% endif %}
 </div>
-<hr style="width:70%" />
+<hr class="page-title-break" />
 {% endblock %}

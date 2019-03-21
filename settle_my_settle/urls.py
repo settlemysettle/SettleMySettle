@@ -19,10 +19,7 @@ from django.conf.urls import include
 from django.conf import settings
 from django.conf.urls.static import static
 from settle import views
-from django.conf.urls import (handler404, handler500)
 
-handler404 = 'settle.views.error404'
-handler500 = 'settle.views.error500'
 
 urlpatterns = [
     url(r'^$', views.redirectHome),

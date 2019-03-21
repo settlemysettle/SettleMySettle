@@ -152,7 +152,7 @@ a.nav-link:focus {
     cursor: pointer;
 }
 
-/* ---------------------- MISC PAGE CSS */
+/* ---------------------- PAGE HEADER CSS */
 
 .page-title {
     margin-bottom:0px;
@@ -166,4 +166,8 @@ a.nav-link:focus {
     text-align: center;
     padding-top:10px;
     font-weight:330;
+}
+
+.page-title-break {
+    width: 70%;
 }

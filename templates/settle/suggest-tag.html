@@ -3,41 +3,53 @@
 {% load admintag %}
 
 {% block style_block %}
-<!-- Import custom CSS here! -->
+<link rel="stylesheet" type="text/css" href="{% static "css/suggest-tag.css" %}">
 {% endblock %}
 
 {% block title_block %}Suggest Tag{% endblock %}
 
 {% block body_block %}
-<!-- Code here! -->
-<div style="height:10%;width:70%;margin:0 auto;text-align: center;padding-top:10px;font-weight:330">
-    <p style="margin-bottom:0px;font-weight:400">Suggest a Tag</p>
+
+<!-- Page Header -->
+<div class="page-title-div">
+    <p class="page-title">Suggest a Tag</p>
     A tag you want to describe your post doesn't exist? Submit it to be approved by admins!
 </div>
-<hr class="pb-1" style="width:70%" />
-<div style="margin:auto;width:45%;">
+<hr class="pb-1 page-title-break" />
+
+<!-- Page Body -->
+<div class="main-div">
     <div class="row" id="tag_form">
         {% if request.user|has_group:"admin" %}
-        <div class="col-6" style="padding-right: 50px" align="left">
+        <div class="col-6 main-div">
             {% else %}
             <div class="col-12">
                 {% endif %}
-
+                
+                <!-- Suggest Tag Form -->
                 <form id="suggest-form" method="post" action="{% url 'tags' %}" enctype="multipart/form-data">
                     {% csrf_token %}
+
+                    <!-- Enter tag name -->
                     <div class="form-group">
                         <label for="exampleFormControlTextarea1">Tag name</label>
                         <textarea class="form-control" id="exampleFormControlTextarea1" name="text" rows="1"
                             maxlength="20"></textarea>
                     </div>
+
+                    <!-- Choose the colour -->
                     <div class="form-group">
                         <label for="cPicker">Pick a colour</label>
                         <input type="color" class="form-control" name="colour" value="" id="cPicker" />
                     </div>
+
+                    <!-- Set as Game Tag -->
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" name="is_game_tag" value="" id="gTag" />
                         <label for="gTag">Game tag</label>
                     </div>
+
+                    <!-- Add Steam AppID -->
                     <div class="form-group">
                         <label for="sAppID">Steam app id</label>
                         <input class="form-control" type="number" name="steamAppId" value="" id="sAppID" />
@@ -56,16 +68,15 @@
                 </form>
                 <br />
 
+                <!-- Preview of Tag -->
                 <p>Preview of your tag.</p>
-                <span id="preview-tag" class="btn tag mb-1" style="background-color: #FFFF00">Your Text Here</span>
-                <a id="preview-steam" href="https://store.steampowered.com/app/0" target="_blank"
-                    style="padding-left: 20px">Test
-                    Steam Link</a>
+                <span id="preview-tag" class="btn tag mb-1 tag-preview">Your Text Here</span>
+                <a id="preview-steam" class="steam-link" href="https://store.steampowered.com/app/0" target="_blank">Test Steam Link</a>
             </div>
-            {% if request.user|has_group:"admin" %}
 
-            <div class="col-6" style="padding-left:50px" align="left">
-                <!-- Code for admin queue -->
+            <!-- Display Tag queue for Admins -->
+            {% if request.user|has_group:"admin" %}
+            <div class="col-6 tag-queue-div">
                 <h4 class="lead">Approve tags</h4>
                 {% if pending_tags %}
                 <table class="table">
@@ -74,6 +85,8 @@
                         <td>Steam Link</td>
                         <td>Actions</td>
                     </tr>
+
+                    <!-- Display Pending Tags -->
                     {% for tag in pending_tags %}
                     <tr>
                         <td id="{{ tag.colour }}{{ tag }}"><span class="btn tag mb-1"
@@ -86,6 +99,8 @@
                                 type="button">Edit</button>
                         </td>
                         <td id={{ tag.is_game_tag }}>
+
+                            <!-- Delete a pending Tag -->
                             <form id="del_form" method="post" action="{% url 'tags' %}" enctype="multipart/form-data">
                                 {% csrf_token %}
                                 <input type="hidden" name="type" value="del" />
@@ -109,6 +124,7 @@
     {% endblock %}
 
     {% block script_block %}
-    <!-- Import custom JS here! -->
+
+    <!-- JavaScript for Suggest Tag -->
     <script src="{% static "js/suggest_tag.js" %}"></script>
     {% endblock %}
