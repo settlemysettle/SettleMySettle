@@ -216,7 +216,7 @@ def populate():
     }
 
     bad_post = {
-        "author": mid_seier,
+        "author": apex,
         "picture": "apex.jpg",
         "game_tag": civ_5,
         "info_tags": [],
