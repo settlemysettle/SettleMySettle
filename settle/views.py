@@ -251,7 +251,7 @@ def signup(request):
                 # Else add the errors to the form
                 signup_form.add_error('password', e)
                 # Return the falied form
-                return render(request, 'settle/register.html', {'form': signup_form, 'registered': registered})
+                return render(request, 'settle/register.html', {'signup_form': signup_form, 'registered': registered})
             # Save the new user
             newUser.password = make_password(password, hasher="pbkdf2_sha256")
             newUser.save()
@@ -268,7 +268,7 @@ def signup(request):
         # Give it back an empty form
         signup_form = SignupForm()
 
-    return render(request, 'settle/register.html', {'form': signup_form, 'registered': registered})
+    return render(request, 'settle/register.html', {'signup_form': signup_form, 'registered': registered})
 
 
 def user_login(request):

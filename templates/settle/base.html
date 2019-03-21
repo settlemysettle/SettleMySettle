@@ -31,7 +31,7 @@
     <nav class="nav navbar-expand-lg navbar-dark pr-2" id="navBar">
 
         <!-- Logo and App Name -->
-        <a class="navbar-brand py-3 px-3" href="{% url 'index' %}">
+        <a class="navbar-brand py-3 pl-4" href="{% url 'index' %}">
             Settle My Settle
             <img src="{% static "images/logoWAD.png" %}" alt="logo" id="logo">
         </a>
@@ -54,15 +54,21 @@
                 <!-- If a guest -->
                 {% if user.is_anonymous %}
                 <li class="nav-item ml-3">
-                    <a class="nav-link disabled" href="{% url 'feed' %}">My Feed</a>
+                    <span data-toggle="tooltip" title="Please log in to see your feed">
+                        <a class="nav-link disabled" href="{% url 'feed' %}" style="pointer-events:none">My Feed</a>
+                    </span>
                 </li>
                 <!-- Item 3: Upload -->
                 <li class=" nav-item ml-3">
-                    <a class="nav-link disabled" href="{% url 'upload' %}">Upload</a>
+                    <span data-toggle="tooltip" title="Please log in to upload posts">
+                        <a class="nav-link disabled" href="{% url 'upload' %}">Upload</a>
+                    </span>
                 </li>
                 <!-- Item 4: Suggest Tag -->
                 <li class="nav-item ml-3">
-                    <a class="nav-link disabled" href="{% url 'tags' %}">Suggest Tag</a>
+                    <span data-toggle="tooltip" title="Please log in to suggest tags">        
+                        <a class="nav-link disabled" href="{% url 'tags' %}">Suggest Tag</a>
+                    </span>
                 </li>
                 {% else %}
                 <!-- Item 2: My Feed -->
@@ -87,8 +93,8 @@
                 <input class="form-control ml-3 mb-2 d-lg-none smallMenuForm" type="text" placeholder="Username" name="username">
                 <input class="form-control ml-3 d-lg-none smallMenuForm" type="password" placeholder="Password" name="password">
                 <!-- Login button for when collapsed -->
-                <button type="submit" class="btn row btn-primary mt-3 ml-3 d-lg-none">Login</button>
-                <a href="{% url 'register' %}"><button type="button" class="btn row btn-primary mt-3 ml-4 d-lg-none"
+                <button type="submit" class="btn row btn-outline-light mt-3 ml-3 d-lg-none">Login</button>
+                <a href="{% url 'register' %}" style="text-decoration: none"><button type="button" class="btn row btn-outline-light mt-3 ml-4 d-lg-none"
                     id="signupButton">Sign up</button></a>
             </form>
             {% endif %}
@@ -106,17 +112,17 @@
             <form class="form-inline my-2 my-lg-0">
                 {% if user.is_authenticated %}
                 <!-- Login button for when not collapsed -->
-                <a href="{% url 'account' %}"><button type="button"
-                        class="btn btn-primary d-none d-lg-block">Account</button></a>
+                <a href="{% url 'account' %}" style="text-decoration: none"><button type="button"
+                        class="btn btn-outline-light d-none d-lg-block">Account</button></a>
                 <!-- Account button for when collapsed -->
-                <a href="{% url 'account' %}"><button type="button"
-                        class="btn btn-primary ml-3 d-lg-none">Account</button>
+                <a href="{% url 'account' %}" style="text-decoration: none"><button type="button"
+                        class="btn btn-outline-light ml-3 d-lg-none">Account</button>
                 <a href="{% url 'logout' %}"><button type="button"
-                        class="btn btn-primary ml-1 mr-2 my-2 my-lg-0">Logout</button></a>
+                        class="btn btn-outline-light ml-1 mr-2 my-2 my-lg-0">Logout</button></a>
                 {% else %}
                 <!-- Login button for when not collapsed -->
-                <button type="button" class="btn btn-primary d-none d-lg-block" id="loginButton">Login</button>
-                <a href="{% url 'register' %}"><button type="button" class="btn btn-primary d-none d-lg-block ml-1 mr-2 my-2 my-md-0"
+                <button type="button" class="btn btn-outline-light d-none d-lg-block" id="loginButton">Login</button>
+                <a href="{% url 'register' %}" style="text-decoration: none"><button type="button" class="btn btn-outline-light d-none d-lg-block ml-1 mr-2 my-2 my-md-0"
                         id="signupButton">Sign up</button></a>
                 {% endif %}
             </form>
@@ -135,7 +141,7 @@
                     placeholder="Username" aria-label="Username">
                 <input class="form-control form-control-sm bigMenuForm" type="password" name="password" value=""
                     placeholder="Password" aria-label="Password">
-                <button class="btn btn-primary btn-sm" type="submit" id="finishLoginButton">Submit</button>
+                <button class="btn btn-outline-light btn-sm" type="submit" id="finishLoginButton">Submit</button>
             </form>
         </div>
     </div>

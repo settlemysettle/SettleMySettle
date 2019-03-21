@@ -14,7 +14,7 @@
     <p class="page-title">Account Details</p>
     Here you can view your Account details, add new favourite games or remove your existing ones.
 </div>
-<hr class="pb-1" />
+<hr class="pb-1 page-title-break" />
 
 <!-- Page Body -->
 <div class="main-div">
@@ -24,7 +24,8 @@
         <br />
         <strong>Username</strong> - {{ user }}<br />
         <strong>Email</strong> - {{ user.email }}<br />
-        <hr class="pb-1" />
+        <br />
+        <hr class="pb-1 details-break" />
     </div>
 
     <br />
@@ -65,7 +66,7 @@
 
                 <input type="hidden" name="type" value="append" />
                 <input type="hidden" name="user" value="{{ user }}" />
-                <button type="submit" class="btn btn-primary">Add</button>
+                <button type="submit" class="btn btn-outline-secondary">Add</button>
             </form>
         </div>
     </div>

@@ -15,7 +15,7 @@
     <p class="page-title">Upload a post</p>
     Select an image, game tag, up to five info tags and write something to describe your post!
 </div>
-<hr class="pb-1" />
+<hr class="pb-1 page-title-break" />
 
 <!-- Page Body -->
 <div class="main-div">
@@ -46,6 +46,8 @@
     <!-- Upload Form -->
     <form id="upload_post" method="post" action="{% url 'upload' %}" enctype="multipart/form-data">
         {% csrf_token %}
+
+        <!-- Upload a Photo -->
         <div class="form-group">
             <label for="exampleFormControlFile1">Upload a Picture</label>
             <input type="file" class="btn form-control-file" id="exampleFormControlFile1" name="picture">
@@ -71,11 +73,15 @@
             </select>
         </div>
 
+        <!-- Enter a Description -->
         <div class="form-group">
             <label for="exampleFormControlTextarea1">Enter a Comment</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" name="description" rows="3"></textarea>
+            <textarea class="form-control" id="exampleFormControlTextarea1" maxlength="300" name="description"
+                rows="3"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Upload!</button>
+        <div class="text-right pr-3">
+            <button type="submit" class="btn btn-outline-secondary">Upload!</button>
+        </div>
     </form>
 </div>
 

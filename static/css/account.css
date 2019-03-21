@@ -1,7 +1,3 @@
-.pb-1 {
-    width: 70%;
-}
-
 .main-div {
     margin: auto;
     width: 70%;
@@ -9,6 +5,10 @@
 
 .details-div {
     text-align: center;
+}
+
+.details-break {
+    width: 50%;
 }
 
 .remove-games {
