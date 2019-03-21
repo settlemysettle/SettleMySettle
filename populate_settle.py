@@ -109,6 +109,12 @@ def populate():
         "favourite_games": [civ_6]
     }
 
+    apex = {
+        "username": "ApexBoy",
+        "password": "F0rtnit3",
+        "email": "battleroyale@ntlworld.com",
+    }
+
     mid_seier = {
         "username": "MidSeier",
         "password": "fire axes",
@@ -123,7 +129,7 @@ def populate():
         "email": "tetris99@hotmail.co.uk",
     }
 
-    users = [secure_user, mid_seier, contrarian]
+    users = [secure_user, mid_seier, contrarian, apex]
 
     # POSTS
     centauri = {
@@ -206,7 +212,15 @@ def populate():
         "picture": "melbourne.png",
         "game_tag": civ_6,
         "info_tags": [petra],
-        "description": "Playing as Austrailia!"
+        "description": "Playing as Australia!"
+    }
+
+    bad_post = {
+        "author": mid_seier,
+        "picture": "apex.jpg",
+        "game_tag": civ_5,
+        "info_tags": [],
+        "description": "Please give me apex coins, my hero is very sick"
     }
 
     newCiv6 = {
@@ -238,11 +252,39 @@ def populate():
         "picture": "wad.png",
         "game_tag": civ_6,
         "info_tags": [petra, beginner, england],
-        "description": "Wad"
+        "description": "What an absolute unit of a mountain"
     }
 
-    posts = [centauri, niani, bigCity, civ3celts, civ5_2, civ5London, factorio1,
-             factorio2, lukeEngland, melbourne, newCiv6, rimworld1, rimworld2, wad]
+    posts = [centauri, niani, bigCity, civ3celts, civ5_2, factorio1,
+             factorio2, lukeEngland, melbourne, newCiv6, bad_post, rimworld1, rimworld2, wad, civ5London]
+
+    lond_comm_1 = {
+        "author": mid_seier,
+        "text": "Nice work getting past the Great Wall! It's pretty tough at that stage in the game.",
+        "liking_users": [secure_user, contrarian],
+        "parent_post": civ5London,
+    }
+
+    lond_comm_2 = {
+        "author": contrarian,
+        "text": "Perhaps it's better not to ask how the elephants crossed the Channel...",
+        "liking_users": [secure_user],
+        "parent_post": civ5London,
+    }
+
+    lond_comm_3 = {
+        "author": mid_seier,
+        "text": "pls dont hurt the deer",
+        "liking_users": [],
+        "parent_post": civ5London,
+    }
+
+    lond_comm_4 = {
+        "author": secure_user,
+        "text": "Update: Things are going pretty okay at the moment!",
+        "liking_users": [secure_user],
+        "parent_post": civ5London,
+    }
 
     cent_comment = {
         "author": mid_seier,
@@ -274,6 +316,12 @@ def populate():
         "liking_users": [mid_seier],
         "parent_post": centauri,
     }
+    
+    bad_comment = {
+        "author": apex,
+        "text": "just play fortnite instead lol",
+        "parent_post": centauri,
+    }
 
     niani_comment = {
         "author": contrarian,
@@ -283,7 +331,8 @@ def populate():
     }
 
     comments = [cent_comment, cent_reply,
-                cent_retort, cent_comeback, niani_comment]
+                cent_retort, cent_comeback, bad_comment, niani_comment, lond_comm_1, lond_comm_2, lond_comm_3,
+                lond_comm_4]
 
     for tag in tags:
         tag_added = add_tag(tag["text"], tag["colour"], tag["is_game_tag"],
