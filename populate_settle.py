@@ -24,7 +24,7 @@ django.setup()
 
 def populate():
 
-    new_group, created = Group.objects.get_or_create(name='admin') # make an admin group if it doesn't exist already
+    admin, created = Group.objects.get_or_create(name='admin') # make an admin group if it doesn't exist already
 
     # TAGS
 
@@ -106,7 +106,8 @@ def populate():
         "username": "MidSeier",
         "password": "fire axes",
         "email": "civ5forever@hotmail.co.uk",
-        "favourite_games": [rimworld, factorio]
+        "favourite_games": [rimworld, factorio],
+        "is_admin": True
     }
 
     contrarian = {
@@ -283,7 +284,7 @@ def populate():
 
     for user in users:
         user_added = add_user(
-            user["username"], user["password"], user["email"], user.get("favourite_games", []))
+            user["username"], user["password"], user["email"], user.get("favourite_games", []), user.get("is_admin", False))
 
     for post in posts:
         post_added = add_post(post["author"], post["picture"],
@@ -302,12 +303,16 @@ def add_tag(text, colour, is_game_tag, is_pending, steamAppId):
     return(tag)
 
 
-def add_user(username, password, email, favourite_games):
+def add_user(username, password, email, favourite_games, is_admin):
     user = User.objects.get_or_create(username=username, password=make_password(
         password, hasher="pbkdf2_sha256"), email=email)[0]
     user.save()
     for game in favourite_games:
         user.favourite_games.add(Tag.objects.get(text=game["text"]))
+
+    if is_admin:
+        admin = Group.objects.get(name='admin') 
+        admin.user_set.add(user)
     print(user.favourite_games.all())
     return(user)
 
