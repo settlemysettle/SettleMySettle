@@ -15,17 +15,35 @@
     <p class="page-title">Suggest a Tag</p>
     A tag you want to describe your post doesn't exist? Submit it to be approved by admins!
 </div>
-<hr class="pb-1 page-title-break" />
 
+<!-- <div style="margin:auto;width:45%;"> -->
+<hr class="pb-1 page-title-break" />
 <!-- Page Body -->
 <div class="main-div">
+    <!-- Used to dispaly any form errors -->
+
+
+    {% if suggest_form.errors %}
+    {% for field in suggest_form %}
+    {% for error in field.errors %}
+    <div class="alert alert-danger">
+        <strong>{{ field.name }} - {{ error|escape }}</strong>
+    </div>
+    {% endfor %}
+    {% endfor %}
+    {% for error in suggest_form.non_field_errors %}
+    <div class="alert alert-danger">
+        <strong>{{ error|escape }}</strong>
+    </div>
+    {% endfor %}
+    {% endif %}
     <div class="row" id="tag_form">
         {% if request.user|has_group:"admin" %}
         <div class="col-6 main-div">
             {% else %}
             <div class="col-12">
                 {% endif %}
-                
+
                 <!-- Suggest Tag Form -->
                 <form id="suggest-form" method="post" action="{% url 'tags' %}" enctype="multipart/form-data">
                     {% csrf_token %}
@@ -71,7 +89,8 @@
                 <!-- Preview of Tag -->
                 <p>Preview of your tag.</p>
                 <span id="preview-tag" class="btn tag mb-1 tag-preview">Your Text Here</span>
-                <a id="preview-steam" class="steam-link" href="https://store.steampowered.com/app/0" target="_blank">Test Steam Link</a>
+                <a id="preview-steam" class="steam-link" href="https://store.steampowered.com/app/0"
+                    target="_blank">Test Steam Link</a>
             </div>
 
             <!-- Display Tag queue for Admins -->
