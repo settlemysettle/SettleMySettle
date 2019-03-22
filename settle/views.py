@@ -37,6 +37,7 @@ def index(request, template="settle/index.html", valid=None):
     # List of post we will display
     post_list = Post.objects.all().order_by("-date_submitted")
     page = request.GET.get('page', 1)
+
     # This is used for infinite scrolling
     paginator = Paginator(post_list, 6)
     try:
@@ -61,6 +62,7 @@ def feed(request):
     fav_games = list(request.user.favourite_games.all())
     # Get the posts we will display but only if they match the fav games tag
     post_list = Post.objects.all().filter(game_tag__in=fav_games).order_by("-date_submitted")
+
     # Used for infinte scrolling
     page = request.GET.get('page', 1)
     paginator = Paginator(post_list, 6)
@@ -114,8 +116,7 @@ def upload(request):
                 user_post.info_tags.set(user_info_tags)
                 user_post.save()
 
-                upload_form.cleaned_data["info_tags"] = user_post.info_tags.all(
-                )
+                upload_form.cleaned_data["info_tags"] = user_post.info_tags.all()
 
                 # Put the picture in the post
                 if 'picture' in request.FILES:
@@ -143,8 +144,11 @@ def post(request, post_id):
     context_dict = {}
     result_list = []
 
+    # get the post from post id passed
     post = Post.objects.filter(id=post_id)[0]
     context_dict['form'] = CommentForm()
+
+    # for checking if a form was sent from the like/comment page
     context_dict["liked"] = False
 
     if request.method == 'POST':
@@ -186,10 +190,12 @@ def post(request, post_id):
             else:
                 comment.liking_users.remove(liker)
 
+        # for deleting a button
         elif request.POST.get('type') == "del":
             c = request.POST.get('comment')
             Comment.objects.filter(id=c).delete()
 
+        # for deleting a post
         elif request.POST.get('type') == "post_del":
             p = request.POST.get('post')
             Post.objects.filter(id=p).delete()
@@ -217,11 +223,11 @@ def post(request, post_id):
         # default to last page if too big
         comments = comm_pagin.page(comm_pagin.num_pages)
 
+    # for getting news from the Steam API
     app_id = post.game_tag.steamAppId
-
     if app_id != 0:
         result_list = get_news(app_id, 5)
-    # result_list = get_news(440, 5)
+
     context_dict["result_list"] = result_list
     context_dict["post"] = post
     context_dict["comments"] = comments
@@ -229,8 +235,6 @@ def post(request, post_id):
 
     return render(request, 'settle/post.html', context=context_dict)
 
-def test(request):
-    return render(request, 'settle/post.html', context={"liked": True})
 
 def signup(request):
     # Used to tell us if signup was successful
@@ -257,8 +261,9 @@ def signup(request):
                 signup_form.add_error('password', e)
                 # Return the falied form
                 return render(request, 'settle/register.html', {'signup_form': signup_form, 'registered': registered})
-            # Save the new user
+            # take the password entered by the user and hash it
             newUser.password = make_password(password, hasher="pbkdf2_sha256")
+            # Save the new user
             newUser.save()
 
             registered = True
@@ -287,7 +292,7 @@ def user_login(request):
         # Check if it is a valid user
         user = authenticate(username=username, password=password)
 
-        # If a valid user
+        # If a valid user login and redirect to home
         if user:
             login(request, user)
             return redirectHome(request)
@@ -299,6 +304,7 @@ def user_login(request):
 
 @login_required
 def user_logout(request):
+    # logout and redirect to home
     logout(request)
     return HttpResponseRedirect(reverse('index'))
 
@@ -349,13 +355,12 @@ def suggest_tag(request):
             t = request.POST.get('tag')
             Tag.objects.filter(id=t).delete()
             suggest_tags_form = SuggestTag()
-
     else:
         suggest_tags_form = SuggestTag()
+
     context_dict["suggest_form"] = suggest_tags_form
 
     pending_tags = Tag.objects.filter(is_pending=True).order_by("text")
-
     context_dict["pending_tags"] = pending_tags
 
     return render(request, 'settle/suggest-tag.html', context=context_dict)

@@ -17,7 +17,6 @@ body {
 
 #navBar {
     background-color: #3A4851;
-    /* background-color:#305475; */
 }
 
 @media (max-width: 992px) {
@@ -31,7 +30,6 @@ body {
 .navbar-brand {
     color:#D8D8D8 !important;
     background-color: #3A4851;
-    /* background-color: #56c9ff; */
 }
 
 #navLogo {
@@ -64,7 +62,24 @@ a.nav-link:focus {
 /* Currently selected page (active page) - text appears in Blue */
 .activeTitle {
     color: #D8D8D8 !important;
-    /* color: #56C9FF !important; */
+}
+
+#navLoginMessage {
+    color: white;
+    font-size: 12px;
+}
+
+#navLoginMessageCollapsed {
+    color: white; 
+}
+
+#navLoginError {
+    color:red;
+    font-size: 12px;
+}
+
+#navLoginErrorCollapsed {
+    color:red;
 }
 
 /* ---------------------- DROPDOWN MENU FOR LOGIN */
@@ -114,6 +129,10 @@ a.nav-link:focus {
     min-width: 90px;
 }
 
+a.buttonLink {
+    text-decoration: none;
+}
+
 .tag {
     font-weight: bold;
 }
@@ -133,6 +152,7 @@ a.nav-link:focus {
     justify-content: center;
 }
 
+/* for centering the image */
 @media(max-height: 991px) {
     .flex-me .image-bg {
         min-height: 80vh;
@@ -148,7 +168,7 @@ a.nav-link:focus {
     }
 }
 
-.modalPic {
+.modalImg {
     cursor: pointer;
 }
 

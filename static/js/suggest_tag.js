@@ -1,5 +1,6 @@
 $(document).ready(function () {
 
+    // updates tag dynamically
     $.fn.updatePreview = function() {
         var tagText = $('#exampleFormControlTextarea1').val();
         var tagCol = $('#cPicker').val();
@@ -13,6 +14,7 @@ $(document).ready(function () {
         $.fn.updatePreview();
     });
 
+    // places the tag information into the form to be modified/approved
     $('.edit-tag').click( function() {
         
         var tagInfo = $(this).closest('tr').children('td') // get list of items in this row
@@ -24,11 +26,6 @@ $(document).ready(function () {
         var tagSteamAppId = tagInfo.get(1).id;
 
         var tagIsGame = tagInfo.get(3).id;
-
-        console.log(tagCol);
-        console.log(tagText);
-        console.log(tagSteamAppId);
-        console.log(tagIsGame);
 
         $('#exampleFormControlTextarea1').val(tagText);
         $('#cPicker').val(tagCol);

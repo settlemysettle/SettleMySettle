@@ -52,7 +52,8 @@
                 <img class="card-img img-fluid modalImg" src="{{ MEDIA_URL }}{{ post.picture }}" alt="post img" id="postImg" data-toggle="modal" data-target="#pic-modal">
                 <hr class="title-break" />
 
-                <!-- Display Tags -->
+                <!-- Display up to 5 Tags -->
+                <!-- CSS needed here as we use a Django variable to colour the tags -->
                 <div class="form-inline justify-content-center">
                   <h2><span class="badge badge-secondary mr-1 tagText" 
                             style="background-color:{{ post.game_tag.colour }};">{{ post.game_tag.text }}</span></h2>
@@ -198,12 +199,28 @@
     </div>
   </div>
 </div>
-<!-- <a class="btn btn-primary btn-lg" onclick="$('#two-tab').trigger('click')">Second</a>  -->
+
+
+<!-- Modal (click on a picture to fade background and show picture center) -->
+<div class="modal fade bs-example-modal-lg" id="pic-modal" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg modal-vert-align-center" role="document">
+        <div class="modal-body">
+            <div class="row no-margin flex-me">
+                <div class="col-md-12">
+                    <div class="text-center image-bg">
+                        <img class="img-responsive" src="" id="full-img">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
 
 {% block script_block %}
-<!-- Import custom JS here! -->
+<!-- script tag needed here as Django variable is used -->
 <script>
     if ("{{ liked }}" == "True" || window.location.href.slice(-2) == "#2") {
       document.getElementById("one").classList.remove("active")

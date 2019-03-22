@@ -33,6 +33,7 @@ $(document).ready(function () {
     }
   });
 
+  // displays tooltip when hovering over disabled nav links
   $("[data-toggle=tooltip]").tooltip();
 
 });

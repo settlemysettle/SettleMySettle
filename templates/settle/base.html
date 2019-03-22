@@ -23,7 +23,6 @@
     <title>
         Settle My Settle - {% block title_block %}{% endblock %}
     </title>
-
 </head>
 
 <body>
@@ -55,7 +54,7 @@
                 {% if user.is_anonymous %}
                 <li class="nav-item ml-3">
                     <span data-toggle="tooltip" title="Please log in to see your feed">
-                        <a class="nav-link disabled" href="{% url 'feed' %}" style="pointer-events:none">My Feed</a>
+                        <a class="nav-link disabled" href="{% url 'feed' %}">My Feed</a>
                     </span>
                 </li>
                 <!-- Item 3: Upload -->
@@ -94,41 +93,45 @@
                 <input class="form-control ml-3 d-lg-none smallMenuForm" type="password" placeholder="Password" name="password">
                 <!-- Login button for when collapsed -->
                 <button type="submit" class="btn row btn-outline-light mt-3 ml-3 d-lg-none">Login</button>
-                <a href="{% url 'register' %}" style="text-decoration: none"><button type="button" class="btn row btn-outline-light mt-3 ml-4 d-lg-none"
+                <a href="{% url 'register' %}" class="buttonLink"><button type="button" class="btn row btn-outline-light mt-3 ml-4 d-lg-none"
                     id="signupButton">Sign up</button></a>
             </form>
             {% endif %}
-            <!-- Very temp valid check -->
+
+            <!-- Login validity check -->
             {% if valid == False %}
-            <p class="pt-3 pr-3 d-none d-lg-block" style="color:red;font-size:12px">Login details invalid.</p>
-            <p class="pt-2 pl-3 d-lg-none" style="color:red;">Login details invalid.</p>
+                <!-- For when the screen is greater than 992px -->
+                <p class="pt-3 pr-3 d-none d-lg-block" id="navLoginError">Login details invalid.</p>
+                <!-- For when the screen is less than 992px -->
+                <p class="pt-2 pl-3 d-lg-none" id="navLoginErrorCollapsed">Login details invalid.</p>
             {% endif %}
 
             {% if user.is_authenticated %}
-            <p class="pt-3 pr-3 d-none d-lg-block" style="color:white;font-size:12px">User logged in: {{ user }}</p>
-            <p class="pt-2 pl-3 d-lg-none" style="color:white;">User logged in: {{ user }}</p>
+                <!-- For when the screen is greater than 992px -->
+                <p class="pt-3 pr-3 d-none d-lg-block" id="navLoginMessage">User logged in: {{ user }}</p>
+                <!-- For when the screen is less than 992px -->
+                <p class="pt-2 pl-3 d-lg-none" id="navLoginMessageCollapsed">User logged in: {{ user }}</p>
             {% endif %}
+
             <!-- Putting the buttons in a line -->
-            <form class="form-inline my-2 my-lg-0">
+            <div class="form-inline my-2 my-lg-0">
                 {% if user.is_authenticated %}
-                <!-- Login button for when not collapsed -->
-                <a href="{% url 'account' %}" style="text-decoration: none"><button type="button"
+                <!-- Account button for when not collapsed -->
+                <a href="{% url 'account' %}" class="buttonLink"><button type="button"
                         class="btn btn-outline-light d-none d-lg-block">Account</button></a>
                 <!-- Account button for when collapsed -->
-                <a href="{% url 'account' %}" style="text-decoration: none"><button type="button"
+                <a href="{% url 'account' %}" class="buttonLink"><button type="button"
                         class="btn btn-outline-light ml-3 d-lg-none">Account</button>
                 <a href="{% url 'logout' %}"><button type="button"
                         class="btn btn-outline-light ml-1 mr-2 my-2 my-lg-0">Logout</button></a>
                 {% else %}
                 <!-- Login button for when not collapsed -->
                 <button type="button" class="btn btn-outline-light d-none d-lg-block" id="loginButton">Login</button>
-                <a href="{% url 'register' %}" style="text-decoration: none"><button type="button" class="btn btn-outline-light d-none d-lg-block ml-1 mr-2 my-2 my-md-0"
-                        id="signupButton">Sign up</button></a>
+                <a href="{% url 'register' %}" class="buttonLink"><button type="button" 
+                    class="btn btn-outline-light d-none d-lg-block ml-1 mr-2 my-2 my-md-0" id="signupButton">Sign up</button></a>
                 {% endif %}
-            </form>
-
+            </div>
         </div>
-
     </nav>
 
     <!-- drop down menu for the login form -->
@@ -147,32 +150,10 @@
     </div>
     {% endif %}
 
-    <!-- Modal (click on a picture to fade background and show picture center) -->
-    <div class="modal fade bs-example-modal-lg" id="pic-modal" tabindex="-1" role="dialog"
-        aria-labelledby="myModalLabel">
-        <div class="modal-dialog modal-lg modal-vert-align-center" role="document">
-            <div class="modal-body">
-                <div class="row no-margin flex-me">
-                    <div class="col-md-12">
-                        <div class="text-center image-bg">
-                            <img class="img-responsive" src="" id="full-img">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div id="bodyContent">
         {% block body_block %}
         {% endblock %}
     </div>
-
-    <!-- To add a responsive image -->
-    <!-- Add the class "img-fluid to it" -->
-
-    <!-- To modal a picture -->
-    <!-- <img src="<file location>" data-toggle="modal" data-target="#pic-modal" class="modalImg"> -->
 
     <!-- JavaScript (For Bootstrap/Jquery) -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
