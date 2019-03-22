@@ -224,9 +224,3 @@ class uploadTempTestCase(TestCase):
         # Check it contains a game and info tag box
         self.assertContains(response, 'Select Game Tag')
         self.assertContains(response, 'Select Info Tags (max 5)')
-
-    def test_it_has_description_box(self):
-        response = self.client.get(reverse('upload'))
-        self.assertEqual(response.status_code, 200)
-        # Check it contains description box
-        self.assertContains(response, 'Description')

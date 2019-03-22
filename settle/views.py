@@ -301,6 +301,7 @@ def user_logout(request):
 @login_required
 def suggest_tag(request):
     context_dict = {}
+    suggest_tags_form = SuggestTag()
 
     if request.method == "POST":
         # Check the type of post
