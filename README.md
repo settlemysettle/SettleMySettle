@@ -12,7 +12,7 @@ Aidan Randtoul (2323851R)
 
 In a newly created virtual environment, in Python 3.7, clone the repository by typing:
 ```
-git https://github.com/settlemysettle/SettleMySettle
+git clone https://github.com/settlemysettle/SettleMySettle
 ```
 Access the project folder by typing:
 ```
