@@ -51,3 +51,4 @@ The website is also deployed on PythonAnywhere at `http://settlemysettle.pythona
 * The Bootstrap CSS toolkit was used, which is available at https://getbootstrap.com/.
 * The jQuery JavaScript library was used, available at https://jquery.com/.
 * Infinite scrolling was implemented using the Waypoints library along with the Infinite Scroll extension, available at https://github.com/imakewebthings/waypoints.
+* The Steam Web API was used to obtain information from the Steam News Feed for particular games - more documentation on the API is available at https://steamcommunity.com/dev.
