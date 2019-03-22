@@ -23,7 +23,7 @@ class SignupForm(forms.ModelForm):
     # Make the passowrd field use password input
     password = forms.CharField(
         max_length=30, widget=forms.PasswordInput(), required=True,
-        help_text="The password must be at least 8 characters in length, contain an upper and lowercase letter and contain at least one digit")
+        help_text="The password must be at least 8 characters in length, contain an upper and lowercase letter and contain a digit")
     # Make sure the put in the same password
     confirm_password = forms.CharField(widget=forms.PasswordInput())
 
@@ -53,7 +53,6 @@ class UploadForm(forms.ModelForm):
     description = forms.CharField(
         max_length=300, required=False)
     picture = forms.ImageField(required=True)
-    
 
     class Meta:
         # Make it inherit fields from Post model
@@ -62,21 +61,13 @@ class UploadForm(forms.ModelForm):
         exclude = ['author', 'date_submitted', 'game_tag']
 
 
-class AddFavGame(forms.Form):
-    # Select the game tags as a multiple choice field
-    game_tags = forms.ModelMultipleChoiceField(queryset=Tag.objects.filter(
-        is_game_tag=True).filter(is_pending=False).order_by("text"), widget=forms.CheckboxSelectMultiple(attrs={'class': 'game-tag-list'}))
-
-    class Meta:
-        fields = ['game_tags']
-
-
 class SuggestTag(forms.ModelForm):
     """A form used to upload a tag suggestion."""
 
     text = forms.CharField(max_length=20, required=True)
 
-    colour = forms.CharField(max_length=7, required=True, widget=TextInput(attrs={"type": "color"}))
+    colour = forms.CharField(max_length=7, required=True,
+                             widget=TextInput(attrs={"type": "color"}))
 
     is_game_tag = forms.BooleanField(required=False)
 

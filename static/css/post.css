@@ -1,0 +1,50 @@
+#postImg {
+    max-width:30em;
+    height:auto;
+}
+
+.cardTab.nav-link:hover {
+    color: black !important;
+}
+
+.cardTab.nav-link:focus {
+    color: black !important;
+}
+
+.active {
+    color: black !important;
+}
+
+.tagText {
+    font-weight: 350;
+    color:#00000F;
+    border-style:solid;
+    border-width:1px;
+    border-color:#D8D8D8;
+}
+
+.main-div {
+    margin:0 auto;
+    width:100%;
+}
+
+.steam-card-title {
+    color:black
+}
+
+.title-break {
+    width: 70%;
+}
+
+.title-card {
+    color:black;
+}
+
+.text-card {
+    color:black;
+}
+
+.comment-break {
+    width:70%;
+    margin:0 auto
+}

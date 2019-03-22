@@ -2,7 +2,6 @@
 {% load staticfiles %}
 
 {% block style_block %}
-<!-- Import custom CSS here! -->
 <link rel="stylesheet" type="text/css" href="{% static "css/upload.css" %}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />
 {% endblock %}
@@ -10,15 +9,18 @@
 {% block title_block %}Upload{% endblock %}
 
 {% block body_block %}
-<div style="height:10%;width:70%;margin:0 auto;text-align: center;padding-top:10px;font-weight:330">
-    <p style="margin-bottom:0px;font-weight:400">Upload a post</p>
+
+<!-- Page Header -->
+<div class="page-title-div">
+    <p class="page-title">Upload a post</p>
     Select an image, game tag, up to five info tags and write something to describe your post!
 </div>
-<hr class="pb-1" style="width:70%" />
+<hr class="pb-1 page-title-break" />
 
-<!-- Code here! -->
-<div style="margin:auto;width:70%;">
-    <!-- Used to dispaly any form errors -->
+<!-- Page Body -->
+<div class="main-div">
+
+    <!-- Display any form errors -->
     {% if upload_form.errors %}
     {% for field in upload_form %}
     {% for error in field.errors %}
@@ -33,6 +35,7 @@
     </div>
     {% endfor %}
     {% endif %}
+
     <!-- Display success message -->
     {% if message %}
     <div class="alert alert-success">
@@ -40,13 +43,17 @@
     </div>
     {% endif %}
 
+    <!-- Upload Form -->
     <form id="upload_post" method="post" action="{% url 'upload' %}" enctype="multipart/form-data">
         {% csrf_token %}
+
+        <!-- Upload a Photo -->
         <div class="form-group">
             <label for="exampleFormControlFile1">Upload a Picture</label>
             <input type="file" class="btn form-control-file" id="exampleFormControlFile1" name="picture">
         </div>
 
+        <!-- Choose Game tag -->
         <p>Pick a game tag</p>
         <div class="form-group">
             <select class="selectpicker" data-live-search="true" name="game_tags">
@@ -56,7 +63,8 @@
             </select>
         </div>
 
-        <p><br>Pick up to 5 info tags</p>
+        <!-- Choose Info tags -->
+        <p>Pick up to 5 info tags</p>
         <div class="form-group">
             <select class="selectpicker" multiple data-live-search="true" name="info_tag_list">
                 {% for tag in info_tags %}
@@ -64,13 +72,16 @@
                 {% endfor %}
             </select>
         </div>
-        <br><br>
 
+        <!-- Enter a Description -->
         <div class="form-group">
             <label for="exampleFormControlTextarea1">Enter a Comment</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" name="description" rows="3"></textarea>
+            <textarea class="form-control" id="exampleFormControlTextarea1" maxlength="300" name="description"
+                rows="3"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Upload!</button>
+        <div class="text-right pr-3">
+            <button type="submit" class="btn btn-outline-secondary">Upload!</button>
+        </div>
     </form>
 </div>
 
