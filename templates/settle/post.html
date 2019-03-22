@@ -9,7 +9,6 @@
 {% block title_block %}View Post{% endblock %}
 
 {% block body_block %}
-
 <!-- Page Body -->
 <div class="main-div">
   <div class="row justify-content-center">
@@ -86,7 +85,7 @@
               </div>
 
               <!-- Display second Tab - Comments -->
-              <div class="tab-pane fade p-3 text-center" id="two" role="tabpanel" aria-labelledby="two-tab">
+              <div class="tab-pane fade show p-3 text-center" id="two" role="tabpanel" aria-labelledby="two-tab">
 
               <!-- Comment Form -->
               {% if user.is_authenticated %}
@@ -152,8 +151,8 @@
                   <div class="pagination justify-content-center pt-3">
                     <span class="step-links">
                       {% if comments.has_previous %}
-                      <a href="?page=1">&laquo; first</a>
-                      <a href="?page={{ comments.previous_page_number }}">previous</a>
+                      <a href="?page=1#2">&laquo; first</a>
+                      <a href="?page={{ comments.previous_page_number }}#2">previous</a>
                       {% endif %}
       
                       <span class="current">
@@ -161,8 +160,8 @@
                       </span>
       
                       {% if comments.has_next %}
-                      <a href="?page={{ comments.next_page_number }}">next</a>
-                      <a href="?page={{ comments.paginator.num_pages }}">last &raquo;</a>
+                        <a href="?page={{ comments.next_page_number }}#2">next</a>
+                        <a href="?page={{ comments.paginator.num_pages }}#2">last &raquo;</a>
                       {% endif %}
                     </span>
                   </div> 
@@ -199,9 +198,16 @@
     </div>
   </div>
 </div>
+<!-- <a class="btn btn-primary btn-lg" onclick="$('#two-tab').trigger('click')">Second</a>  -->
 
 {% endblock %}
 
 {% block script_block %}
 <!-- Import custom JS here! -->
+<script>
+    if ("{{ liked }}" == "True" || window.location.href.slice(-2) == "#2") {
+      document.getElementById("one").classList.remove("active")
+      $('#two-tab').tab('show')
+    }
+</script>
 {% endblock %}
