@@ -145,10 +145,12 @@ def post(request, post_id):
 
     post = Post.objects.filter(id=post_id)[0]
     context_dict['form'] = CommentForm()
+    context_dict["liked"] = False
 
     if request.method == 'POST':
         # Check the type of post request
         if request.POST.get('type') == "com":
+            context_dict["liked"] = True
             # Use the CommentForm
             comment_form = CommentForm(data=request.POST)
             context_dict['form'] = comment_form
@@ -170,6 +172,7 @@ def post(request, post_id):
                 print(comment_form.errors)
         # If a like request, update the comment
         elif request.POST.get('type') == "like":
+            context_dict["liked"] = True
             # Get the id of the comment and get the comment object
             c = request.POST.get('comment')
             comment = Comment.objects.get(id=c)
@@ -226,6 +229,8 @@ def post(request, post_id):
 
     return render(request, 'settle/post.html', context=context_dict)
 
+def test(request):
+    return render(request, 'settle/post.html', context={"liked": True})
 
 def signup(request):
     # Used to tell us if signup was successful
