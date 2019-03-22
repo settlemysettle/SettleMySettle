@@ -24,6 +24,11 @@ Install the required packages by running:
 pip install -r requirements.txt
 ```
 
+Make migrations on the database by running:
+```
+python manage.py makemigrations
+```
+
 Set up the database by running:
 ```
 python manage.py migrate
