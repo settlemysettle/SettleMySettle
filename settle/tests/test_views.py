@@ -143,7 +143,7 @@ class SignupView(TestCase):
                                                           'username': "Duke", 'password': "password",
                                                           'confirm_password': "password"})
         # Should be returned with form errors
-        form = response.context['form']
+        form = response.context['signup_form']
         self.assertFalse(form.is_valid())
 
     def test_short_password(self):
@@ -151,7 +151,7 @@ class SignupView(TestCase):
                                                           'username': "Duke", 'password': "pw1",
                                                           'confirm_password': "pw1"})
         # Should be returned with form errors
-        form = response.context['form']
+        form = response.context['signup_form']
         self.assertFalse(form.is_valid())
 
     def test_justUpper_password(self):
@@ -159,7 +159,7 @@ class SignupView(TestCase):
                                                           'username': "Duke", 'password': "PASSWORD",
                                                           'confirm_password': "PASSWORD"})
         # Should be returned with form errors
-        form = response.context['form']
+        form = response.context['signup_form']
         self.assertFalse(form.is_valid())
 
     def test_noDigits_password(self):
@@ -167,5 +167,5 @@ class SignupView(TestCase):
                                                           'username': "Duke", 'password': "Password",
                                                           'confirm_password': "Password"})
         # Should be returned with form errors
-        form = response.context['form']
+        form = response.context['signup_form']
         self.assertFalse(form.is_valid())
